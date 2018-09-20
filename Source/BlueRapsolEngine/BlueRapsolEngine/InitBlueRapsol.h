@@ -12,8 +12,18 @@
 #pragma once
 
 class InitBlueRapsol{
+
+public:
+	//CONSTRUCTOR
+	InitBlueRapsol();
+
 	//TODO Check for multiple Instances
+
 	//TODO Check for sufficient storage space
+	bool ChkStorage(unsigned long long requiredBytes, const char* directory);
+
 	//TODO Check for available RAM and virtual memory
+	void ChkMem();
+
 	//TODO Display CPU speed and architecture
 };

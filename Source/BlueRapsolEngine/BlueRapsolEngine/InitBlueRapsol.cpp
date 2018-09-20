@@ -10,6 +10,11 @@
 
 #include "InitBlueRapsol.h" 
 
+//CONSTRUCTOR
+InitBlueRapsol::InitBlueRapsol() {
+
+	
+}
 
 
 

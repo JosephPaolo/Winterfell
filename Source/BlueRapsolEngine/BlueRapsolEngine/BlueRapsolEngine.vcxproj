@@ -19,10 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlueRapsolEngine.cpp" />
     <ClCompile Include="InitBlueRapsol.cpp" />
+    <ClCompile Include="InitBRChkMem.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="InitBlueRapsol.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
