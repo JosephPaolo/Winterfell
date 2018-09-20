@@ -23,6 +23,7 @@
     <ClCompile Include="CPUDisplay.cpp" />
     <ClCompile Include="InitBlueRapsol.cpp" />
     <ClCompile Include="InitBRChkMem.cpp" />
+    <ClCompile Include="InstanceCheck.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>

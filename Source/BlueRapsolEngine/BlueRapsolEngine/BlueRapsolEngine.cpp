@@ -32,6 +32,7 @@ void BlueRapsolEngine::Initialize() {
 
 	//System Check
 	std::cout << "\nChecking if another instance of the application is running...\n";
+	init.IsOnlyInstance();
 
 	std::cout << "\nChecking System Memory...\n";
 	init.ChkMem();

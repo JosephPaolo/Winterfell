@@ -15,7 +15,7 @@ void InitBlueRapsol::DisplayCPUSpeed() {
 	DWORD dwMHz = _MAX_PATH;
 	DWORD type = REG_DWORD;
 	HKEY hKey;
-	
+
 	long lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0)", 0, KEY_READ, &hKey);
 	if (lError != ERROR_SUCCESS) {
 		cout << "CPU Speed: Error! Cannot display CPU Speed; Key not found.\n";
