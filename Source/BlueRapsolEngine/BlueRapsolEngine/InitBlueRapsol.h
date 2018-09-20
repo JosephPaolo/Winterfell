@@ -18,6 +18,7 @@ public:
 	InitBlueRapsol();
 
 	//TODO Check for multiple Instances
+	bool IsOnlyInstance();
 
 	//TODO Check for sufficient storage space
 	bool ChkStorage(unsigned long long requiredBytes, const char* directory);
@@ -26,4 +27,6 @@ public:
 	void ChkMem();
 
 	//TODO Display CPU speed and architecture
+	void DisplayCPUArch();
+	void DisplayCPUSpeed();
 };

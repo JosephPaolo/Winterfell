@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlueRapsolEngine.cpp" />
+    <ClCompile Include="CPUDisplay.cpp" />
     <ClCompile Include="InitBlueRapsol.cpp" />
     <ClCompile Include="InitBRChkMem.cpp" />
     <ClCompile Include="Main.cpp" />

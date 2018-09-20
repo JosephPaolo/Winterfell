@@ -30,9 +30,15 @@ void BlueRapsolEngine::run() {
 void BlueRapsolEngine::initialize() {
 	InitBlueRapsol init;
 
-	std::cout << "Checking System Memory...\n";
+	std::cout << "\nChecking if another instance of the application is running...\n";
+
+	std::cout << "\nChecking System Memory...\n";
 	init.ChkMem();
 	init.ChkStorage(REQUIRED_STORAGE, STORAGE_DIRECTORY);
 
-	std::cout << "Initializing...\n";
+	std::cout << "\nChecking CPU...\n";
+	init.DisplayCPUArch();
+	init.DisplayCPUSpeed();
+
+	std::cout << "\nInitializing...\n";
 }
