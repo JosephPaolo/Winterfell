@@ -19,6 +19,9 @@
 //Temp macro for storage directory
 #define STORAGE_DIRECTORY "c:\\"
 
+//Name of this program for Mutex
+#define MUTEX_APP_NAME "BlueRapsolEngineMutex"
+
 void BlueRapsolEngine::Run() {
 
 	//Initialization
@@ -32,11 +35,11 @@ void BlueRapsolEngine::Initialize() {
 
 	//System Check
 	std::cout << "\nChecking if another instance of the application is running...\n";
-	init.IsOnlyInstance();
+	init.IsOnlyInstance(MUTEX_APP_NAME); //TODO terminate on false
 
 	std::cout << "\nChecking System Memory...\n";
 	init.ChkMem();
-	init.ChkStorage(REQUIRED_STORAGE, STORAGE_DIRECTORY);
+	init.ChkStorage(REQUIRED_STORAGE, STORAGE_DIRECTORY); //TODO terminate on false
 
 	std::cout << "\nChecking CPU...\n";
 	init.DisplayCPUArch();

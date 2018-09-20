@@ -9,6 +9,9 @@
 //   Rapsol game engine. It first makes hardware checks for compatibility and adjustments.
 // *****************************************************************************
 
+#include <windows.h>
+#include <WinBase.h>
+
 #pragma once
 
 class InitBlueRapsol{
@@ -18,7 +21,7 @@ public:
 	InitBlueRapsol();
 
 	//TODO Check for multiple Instances
-	bool IsOnlyInstance();
+	bool IsOnlyInstance(LPCTSTR appName);
 
 	//TODO Check for sufficient storage space
 	bool ChkStorage(unsigned long long requiredBytes, const char* directory);
