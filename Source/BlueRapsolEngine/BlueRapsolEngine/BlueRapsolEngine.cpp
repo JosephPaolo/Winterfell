@@ -19,17 +19,18 @@
 //Temp macro for storage directory
 #define STORAGE_DIRECTORY "c:\\"
 
-void BlueRapsolEngine::run() {
-	
+void BlueRapsolEngine::Run() {
+
 	//Initialization
-	BlueRapsolEngine::initialize();
+	BlueRapsolEngine::Initialize();
 
 	//TODO Program loop
 }
 
-void BlueRapsolEngine::initialize() {
+void BlueRapsolEngine::Initialize() {
 	InitBlueRapsol init;
 
+	//System Check
 	std::cout << "\nChecking if another instance of the application is running...\n";
 
 	std::cout << "\nChecking System Memory...\n";
@@ -41,4 +42,6 @@ void BlueRapsolEngine::initialize() {
 	init.DisplayCPUSpeed();
 
 	std::cout << "\nInitializing...\n";
+
+	//Initialization
 }

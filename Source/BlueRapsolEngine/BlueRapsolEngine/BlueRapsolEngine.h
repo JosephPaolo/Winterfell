@@ -13,8 +13,8 @@
 class BlueRapsolEngine {
 
 public:
-	void run();
+	void Run();
 
 private:
-	void initialize();
+	void Initialize();
 };

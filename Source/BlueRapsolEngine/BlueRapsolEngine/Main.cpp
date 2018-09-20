@@ -15,7 +15,7 @@
 int main() {
 	BlueRapsolEngine engineBR;
 	std::cout << "Starting Blue Rapsol Engine...\n";
-	engineBR.run(); //Start engine
+	engineBR.Run(); //Start engine
 
 	std::cout << "\n\nPress Enter to terminate application.\n";
 	std::getchar(); //Prevents program from terminating immediately by prompting for char user input
