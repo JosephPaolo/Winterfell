@@ -7,7 +7,7 @@
 // Description: 
 //   These are functions of Class InitBlueRapsol. These are used to check and display 
 //   available Storage, RAM and virtual memory. If there isn't atleast 300MB Storage 
-//   space then notify user.
+//   space then notify user..
 // *****************************************************************************
 
 #include "InitBlueRapsol.h" 
