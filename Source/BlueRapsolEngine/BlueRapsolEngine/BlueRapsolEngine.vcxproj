@@ -19,16 +19,64 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="ActorComponent.cpp" />
+    <ClCompile Include="AnimationComponent.cpp" />
+    <ClCompile Include="AttackAIComponent.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
     <ClCompile Include="CPUDisplay.cpp" />
+    <ClCompile Include="d3dApp.cpp" />
+    <ClCompile Include="d3dUtil.cpp" />
+    <ClCompile Include="FlyAIComponent.cpp" />
     <ClCompile Include="InitBlueRapsol.cpp" />
     <ClCompile Include="InitBRChkMem.cpp" />
     <ClCompile Include="InstanceCheck.cpp" />
+    <ClCompile Include="KeyboardListener.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="LifeTimeComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapMaker.cpp" />
+    <ClCompile Include="OverlapColliderComponent.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="PickUpComponent.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="ProjectileAbilityComponent.cpp" />
+    <ClCompile Include="RoomMaker.cpp" />
+    <ClCompile Include="SentryAIComponent.cpp" />
+    <ClCompile Include="SlideShowManager.cpp" />
+    <ClCompile Include="SolidColliderComponent.cpp" />
+    <ClCompile Include="StatManager.cpp" />
+    <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="UserInput.cpp" />
+    <ClCompile Include="WanderAIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="AttackAIComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
+    <ClInclude Include="d3dApp.h" />
+    <ClInclude Include="d3dUtil.h" />
+    <ClInclude Include="FlyAIComponent.h" />
     <ClInclude Include="InitBlueRapsol.h" />
+    <ClInclude Include="KeyboardListener.h" />
+    <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="LifetimeComponent.h" />
+    <ClInclude Include="MapMaker.h" />
+    <ClInclude Include="OverlapColliderComponent.h" />
+    <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="PickUpComponent.h" />
+    <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="ProjectileAbilityComponent.h" />
+    <ClInclude Include="RoomMaker.h" />
+    <ClInclude Include="SentryAIComponent.h" />
+    <ClInclude Include="SlideShowManager.h" />
+    <ClInclude Include="SolidColliderComponent.h" />
+    <ClInclude Include="StatManager.h" />
+    <ClInclude Include="TextureComponent.h" />
+    <ClInclude Include="UserInput.h" />
+    <ClInclude Include="WanderAIComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
