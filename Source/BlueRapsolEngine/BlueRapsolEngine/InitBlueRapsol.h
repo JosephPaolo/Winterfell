@@ -9,27 +9,36 @@
 //   Rapsol game engine. It first makes hardware checks for compatibility and adjustments.
 // *****************************************************************************
 
+#pragma once
+
 #include <windows.h>
 #include <WinBase.h>
-
-#pragma once
+#include <stdlib.h> 
+#include <string>
+#include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
+#include "../../DirectX/Framework/InitDirect3DApp.h"
 
 class InitBlueRapsol{
 
 public:
 	//CONSTRUCTOR
-	InitBlueRapsol();
+	//InitBlueRapsol(HINSTANCE hInstance);
 
-	//TODO Check for multiple Instances
+	//Check for multiple Instances
 	bool IsOnlyInstance(LPCTSTR appName);
 
-	//TODO Check for sufficient storage space
-	bool ChkStorage(unsigned long long requiredBytes, const char* directory);
+	//Check for sufficient storage space
+	bool ChkStorage(unsigned long long requiredBytes, LPCWSTR directory);
 
-	//TODO Check for available RAM and virtual memory
+	//Check for available RAM and virtual memory
 	void ChkMem();
 
-	//TODO Display CPU speed and architecture
+	//Display CPU speed and architecture
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
+
+	//Initialize DirectX
+	//TODO modify; TODO remove user input parameters
+	int InitializeD3d(HINSTANCE hInstance);
 };

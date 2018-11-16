@@ -10,11 +10,21 @@
 
 #pragma once
 
+#include <windows.h>
+#include <WinBase.h>
+#include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
+#include "InitBlueRapsol.h" 
+
 class BlueRapsolEngine {
 
 public:
-	void Run();
+	KeyboardListener kbInput;
+	MouseListener mbInput;
+
+	void Run(HINSTANCE hInstance);
 
 private:
-	void Initialize();
+	void Initialize(HINSTANCE hInstance);
+	int GameLoop();
 };

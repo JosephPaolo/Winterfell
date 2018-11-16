@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\DirectX">
+      <UniqueIdentifier>{3463e1a5-e2bf-40f6-9912-a210a615c1b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DirectX">
+      <UniqueIdentifier>{7fc373bd-0334-4cd7-a182-0a7965fedc84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Structures">
+      <UniqueIdentifier>{bd32c327-2b99-4d12-a922-2779d0df3cc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,16 +30,7 @@
     <ClCompile Include="InitBlueRapsol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InitBRChkMem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlueRapsolEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CPUDisplay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InstanceCheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
@@ -93,16 +93,28 @@
     <ClCompile Include="TextureComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WanderAIComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="d3dApp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\DirectX\Common\d3dApp.cpp">
+      <Filter>Source Files\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="d3dUtil.cpp">
+    <ClCompile Include="..\..\DirectX\Common\d3dUtil.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DirectX\Common\DDSTextureLoader.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DirectX\Common\MathHelper.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DirectX\Framework\InitDirect3DApp.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,12 +176,6 @@
     <ClInclude Include="MapMaker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UserInput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -179,10 +185,40 @@
     <ClInclude Include="SlideShowManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="d3dApp.h">
+    <ClInclude Include="IUserInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="d3dUtil.h">
+    <ClInclude Include="..\..\DirectX\Common\d3dApp.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\d3dUtil.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\d3dx12.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\DDSTextureLoader.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\GameTimer.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\MathHelper.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\UploadBuffer.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Framework\InitDirect3DApp.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="BRDataTypes.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

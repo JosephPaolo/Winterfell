@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,23 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\DirectX\Common\d3dApp.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\DirectX\Framework\InitDirect3DApp.cpp" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttackAIComponent.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
-    <ClCompile Include="CPUDisplay.cpp" />
-    <ClCompile Include="d3dApp.cpp" />
-    <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="FlyAIComponent.cpp" />
     <ClCompile Include="InitBlueRapsol.cpp" />
-    <ClCompile Include="InitBRChkMem.cpp" />
-    <ClCompile Include="InstanceCheck.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LifeTimeComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapMaker.cpp" />
+    <ClCompile Include="MouseListener.cpp" />
     <ClCompile Include="OverlapColliderComponent.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="PickUpComponent.cpp" />
@@ -47,23 +49,31 @@
     <ClCompile Include="SolidColliderComponent.cpp" />
     <ClCompile Include="StatManager.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
-    <ClCompile Include="UserInput.cpp" />
     <ClCompile Include="WanderAIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\DirectX\Common\d3dApp.h" />
+    <ClInclude Include="..\..\DirectX\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\DirectX\Common\d3dx12.h" />
+    <ClInclude Include="..\..\DirectX\Common\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\DirectX\Common\GameTimer.h" />
+    <ClInclude Include="..\..\DirectX\Common\MathHelper.h" />
+    <ClInclude Include="..\..\DirectX\Common\UploadBuffer.h" />
+    <ClInclude Include="..\..\DirectX\Framework\InitDirect3DApp.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttackAIComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
-    <ClInclude Include="d3dApp.h" />
-    <ClInclude Include="d3dUtil.h" />
+    <ClInclude Include="BRDataTypes.h" />
     <ClInclude Include="FlyAIComponent.h" />
     <ClInclude Include="InitBlueRapsol.h" />
+    <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="LifetimeComponent.h" />
     <ClInclude Include="MapMaker.h" />
+    <ClInclude Include="MouseListener.h" />
     <ClInclude Include="OverlapColliderComponent.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="PickUpComponent.h" />
@@ -75,14 +85,13 @@
     <ClInclude Include="SolidColliderComponent.h" />
     <ClInclude Include="StatManager.h" />
     <ClInclude Include="TextureComponent.h" />
-    <ClInclude Include="UserInput.h" />
     <ClInclude Include="WanderAIComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8F08A3C4-A48D-4EC4-94CB-4442FB5944B0}</ProjectGuid>
     <RootNamespace>BlueRapsolEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -102,7 +111,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -145,7 +154,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
