@@ -39,7 +39,9 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 	//System Check
 	//std::cout << "\nChecking if another instance of the application is running...\n";
 	OutputDebugString(L"\nChecking if another instance of the application is running...\n");
-	init.IsOnlyInstance(MUTEX_APP_NAME); //TODO terminate on false
+	if (!init.IsOnlyInstance(MUTEX_APP_NAME)) {
+		return;
+	}
 
 	//std::cout << "\nChecking System Memory...\n";
 	OutputDebugString(L"\nChecking System Memory...\n");
