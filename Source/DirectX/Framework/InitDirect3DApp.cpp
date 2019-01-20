@@ -32,6 +32,7 @@ void InitDirect3DApp::OnResize()
 
 //This function is called repeatedly within a loop
 void InitDirect3DApp::Update(const GameTimer& gt){
+
 	/*
 	char key = ' ';
 	std::wstring msg;
