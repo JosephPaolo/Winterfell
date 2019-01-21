@@ -15,6 +15,7 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
 #include "InitBlueRapsol.h" 
+#include "GameTimer.h"
 
 class BlueRapsolEngine {
 
@@ -27,4 +28,9 @@ public:
 private:
 	void Initialize(HINSTANCE hInstance);
 	int GameLoop();
+
+protected:
+	// Used to keep track of the “delta-time” and game time (§4.4).
+	GameTimer mTimer;
+
 };

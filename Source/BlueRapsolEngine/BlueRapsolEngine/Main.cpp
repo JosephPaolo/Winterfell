@@ -13,18 +13,6 @@
 #include "BlueRapsolEngine.h" 
 #include "../../DirectX/Common/d3dApp.h"
 
-/*
-int main() {
-	BlueRapsolEngine engineBR;
-	std::cout << "Starting Blue Rapsol Engine...\n";
-	engineBR.Run(); //Start engine
-
-	std::cout << "\n\nPress Enter to terminate application.\n";
-	std::getchar(); //Prevents program from terminating immediately by prompting for char user input
-	return 0;
-}
-*/
-
 //TODO: Regarding maintaining one instance: figure out if we can substitute HINSTANCE hInstance in InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance) 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) {
 	// Enable run-time memory check for debug builds.
