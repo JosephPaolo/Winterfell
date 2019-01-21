@@ -27,9 +27,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InitBlueRapsol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlueRapsolEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,9 +62,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InitBlueRapsol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BlueRapsolEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>

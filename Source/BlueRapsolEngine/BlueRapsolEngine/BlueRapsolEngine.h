@@ -14,16 +14,31 @@
 #include <WinBase.h>
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
-#include "InitBlueRapsol.h" 
-#include "GameTimer.h"
+#include "../../DirectX/Common/GameTimer.h"
+#include "../../DirectX/Framework/InitDirect3DApp.h"
 
 class BlueRapsolEngine {
+
+//Used in converting units of measurements from bytes
+const LONGLONG toKB = 1024;
+const LONGLONG toMB = 1024 * toKB;
+const LONGLONG toGB = 1024 * toMB;
 
 public:
 	KeyboardListener kbInput;
 	MouseListener mbInput;
 
 	void Run(HINSTANCE hInstance);
+
+	//Check for sufficient storage space
+	bool ChkStorage(unsigned long long requiredBytes, LPCWSTR directory);
+
+	//Check for available RAM and virtual memory
+	void ChkMem();
+
+	//Display CPU speed and architecture
+	void DisplayCPUArch();
+	void DisplayCPUSpeed();
 
 private:
 	void Initialize(HINSTANCE hInstance);
@@ -33,4 +48,10 @@ protected:
 	// Used to keep track of the “delta-time” and game time (§4.4).
 	GameTimer mTimer;
 
+	//Initialize DirectX
+	//TODO modify; TODO remove user input parameters
+	int InitializeD3d(HINSTANCE hInstance);
+
+	//Check for multiple Instances
+	bool IsOnlyInstance(LPCTSTR appName);
 };

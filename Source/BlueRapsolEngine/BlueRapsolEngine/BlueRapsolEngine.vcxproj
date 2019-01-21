@@ -28,7 +28,6 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
-    <ClCompile Include="InitBlueRapsol.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MouseListener.cpp" />
@@ -46,7 +45,6 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
-    <ClInclude Include="InitBlueRapsol.h" />
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="MouseListener.h" />
