@@ -17,7 +17,6 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
 #include "../../DirectX/Common/GameTimer.h"
-#include "../../DirectX/Common/d3dApp.h"
 #include "../../DirectX/Framework/InitDirect3DApp.h"
 
 class BlueRapsolEngine {
@@ -35,15 +34,6 @@ public:
 	//virtual bool Start();
 	void Run(HINSTANCE hInstance);
 
-private:
-	//void Initialize(HINSTANCE hInstance);
-	int GameLoop();
-
-protected: 
-
-	//Check for multiple Instances
-	bool IsOnlyInstance(LPCTSTR appName);
-
 	//Check for sufficient storage space
 	bool ChkStorage(unsigned long long requiredBytes, LPCWSTR directory);
 
@@ -54,9 +44,18 @@ protected:
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
 
+private:
+	//void Initialize(HINSTANCE hInstance);
+	int GameLoop();
+
+protected:
+	// Used to keep track of the “delta-time” and game time (§4.4).
+	GameTimer mTimer;
+
 	//Initialize DirectX
+	//TODO modify; TODO remove user input parameters
 	int InitializeD3d(HINSTANCE hInstance);
 
-	// Used to keep track of the “delta-time” and game time (§4.4).
-	GameTimer gameTimer;
+	//Check for multiple Instances
+	bool IsOnlyInstance(LPCTSTR appName);
 };

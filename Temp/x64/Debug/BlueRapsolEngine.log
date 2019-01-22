@@ -1,4 +1,7 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  InitDirect3DApp.cpp
-  BlueRapsolEngine.vcxproj -> D:\Files\PROGRAMMING\School\GAME3121\Winterfell Repo\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe
+  BlueRapsolEngine.cpp
+c:\users\paolo school profile\documents\repository\blue rapsol container\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Main.cpp
+  Generating Code...
+  BlueRapsolEngine.vcxproj -> C:\Users\Paolo School Profile\Documents\Repository\Blue Rapsol Container\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe

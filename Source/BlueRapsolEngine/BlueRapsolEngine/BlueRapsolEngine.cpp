@@ -3,7 +3,7 @@
 // Authors: Joseph Malibiran, Tsuzuri Okada, Terence Stewart (C) 2018 All Rights Reserved. 
 // Created: Sept. 19, 2018
 // Last Updated: Sept. 19, 2018
-// Version: 0.0.1A
+// Version: 0.0.2A
 // Description: 
 //   This Class will represent the Game Application layer of the Blue Rapsol Engine
 // *****************************************************************************
@@ -65,7 +65,8 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 int BlueRapsolEngine::GameLoop() {
 	MSG msg = { 0 };
 	/*
-	gameTimer.Reset();
+	mTimer
+.Reset();
 
 	while (msg.message != WM_QUIT)
 	{
@@ -97,6 +98,20 @@ int BlueRapsolEngine::GameLoop() {
 	return (int)msg.wParam;
 }
 
+//Insures only one of this application is running
+bool BlueRapsolEngine::IsOnlyInstance(LPCTSTR appName) {
+	HANDLE handle = CreateMutex(NULL, TRUE, appName);
+
+	if (GetLastError() != ERROR_SUCCESS) {
+		//std::cout << "Error: An instance of this appication is already running" << std::endl;
+		OutputDebugString(L"Error: An instance of this appication is already running\n");
+		return false;
+	}
+	//std::cout << "No other instance of this application is found running" << std::endl;
+	OutputDebugString(L"No other instance of this application is found running\n");
+	return true;
+}
+
 //Check for required Storage space, notify user on insufficient space
 bool BlueRapsolEngine::ChkStorage(unsigned long long requiredBytes, LPCWSTR directory) {
 	std::wstring msg;
@@ -113,36 +128,6 @@ bool BlueRapsolEngine::ChkStorage(unsigned long long requiredBytes, LPCWSTR dire
 		return false;
 	}
 
-	return true;
-}
-
-//Start DirectX window
-//TODO remove user input parameters from this function and theApp.Initialize()
-int BlueRapsolEngine::InitializeD3d(HINSTANCE hInstance) {
-	try {
-		InitDirect3DApp theApp(hInstance);
-		if (!theApp.Initialize())
-			return 0;
-
-		return theApp.Run();
-	}
-	catch (DxException& e) {
-		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
-		return 0;
-	}
-}
-
-//Insures only one of this application is running
-bool BlueRapsolEngine::IsOnlyInstance(LPCTSTR appName) {
-	HANDLE handle = CreateMutex(NULL, TRUE, appName);
-
-	if (GetLastError() != ERROR_SUCCESS) {
-		//std::cout << "Error: An instance of this appication is already running" << std::endl;
-		OutputDebugString(L"Error: An instance of this appication is already running\n");
-		return false;
-	}
-	//std::cout << "No other instance of this application is found running" << std::endl;
-	OutputDebugString(L"No other instance of this application is found running\n");
 	return true;
 }
 
@@ -255,4 +240,20 @@ void BlueRapsolEngine::DisplayCPUArch() {
 		return;
 	}
 
+}
+
+//Start DirectX window
+//TODO remove user input parameters from this function and theApp.Initialize()
+int BlueRapsolEngine::InitializeD3d(HINSTANCE hInstance) {
+	try {
+		InitDirect3DApp theApp(hInstance);
+		if (!theApp.Initialize())
+			return 0;
+
+		return theApp.Run();
+	}
+	catch (DxException& e) {
+		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
+		return 0;
+	}
 }
