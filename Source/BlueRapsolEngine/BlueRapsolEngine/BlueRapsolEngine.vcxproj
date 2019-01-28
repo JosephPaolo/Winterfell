@@ -22,7 +22,9 @@
     <ClCompile Include="..\..\DirectX\Common\d3dApp.cpp" />
     <ClCompile Include="..\..\DirectX\Common\d3dUtil.cpp" />
     <ClCompile Include="..\..\DirectX\Common\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\FrameResource.cpp" />
     <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\GeometryGenerator.cpp" />
     <ClCompile Include="..\..\DirectX\Common\MathHelper.cpp" />
     <ClCompile Include="..\..\DirectX\Framework\InitDirect3DApp.cpp" />
     <ClCompile Include="Actor.cpp" />
@@ -37,7 +39,10 @@
     <ClInclude Include="..\..\DirectX\Common\d3dUtil.h" />
     <ClInclude Include="..\..\DirectX\Common\d3dx12.h" />
     <ClInclude Include="..\..\DirectX\Common\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\DirectX\Common\FrameResource.h" />
     <ClInclude Include="..\..\DirectX\Common\GameTimer.h" />
+    <ClInclude Include="..\..\DirectX\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\DirectX\Common\GraphicsStructures.h" />
     <ClInclude Include="..\..\DirectX\Common\MathHelper.h" />
     <ClInclude Include="..\..\DirectX\Common\UploadBuffer.h" />
     <ClInclude Include="..\..\DirectX\Framework\InitDirect3DApp.h" />

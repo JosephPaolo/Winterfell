@@ -18,7 +18,6 @@
 #define REQUIRED_STORAGE 314572800
 //Temp macro for storage directory
 #define STORAGE_DIRECTORY L"c:\\"
-
 //Name of this program for Mutex
 #define MUTEX_APP_NAME L"BlueRapsolEngineMutex"
 
@@ -65,8 +64,7 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 int BlueRapsolEngine::GameLoop() {
 	MSG msg = { 0 };
 	/*
-	mTimer
-.Reset();
+	mTimer.Reset();
 
 	while (msg.message != WM_QUIT)
 	{
