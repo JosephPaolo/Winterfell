@@ -11,8 +11,6 @@
 
 #include "d3dUtil.h"
 #include "GameTimer.h"
-#include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
-#include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
 
 // Link necessary d3d12 libraries.
 #pragma comment(lib,"d3dcompiler.lib")
@@ -39,20 +37,16 @@ public:
     bool Get4xMsaaState()const;
     void Set4xMsaaState(bool value);
 
-	//TEMP: Handles useinput, but these functionality will be moved to BlueRapsolEngine class once we move the game loop and windows message procs there as well.
-	KeyboardListener kbInput;
-	MouseListener mbInput;
-
 	int Run();
-
-	virtual bool Initialize();
+ 
+    virtual bool Initialize();
     virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 protected:
     virtual void CreateRtvAndDsvDescriptorHeaps();
 	virtual void OnResize(); 
-	virtual void Update(const GameTimer& gt)=0; //TODO
-    virtual void Draw(const GameTimer& gt)=0; //TODO
+	virtual void Update(const GameTimer& gt)=0;
+    virtual void Draw(const GameTimer& gt)=0;
 
 	// Convenience overrides for handling mouse input.
 	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }

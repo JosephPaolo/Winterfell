@@ -1,109 +1,281 @@
 //***************************************************************************************
-// Init Direct3D.cpp by Frank Luna (C) 2015 All Rights Reserved.
-//
-// Demonstrates the sample framework by initializing Direct3D, clearing 
-// the screen, and displaying frame stats.
-//
+// CrateApp.cpp by Frank Luna (C) 2015 All Rights Reserved.
 //***************************************************************************************
 
 #include "../../DirectX/Framework/InitDirect3DApp.h"
-#include "../../DirectX/Common/d3dApp.h"
 
-InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance): D3DApp(hInstance) {
+using Microsoft::WRL::ComPtr;
+using namespace DirectX;
+using namespace DirectX::PackedVector;
 
+//#pragma comment(lib, "d3dcompiler.lib")
+//#pragma comment(lib, "D3D12.lib")
+
+const int gNumFrameResources = 3;
+
+//// Lightweight structure stores parameters to draw a shape.  This will
+//// vary from app-to-app.
+//struct RenderItem{
+//	RenderItem() = default;
+//
+//	// World matrix of the shape that describes the object's local space
+//	// relative to the world space, which defines the position, orientation,
+//	// and scale of the object in the world.
+//	XMFLOAT4X4 World = MathHelper::Identity4x4();
+//
+//	XMFLOAT4X4 TexTransform = MathHelper::Identity4x4();
+//
+//	// Dirty flag indicating the object data has changed and we need to update the constant buffer.
+//	// Because we have an object cbuffer for each FrameResource, we have to apply the
+//	// update to each FrameResource.  Thus, when we modify obect data we should set 
+//	// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
+//	int NumFramesDirty = gNumFrameResources;
+//
+//	// Index into GPU constant buffer corresponding to the ObjectCB for this render item.
+//	UINT ObjCBIndex = -1;
+//
+//	Material* Mat = nullptr;
+//	MeshGeometry* Geo = nullptr;
+//
+//	// Primitive topology.
+//	D3D12_PRIMITIVE_TOPOLOGY PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+//
+//	// DrawIndexedInstanced parameters.
+//	UINT IndexCount = 0;
+//	UINT StartIndexLocation = 0;
+//	int BaseVertexLocation = 0;
+//};
+
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
+//	PSTR cmdLine, int showCmd)
+//{
+//	// Enable run-time memory check for debug builds.
+//#if defined(DEBUG) | defined(_DEBUG)
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//#endif
+//
+//	try
+//	{
+//		CrateApp theApp(hInstance);
+//		if (!theApp.Initialize())
+//			return 0;
+//
+//		return theApp.Run();
+//	}
+//	catch (DxException& e)
+//	{
+//		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
+//		return 0;
+//	}
+//}
+
+InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance)
+	: D3DApp(hInstance)
+{
 }
 
 InitDirect3DApp::~InitDirect3DApp()
 {
+	if (md3dDevice != nullptr)
+		FlushCommandQueue();
 }
 
 bool InitDirect3DApp::Initialize()
 {
-    if(!D3DApp::Initialize())
+	if (!D3DApp::Initialize())
 		return false;
-		
+
+	// Reset the command list to prep for initialization commands.
+	ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
+
+	// Get the increment size of a descriptor in this heap type.  This is hardware specific, 
+	// so we have to query this information.
+	mCbvSrvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+
+	LoadTextures();
+	BuildRootSignature();
+	BuildDescriptorHeaps();
+	BuildShadersAndInputLayout();
+	BuildShapeGeometry();
+	BuildMaterials();
+	BuildRenderItems();
+	BuildFrameResources();
+	BuildPSOs();
+
+	// Execute the initialization commands.
+	ThrowIfFailed(mCommandList->Close());
+	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
+	// Wait until initialization is complete.
+	FlushCommandQueue();
+
 	return true;
 }
 
 void InitDirect3DApp::OnResize()
 {
 	D3DApp::OnResize();
+
+	// The window resized, so update the aspect ratio and recompute the projection matrix.
+	XMMATRIX P = XMMatrixPerspectiveFovLH(0.25f*MathHelper::Pi, AspectRatio(), 1.0f, 1000.0f);
+	XMStoreFloat4x4(&mProj, P);
 }
 
-//This function is called repeatedly within a loop
-void InitDirect3DApp::Update(const GameTimer& gt){
+void InitDirect3DApp::Update(const GameTimer& gt)
+{
+	OnKeyboardInput(gt);
+	UpdateCamera(gt);
 
-	/*
-	char key = ' ';
-	std::wstring msg;
-	
-	//OutputDebugString(L"This message appears repeatedly.\n");
+	// Cycle through the circular frame resource array.
+	mCurrFrameResourceIndex = (mCurrFrameResourceIndex + 1) % gNumFrameResources;
+	mCurrFrameResource = mFrameResources[mCurrFrameResourceIndex].get();
 
-	//TODO properly handle input
-	if (_kbhit()) { //If keyboard is pressed
-		OutputDebugString(L"This message does not appear.\n");
-		key = _getch();
-		msg = L"Button Pressed: " + key;
-		OutputDebugString(msg.c_str()); //This message does not appear
+	// Has the GPU finished processing the commands of the current frame resource?
+	// If not, wait until the GPU has completed commands up to this fence point.
+	if (mCurrFrameResource->Fence != 0 && mFence->GetCompletedValue() < mCurrFrameResource->Fence)
+	{
+		HANDLE eventHandle = CreateEventEx(nullptr, false, false, EVENT_ALL_ACCESS);
+		ThrowIfFailed(mFence->SetEventOnCompletion(mCurrFrameResource->Fence, eventHandle));
+		WaitForSingleObject(eventHandle, INFINITE);
+		CloseHandle(eventHandle);
 	}
-	*/
+
+	AnimateMaterials(gt);
+	UpdateObjectCBs(gt);
+	UpdateMaterialCBs(gt);
+	UpdateMainPassCB(gt);
 }
 
 void InitDirect3DApp::Draw(const GameTimer& gt)
 {
-    // Reuse the memory associated with command recording.
-    // We can only reset when the associated command lists have finished execution on the GPU.
-	ThrowIfFailed(mDirectCmdListAlloc->Reset());
+	auto cmdListAlloc = mCurrFrameResource->CmdListAlloc;
+
+	// Reuse the memory associated with command recording.
+	// We can only reset when the associated command lists have finished execution on the GPU.
+	ThrowIfFailed(cmdListAlloc->Reset());
 
 	// A command list can be reset after it has been added to the command queue via ExecuteCommandList.
-    // Reusing the command list reuses memory.
-    ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
+	// Reusing the command list reuses memory.
+	ThrowIfFailed(mCommandList->Reset(cmdListAlloc.Get(), mOpaquePSO.Get()));
+
+	mCommandList->RSSetViewports(1, &mScreenViewport);
+	mCommandList->RSSetScissorRects(1, &mScissorRect);
 
 	// Indicate a state transition on the resource usage.
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
-    // Set the viewport and scissor rect.  This needs to be reset whenever the command list is reset.
-    mCommandList->RSSetViewports(1, &mScreenViewport);
-    mCommandList->RSSetScissorRects(1, &mScissorRect);
-
-    // Clear the back buffer and depth buffer.
-	mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::Black, 0, nullptr);
+	// Clear the back buffer and depth buffer.
+	mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::LightSteelBlue, 0, nullptr);
 	mCommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
-	
-    // Specify the buffers we are going to render to.
+
+	// Specify the buffers we are going to render to.
 	mCommandList->OMSetRenderTargets(1, &CurrentBackBufferView(), true, &DepthStencilView());
-	
-    // Indicate a state transition on the resource usage.
+
+	ID3D12DescriptorHeap* descriptorHeaps[] = { mSrvDescriptorHeap.Get() };
+	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
+
+	auto passCB = mCurrFrameResource->PassCB->Resource();
+	mCommandList->SetGraphicsRootConstantBufferView(2, passCB->GetGPUVirtualAddress());
+
+	DrawRenderItems(mCommandList.Get(), mOpaqueRitems);
+
+	// Indicate a state transition on the resource usage.
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
-    // Done recording commands.
+	// Done recording commands.
 	ThrowIfFailed(mCommandList->Close());
- 
-    // Add the command list to the queue for execution.
+
+	// Add the command list to the queue for execution.
 	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
 	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
-	
-	// swap the back and front buffers
+
+	// Swap the back and front buffers
 	ThrowIfFailed(mSwapChain->Present(0, 0));
 	mCurrBackBuffer = (mCurrBackBuffer + 1) % SwapChainBufferCount;
 
-	// Wait until frame commands are complete.  This waiting is inefficient and is
-	// done for simplicity.  Later we will show how to organize our rendering code
-	// so we do not have to wait per frame.
-	FlushCommandQueue();
+	// Advance the fence value to mark commands up to this fence point.
+	mCurrFrameResource->Fence = ++mCurrentFence;
+
+	// Add an instruction to the command queue to set a new fence point. 
+	// Because we are on the GPU timeline, the new fence point won't be 
+	// set until the GPU finishes processing all the commands prior to this Signal().
+	mCommandQueue->Signal(mFence.Get(), mCurrentFence);
 }
 
-void InitDirect3DApp::LoadTextures() {
-	auto blueRapsolSplash = std::make_unique<Texture>();
-	blueRapsolSplash->Name = "blueRapsolSplash";
-	blueRapsolSplash->Filename = L"../Assets/blueRapsolSplashTex.DDS";
-	ThrowIfFailed(DirectX::CreateDDSTextureFromFile12(md3dDevice.Get(),
-		mCommandList.Get(), blueRapsolSplash->Filename.c_str(),
-		blueRapsolSplash->Resource, blueRapsolSplash->UploadHeap));
+void InitDirect3DApp::OnMouseDown(WPARAM btnState, int x, int y)
+{
+	mLastMousePos.x = x;
+	mLastMousePos.y = y;
 
-	mTextures[blueRapsolSplash->Name] = std::move(blueRapsolSplash);
+	SetCapture(mhMainWnd);
+}
+
+void InitDirect3DApp::OnMouseUp(WPARAM btnState, int x, int y)
+{
+	ReleaseCapture();
+}
+
+void InitDirect3DApp::OnMouseMove(WPARAM btnState, int x, int y)
+{
+	if ((btnState & MK_LBUTTON) != 0)
+	{
+		// Make each pixel correspond to a quarter of a degree.
+		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+
+		// Update angles based on input to orbit camera around box.
+		mTheta += dx;
+		mPhi += dy;
+
+		// Restrict the angle mPhi.
+		mPhi = MathHelper::Clamp(mPhi, 0.1f, MathHelper::Pi - 0.1f);
+	}
+	else if ((btnState & MK_RBUTTON) != 0)
+	{
+		// Make each pixel correspond to 0.2 unit in the scene.
+		float dx = 0.05f*static_cast<float>(x - mLastMousePos.x);
+		float dy = 0.05f*static_cast<float>(y - mLastMousePos.y);
+
+		// Update the camera radius based on input.
+		mRadius += dx - dy;
+
+		// Restrict the radius.
+		mRadius = MathHelper::Clamp(mRadius, 5.0f, 150.0f);
+	}
+
+	mLastMousePos.x = x;
+	mLastMousePos.y = y;
+}
+
+void InitDirect3DApp::OnKeyboardInput(const GameTimer& gt)
+{
+}
+
+void InitDirect3DApp::UpdateCamera(const GameTimer& gt)
+{
+	// Convert Spherical to Cartesian coordinates.
+	mEyePos.x = mRadius * sinf(mPhi)*cosf(mTheta);
+	mEyePos.z = mRadius * sinf(mPhi)*sinf(mTheta);
+	mEyePos.y = mRadius * cosf(mPhi);
+
+	// Build the view matrix.
+	XMVECTOR pos = XMVectorSet(mEyePos.x, mEyePos.y, mEyePos.z, 1.0f);
+	XMVECTOR target = XMVectorZero();
+	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
+	XMStoreFloat4x4(&mView, view);
+}
+
+void InitDirect3DApp::AnimateMaterials(const GameTimer& gt)
+{
+
 }
 
 void InitDirect3DApp::UpdateObjectCBs(const GameTimer& gt)
@@ -128,38 +300,6 @@ void InitDirect3DApp::UpdateObjectCBs(const GameTimer& gt)
 			e->NumFramesDirty--;
 		}
 	}
-}
-
-void InitDirect3DApp::BuildRootSignature()
-{
-	// Root parameter can be a table, root descriptor or root constants.
-	CD3DX12_ROOT_PARAMETER slotRootParameter[3];
-
-	// Create root CBV.
-	slotRootParameter[0].InitAsConstantBufferView(0);
-	slotRootParameter[1].InitAsConstantBufferView(1);
-	slotRootParameter[2].InitAsConstantBufferView(2);
-
-	// A root signature is an array of root parameters.
-	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(3, slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-	// create a root signature with a single slot which points to a descriptor range consisting of a single constant buffer
-	ComPtr<ID3DBlob> serializedRootSig = nullptr;
-	ComPtr<ID3DBlob> errorBlob = nullptr;
-	HRESULT hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1,
-		serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
-
-	if (errorBlob != nullptr)
-	{
-		::OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-	}
-	ThrowIfFailed(hr);
-
-	ThrowIfFailed(md3dDevice->CreateRootSignature(
-		0,
-		serializedRootSig->GetBufferPointer(),
-		serializedRootSig->GetBufferSize(),
-		IID_PPV_ARGS(mRootSignature.GetAddressOf())));
 }
 
 void InitDirect3DApp::UpdateMaterialCBs(const GameTimer& gt)
@@ -223,16 +363,91 @@ void InitDirect3DApp::UpdateMainPassCB(const GameTimer& gt)
 	currPassCB->CopyData(0, mMainPassCB);
 }
 
+void InitDirect3DApp::LoadTextures()
+{
+	auto rubiksCubeTex = std::make_unique<Texture>();
+	rubiksCubeTex->Name = "rubiksCubeTex";
+	rubiksCubeTex->Filename = L"../../DirectX/Framework/rubiksTexture.DDS";
+	ThrowIfFailed(DirectX::CreateDDSTextureFromFile12(md3dDevice.Get(),
+		mCommandList.Get(), rubiksCubeTex->Filename.c_str(),
+		rubiksCubeTex->Resource, rubiksCubeTex->UploadHeap));
+
+	mTextures[rubiksCubeTex->Name] = std::move(rubiksCubeTex);
+}
+
+void InitDirect3DApp::BuildRootSignature()
+{
+	CD3DX12_DESCRIPTOR_RANGE texTable;
+	texTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+
+	// Root parameter can be a table, root descriptor or root constants.
+	CD3DX12_ROOT_PARAMETER slotRootParameter[4];
+
+	// Perfomance TIP: Order from most frequent to least frequent.
+	slotRootParameter[0].InitAsDescriptorTable(1, &texTable, D3D12_SHADER_VISIBILITY_PIXEL);
+	slotRootParameter[1].InitAsConstantBufferView(0);
+	slotRootParameter[2].InitAsConstantBufferView(1);
+	slotRootParameter[3].InitAsConstantBufferView(2);
+
+	auto staticSamplers = GetStaticSamplers();
+
+	// A root signature is an array of root parameters.
+	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(4, slotRootParameter,
+		(UINT)staticSamplers.size(), staticSamplers.data(),
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+	// create a root signature with a single slot which points to a descriptor range consisting of a single constant buffer
+	ComPtr<ID3DBlob> serializedRootSig = nullptr;
+	ComPtr<ID3DBlob> errorBlob = nullptr;
+	HRESULT hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1,
+		serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
+
+	if (errorBlob != nullptr)
+	{
+		::OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+	}
+	ThrowIfFailed(hr);
+
+	ThrowIfFailed(md3dDevice->CreateRootSignature(
+		0,
+		serializedRootSig->GetBufferPointer(),
+		serializedRootSig->GetBufferSize(),
+		IID_PPV_ARGS(mRootSignature.GetAddressOf())));
+}
+
+void InitDirect3DApp::BuildDescriptorHeaps()
+{
+	//
+	// Create the SRV heap.
+	//
+	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
+	srvHeapDesc.NumDescriptors = 1;
+	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	ThrowIfFailed(md3dDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mSrvDescriptorHeap)));
+
+	//
+	// Fill out the heap with actual descriptors.
+	//
+	CD3DX12_CPU_DESCRIPTOR_HANDLE hDescriptor(mSrvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+	auto rubiksCubeTex = mTextures["rubiksCubeTex"]->Resource;
+
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.Format = rubiksCubeTex->GetDesc().Format;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = rubiksCubeTex->GetDesc().MipLevels;
+	srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
+
+	md3dDevice->CreateShaderResourceView(rubiksCubeTex.Get(), &srvDesc, hDescriptor);
+}
+
 void InitDirect3DApp::BuildShadersAndInputLayout()
 {
-	const D3D_SHADER_MACRO alphaTestDefines[] =
-	{
-		"ALPHA_TEST", "1",
-		NULL, NULL
-	};
-
-	mShaders["standardVS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "VS", "vs_5_1");
-	mShaders["opaquePS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "PS", "ps_5_1");
+	mShaders["standardVS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "VS", "vs_5_0");
+	mShaders["opaquePS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "PS", "ps_5_0");
 
 	mInputLayout =
 	{
@@ -245,8 +460,9 @@ void InitDirect3DApp::BuildShadersAndInputLayout()
 void InitDirect3DApp::BuildShapeGeometry()
 {
 	GeometryGenerator geoGen;
-	GeometryGenerator::MeshData box = geoGen.CreateBox(1.5f, 0.5f, 1.5f, 3);
-
+	//GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
+	GeometryGenerator::MeshData broken = geoGen.CreateBox(1.0f, 1.0f, 1.0f, 3);
+	GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
 	//
 	// We are concatenating all the geometry into one big vertex/index buffer.  So
 	// define the regions in the buffer each submesh covers.
@@ -254,25 +470,21 @@ void InitDirect3DApp::BuildShapeGeometry()
 
 	// Cache the vertex offsets to each object in the concatenated vertex buffer.
 	UINT boxVertexOffset = 0;
-	UINT gridVertexOffset = (UINT)box.Vertices.size();
-	//UINT sphereVertexOffset = gridVertexOffset + (UINT)grid.Vertices.size();
-	//UINT cylinderVertexOffset = sphereVertexOffset + (UINT)sphere.Vertices.size();
+	UINT brokenVertexOffset = (UINT)box.Vertices.size();
 
 	// Cache the starting index for each object in the concatenated index buffer.
 	UINT boxIndexOffset = 0;
-	UINT gridIndexOffset = (UINT)box.Indices32.size();
-	//UINT sphereIndexOffset = gridIndexOffset + (UINT)grid.Indices32.size();
-	//UINT cylinderIndexOffset = sphereIndexOffset + (UINT)sphere.Indices32.size();
+	UINT brokenIndexOffset = (UINT)box.Indices32.size();
 
 	SubmeshGeometry boxSubmesh;
 	boxSubmesh.IndexCount = (UINT)box.Indices32.size();
 	boxSubmesh.StartIndexLocation = boxIndexOffset;
 	boxSubmesh.BaseVertexLocation = boxVertexOffset;
 
-	//SubmeshGeometry gridSubmesh;
-	//gridSubmesh.IndexCount = (UINT)grid.Indices32.size();
-	//gridSubmesh.StartIndexLocation = gridIndexOffset;
-	//gridSubmesh.BaseVertexLocation = gridVertexOffset;
+	SubmeshGeometry brokenSubmesh;
+	brokenSubmesh.IndexCount = (UINT)broken.Indices32.size();
+	brokenSubmesh.StartIndexLocation = brokenIndexOffset;
+	brokenSubmesh.BaseVertexLocation = brokenVertexOffset;
 
 	//
 	// Extract the vertex elements we are interested in and pack the
@@ -280,29 +492,41 @@ void InitDirect3DApp::BuildShapeGeometry()
 	//
 
 	auto totalVertexCount =
-		box.Vertices.size();
-		//grid.Vertices.size() +
-		//sphere.Vertices.size() +
-		//cylinder.Vertices.size();
+		box.Vertices.size() +
+		broken.Vertices.size();
 
 	std::vector<Vertex> vertices(totalVertexCount);
 
+	//std::vector<Vertex> vertices(box.Vertices.size());
+
 	UINT k = 0;
+
 	for (size_t i = 0; i < box.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos = box.Vertices[i].Position;
 		vertices[k].Normal = box.Vertices[i].Normal;
+		vertices[k].TexC = box.Vertices[i].TexC;
 	}
 
+	for (size_t i = 0; i < broken.Vertices.size(); ++i, ++k)
+	{
+		vertices[k].Pos = broken.Vertices[i].Position;
+		vertices[k].Normal = broken.Vertices[i].Normal;
+		vertices[k].TexC = broken.Vertices[i].TexC;
+	}
+
+	//std::vector<std::uint16_t> indices = box.GetIndices16();
+	//std::vector<std::uint16_t> indices = broken.GetIndices16();
 
 	std::vector<std::uint16_t> indices;
 	indices.insert(indices.end(), std::begin(box.GetIndices16()), std::end(box.GetIndices16()));
+	indices.insert(indices.end(), std::begin(broken.GetIndices16()), std::end(broken.GetIndices16()));
 
 	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
 	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
 
 	auto geo = std::make_unique<MeshGeometry>();
-	geo->Name = "shapeGeo";
+	geo->Name = "boxGeo";
 
 	ThrowIfFailed(D3DCreateBlob(vbByteSize, &geo->VertexBufferCPU));
 	CopyMemory(geo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize);
@@ -322,6 +546,7 @@ void InitDirect3DApp::BuildShapeGeometry()
 	geo->IndexBufferByteSize = ibByteSize;
 
 	geo->DrawArgs["box"] = boxSubmesh;
+	geo->DrawArgs["broken"] = brokenSubmesh;
 
 	mGeometries[geo->Name] = std::move(geo);
 }
@@ -370,59 +595,58 @@ void InitDirect3DApp::BuildFrameResources()
 
 void InitDirect3DApp::BuildMaterials()
 {
-	auto bricks0 = std::make_unique<Material>();
-	bricks0->Name = "bricks0";
-	bricks0->MatCBIndex = 0;
-	bricks0->DiffuseSrvHeapIndex = 0;
-	bricks0->DiffuseAlbedo = XMFLOAT4(Colors::ForestGreen);
-	bricks0->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
-	bricks0->Roughness = 0.1f;
+	auto cubeHolder = std::make_unique<Material>();
+	cubeHolder->Name = "rubiksCube";
+	cubeHolder->MatCBIndex = 0;
+	cubeHolder->DiffuseSrvHeapIndex = 0;
+	cubeHolder->DiffuseAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	cubeHolder->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05f);
+	cubeHolder->Roughness = 0.2f;
+	mMaterials["rubiksCube"] = std::move(cubeHolder);
 
-	auto stone0 = std::make_unique<Material>();
-	stone0->Name = "stone0";
-	stone0->MatCBIndex = 1;
-	stone0->DiffuseSrvHeapIndex = 1;
-	stone0->DiffuseAlbedo = XMFLOAT4(Colors::LightSteelBlue);
-	stone0->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05f);
-	stone0->Roughness = 0.3f;
-
-	auto tile0 = std::make_unique<Material>();
-	tile0->Name = "tile0";
-	tile0->MatCBIndex = 2;
-	tile0->DiffuseSrvHeapIndex = 2;
-	tile0->DiffuseAlbedo = XMFLOAT4(Colors::LightGray);
-	tile0->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
-	tile0->Roughness = 0.2f;
-
-	auto skullMat = std::make_unique<Material>();
-	skullMat->Name = "skullMat";
-	skullMat->MatCBIndex = 3;
-	skullMat->DiffuseSrvHeapIndex = 3;
-	skullMat->DiffuseAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	skullMat->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05);
-	skullMat->Roughness = 0.3f;
-
-	mMaterials["bricks0"] = std::move(bricks0);
-	mMaterials["stone0"] = std::move(stone0);
-	mMaterials["tile0"] = std::move(tile0);
-	mMaterials["skullMat"] = std::move(skullMat);
 }
 
 void InitDirect3DApp::BuildRenderItems()
 {
-	/*
-	auto boxRitem = std::make_unique<RenderItem>();
-	XMStoreFloat4x4(&boxRitem->World, XMMatrixScaling(2.0f, 2.0f, 2.0f)*XMMatrixTranslation(0.0f, 0.5f, 0.0f));
-	XMStoreFloat4x4(&boxRitem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-	boxRitem->ObjCBIndex = 0;
-	boxRitem->Mat = mMaterials["stone0"].get();
-	boxRitem->Geo = mGeometries["shapeGeo"].get();
-	boxRitem->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	boxRitem->IndexCount = boxRitem->Geo->DrawArgs["box"].IndexCount;
-	boxRitem->StartIndexLocation = boxRitem->Geo->DrawArgs["box"].StartIndexLocation;
-	boxRitem->BaseVertexLocation = boxRitem->Geo->DrawArgs["box"].BaseVertexLocation;
-	mAllRitems.push_back(std::move(boxRitem));
-	*/
+	std::unique_ptr<RenderItem> cubeHolder;
+	int index = 0;
+
+	/* initialize random seed: */
+	srand(time(NULL));
+
+	//X random range: -12 to 12 (rand() % 24 + -12)
+	//Y random range: -12 to 12 (rand() % 24 + -12)
+	//Z random range: -4 to 20 (rand() % 24 + -4)
+
+	for (int ia = 0; ia < 50; ia++) {
+		cubeHolder = std::make_unique<RenderItem>();
+		XMStoreFloat4x4(&cubeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation((rand() % 24 + -12), (rand() % 24 + -12), (rand() % 24 + -4)));
+		//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+		cubeHolder->ObjCBIndex = index;
+		cubeHolder->Mat = mMaterials["rubiksCube"].get();
+		cubeHolder->Geo = mGeometries["boxGeo"].get();
+		cubeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		cubeHolder->IndexCount = cubeHolder->Geo->DrawArgs["box"].IndexCount;
+		cubeHolder->StartIndexLocation = cubeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+		cubeHolder->BaseVertexLocation = cubeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+		mAllRitems.push_back(std::move(cubeHolder));
+		index++;
+	}
+
+	for (int ib = 0; ib < 50; ib++) {
+		cubeHolder = std::make_unique<RenderItem>();
+		XMStoreFloat4x4(&cubeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation((rand() % 24 + -12), (rand() % 24 + -12), (rand() % 24 + -4)));
+		//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+		cubeHolder->ObjCBIndex = index;
+		cubeHolder->Mat = mMaterials["rubiksCube"].get();
+		cubeHolder->Geo = mGeometries["boxGeo"].get();
+		cubeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		cubeHolder->IndexCount = cubeHolder->Geo->DrawArgs["broken"].IndexCount;
+		cubeHolder->StartIndexLocation = cubeHolder->Geo->DrawArgs["broken"].StartIndexLocation;
+		cubeHolder->BaseVertexLocation = cubeHolder->Geo->DrawArgs["broken"].BaseVertexLocation;
+		mAllRitems.push_back(std::move(cubeHolder));
+		index++;
+	}
 
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
@@ -446,12 +670,74 @@ void InitDirect3DApp::DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const 
 		cmdList->IASetIndexBuffer(&ri->Geo->IndexBufferView());
 		cmdList->IASetPrimitiveTopology(ri->PrimitiveType);
 
+		CD3DX12_GPU_DESCRIPTOR_HANDLE tex(mSrvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+		tex.Offset(ri->Mat->DiffuseSrvHeapIndex, mCbvSrvDescriptorSize);
+
 		D3D12_GPU_VIRTUAL_ADDRESS objCBAddress = objectCB->GetGPUVirtualAddress() + ri->ObjCBIndex*objCBByteSize;
 		D3D12_GPU_VIRTUAL_ADDRESS matCBAddress = matCB->GetGPUVirtualAddress() + ri->Mat->MatCBIndex*matCBByteSize;
 
-		cmdList->SetGraphicsRootConstantBufferView(0, objCBAddress);
-		cmdList->SetGraphicsRootConstantBufferView(1, matCBAddress);
+		cmdList->SetGraphicsRootDescriptorTable(0, tex);
+		cmdList->SetGraphicsRootConstantBufferView(1, objCBAddress);
+		cmdList->SetGraphicsRootConstantBufferView(3, matCBAddress);
 
 		cmdList->DrawIndexedInstanced(ri->IndexCount, 1, ri->StartIndexLocation, ri->BaseVertexLocation, 0);
 	}
 }
+
+std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSamplers()
+{
+	// Applications usually only need a handful of samplers.  So just define them all up front
+	// and keep them available as part of the root signature.  
+
+	const CD3DX12_STATIC_SAMPLER_DESC pointWrap(
+		0, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_POINT, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC pointClamp(
+		1, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_POINT, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC linearWrap(
+		2, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_LINEAR, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC linearClamp(
+		3, // shaderRegister
+		D3D12_FILTER_MIN_MAG_MIP_LINEAR, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP); // addressW
+
+	const CD3DX12_STATIC_SAMPLER_DESC anisotropicWrap(
+		4, // shaderRegister
+		D3D12_FILTER_ANISOTROPIC, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_WRAP,  // addressW
+		0.0f,                             // mipLODBias
+		8);                               // maxAnisotropy
+
+	const CD3DX12_STATIC_SAMPLER_DESC anisotropicClamp(
+		5, // shaderRegister
+		D3D12_FILTER_ANISOTROPIC, // filter
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressU
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressV
+		D3D12_TEXTURE_ADDRESS_MODE_CLAMP,  // addressW
+		0.0f,                              // mipLODBias
+		8);                                // maxAnisotropy
+
+	return {
+		pointWrap, pointClamp,
+		linearWrap, linearClamp,
+		anisotropicWrap, anisotropicClamp };
+}
+

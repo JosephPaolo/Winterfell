@@ -1,10 +1,9 @@
 //***************************************************************************************
 // d3dApp.cpp by Frank Luna (C) 2015 All Rights Reserved.
-// Modified by Joseph Malibiran, Tsuzuri Okada, Terence Stewart.
 //***************************************************************************************
 
-#include <WindowsX.h>
 #include "d3dApp.h"
+#include <WindowsX.h>
 
 using Microsoft::WRL::ComPtr;
 using namespace std;
@@ -347,29 +346,19 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_LBUTTONDOWN:
-		mbInput.VOnBtnDown(wParam); //TEMP
 	case WM_MBUTTONDOWN:
-		mbInput.VOnBtnDown(wParam); //TEMP
 	case WM_RBUTTONDOWN:
-		//OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)); //TODO remove this function
-		mbInput.VOnBtnDown(wParam); //TEMP
+		OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_LBUTTONUP:
-		mbInput.VOnBtnUp(wParam); //TEMP
 	case WM_MBUTTONUP:
-		mbInput.VOnBtnUp(wParam); //TEMP
 	case WM_RBUTTONUP:
-		//OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)); //TODO remove this function
-		mbInput.VOnBtnUp(wParam); //TEMP
+		OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_MOUSEMOVE:
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
-	case WM_KEYDOWN:
-		kbInput.VOnBtnDown(wParam); //TEMP
-		return 0;
     case WM_KEYUP:
-		kbInput.VOnBtnUp(wParam); //TEMP
         if(wParam == VK_ESCAPE)
         {
             PostQuitMessage(0);
