@@ -1,19 +1,119 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  d3dApp.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(391): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(393): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(396): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(399): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(401): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(404): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(410): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(413): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
   FrameResource.cpp
-  GeometryGenerator.cpp
   InitDirect3DApp.cpp
-<<<<<<< HEAD
-=======
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(402): warning C4305: 'argument': truncation from 'double' to 'float'
->>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(71): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(72): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(75): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(76): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(90): error C2059: syntax error: '>>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(91): error C2143: syntax error: missing ';' before '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(91): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(66): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(69): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(72): error C2181: illegal else without matching if
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(76): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(80): error C2059: syntax error: '>>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(104): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(115): error C2509: 'OnMouseDown': member function not declared in 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(123): error C2509: 'OnMouseUp': member function not declared in 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(128): error C2509: 'OnMouseMove': member function not declared in 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(159): error C2039: 'OnKeyboardInput': is not a member of 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(163): error C2039: 'UpdateCamera': is not a member of 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(165): error C2065: 'inMainLoop': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(167): error C2065: 'mEyePos': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(167): error C2065: 'mRadius': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(167): error C2065: 'mPhi': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(167): error C2065: 'mTheta': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(168): error C2065: 'mEyePos': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(168): error C2065: 'mRadius': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(168): error C2065: 'mPhi': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(168): error C2065: 'mTheta': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(169): error C2065: 'mEyePos': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(169): error C2065: 'mRadius': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(169): error C2065: 'mPhi': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(172): error C2065: 'mEyePos': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(172): error C2660: 'DirectX::XMVectorSet': function does not take 2 arguments
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\um\directxmathvector.inl(64): note: see declaration of 'DirectX::XMVectorSet'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(177): error C2065: 'mView': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(179): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(184): error C2059: syntax error: '>>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(198): error C2039: 'UpdateObjectCBs': is not a member of 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(200): error C2065: 'mCurrFrameResource': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(201): error C2065: 'mAllRitems': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(202): error C3312: no callable 'begin' function found for type 'unknown-type'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(202): error C3312: no callable 'end' function found for type 'unknown-type'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(205): error C2065: 'e': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(207): error C2065: 'e': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(208): error C2065: 'e': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(214): error C3536: 'currObjectCB': cannot be used before it is initialized
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(214): error C2065: 'e': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(217): error C2065: 'e': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(315): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(317): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(317): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(329): error C2143: syntax error: missing ';' before '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(329): error C2761: 'void InitDirect3DApp::BuildRootSignature(void)': redeclaration of member is not allowed
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(329): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(332): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(332): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(347): error C2039: 'BuildDescriptorHeaps': is not a member of 'InitDirect3DApp'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(20): note: see declaration of 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(356): error C2065: 'md3dDevice': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(356): error C2065: 'mSrvDescriptorHeap': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(361): error C2065: 'mSrvDescriptorHeap': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(363): error C2065: 'mTextures': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(367): error C3536: 'splashArtTex': cannot be used before it is initialized
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(373): error C2065: 'md3dDevice': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(375): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(378): error C2143: syntax error: missing ';' before '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(378): error C2059: syntax error: '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(379): error C2059: syntax error: '>>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(382): error C2057: expected constant expression
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(382): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(382): error C2440: 'initializing': cannot convert from 'Microsoft::WRL::ComPtr<ID3DBlob>' to 'int []'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(382): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(385): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(385): error C2440: 'initializing': cannot convert from 'initializer list' to 'int'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(389): note: The initializer contains too many elements
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(390): error C2059: syntax error: '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(390): error C2143: syntax error: missing ';' before '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(393): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(393): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(565): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(566): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(566): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.cpp(840): fatal error C1004: unexpected end-of-file found
   BlueRapsolEngine.cpp
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(71): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(72): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(75): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(76): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(90): error C2059: syntax error: '>>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(91): error C2143: syntax error: missing ';' before '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(91): error C2238: unexpected token(s) preceding ';'
   Main.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(71): error C2059: syntax error: '<<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(72): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(75): error C2059: syntax error: '=='
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(76): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(90): error C2059: syntax error: '>>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(91): error C2143: syntax error: missing ';' before '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(91): error C2238: unexpected token(s) preceding ';'
   Generating Code...
-<<<<<<< HEAD
-  BlueRapsolEngine.vcxproj -> D:\Files\PROGRAMMING\School\GAME3121\Winterfell Repo\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe
-=======
-InitDirect3DApp.obj : error LNK2001: unresolved external symbol "int const gNumFrameResources" (?gNumFrameResources@@3HB)
-D:\Files\PROGRAMMING\School\GAME3121\Winterfell Repo\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe : fatal error LNK1120: 1 unresolved externals
->>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
