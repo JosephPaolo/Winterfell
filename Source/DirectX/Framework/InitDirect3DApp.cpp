@@ -1,172 +1,69 @@
 //***************************************************************************************
-// CrateApp.cpp by Frank Luna (C) 2015 All Rights Reserved.
+// Init Direct3D.cpp by Frank Luna (C) 2015 All Rights Reserved.
+//
+// Demonstrates the sample framework by initializing Direct3D, clearing 
+// the screen, and displaying frame stats.
+//
 //***************************************************************************************
 
 #include "../../DirectX/Framework/InitDirect3DApp.h"
+#include "../../DirectX/Common/d3dApp.h"
 
-using Microsoft::WRL::ComPtr;
-using namespace DirectX;
-using namespace DirectX::PackedVector;
+InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance): D3DApp(hInstance) {
 
-//#pragma comment(lib, "d3dcompiler.lib")
-//#pragma comment(lib, "D3D12.lib")
-
-const int gNumFrameResources = 3;
-
-//// Lightweight structure stores parameters to draw a shape.  This will
-//// vary from app-to-app.
-//struct RenderItem{
-//	RenderItem() = default;
-//
-//	// World matrix of the shape that describes the object's local space
-//	// relative to the world space, which defines the position, orientation,
-//	// and scale of the object in the world.
-//	XMFLOAT4X4 World = MathHelper::Identity4x4();
-//
-//	XMFLOAT4X4 TexTransform = MathHelper::Identity4x4();
-//
-//	// Dirty flag indicating the object data has changed and we need to update the constant buffer.
-//	// Because we have an object cbuffer for each FrameResource, we have to apply the
-//	// update to each FrameResource.  Thus, when we modify obect data we should set 
-//	// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
-//	int NumFramesDirty = gNumFrameResources;
-//
-//	// Index into GPU constant buffer corresponding to the ObjectCB for this render item.
-//	UINT ObjCBIndex = -1;
-//
-//	Material* Mat = nullptr;
-//	MeshGeometry* Geo = nullptr;
-//
-//	// Primitive topology.
-//	D3D12_PRIMITIVE_TOPOLOGY PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-//
-//	// DrawIndexedInstanced parameters.
-//	UINT IndexCount = 0;
-//	UINT StartIndexLocation = 0;
-//	int BaseVertexLocation = 0;
-//};
-
-//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
-//	PSTR cmdLine, int showCmd)
-//{
-//	// Enable run-time memory check for debug builds.
-//#if defined(DEBUG) | defined(_DEBUG)
-//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-//#endif
-//
-//	try
-//	{
-//		CrateApp theApp(hInstance);
-//		if (!theApp.Initialize())
-//			return 0;
-//
-//		return theApp.Run();
-//	}
-//	catch (DxException& e)
-//	{
-//		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
-//		return 0;
-//	}
-//}
-
-InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance)
-	: D3DApp(hInstance)
-{
 }
 
 InitDirect3DApp::~InitDirect3DApp()
 {
-	if (md3dDevice != nullptr)
-		FlushCommandQueue();
 }
 
 bool InitDirect3DApp::Initialize()
 {
-	if (!D3DApp::Initialize())
+    if(!D3DApp::Initialize())
 		return false;
-
-	// Reset the command list to prep for initialization commands.
-	ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
-
-	// Get the increment size of a descriptor in this heap type.  This is hardware specific, 
-	// so we have to query this information.
-	mCbvSrvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-
-	LoadTextures();
-	BuildRootSignature();
-	BuildDescriptorHeaps();
-	BuildShadersAndInputLayout();
-	BuildShapeGeometry();
-	BuildMaterials();
-	BuildRenderItems();
-	BuildFrameResources();
-	BuildPSOs();
-
-	// Execute the initialization commands.
-	ThrowIfFailed(mCommandList->Close());
-	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
-	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
-
-	// Wait until initialization is complete.
-	FlushCommandQueue();
-
+		
 	return true;
 }
 
 void InitDirect3DApp::OnResize()
 {
 	D3DApp::OnResize();
-
-	// The window resized, so update the aspect ratio and recompute the projection matrix.
-	XMMATRIX P = XMMatrixPerspectiveFovLH(0.25f*MathHelper::Pi, AspectRatio(), 1.0f, 1000.0f);
-	XMStoreFloat4x4(&mProj, P);
 }
 
-void InitDirect3DApp::Update(const GameTimer& gt)
-{
-	OnKeyboardInput(gt);
-	UpdateCamera(gt);
+//This function is called repeatedly within a loop
+void InitDirect3DApp::Update(const GameTimer& gt){
 
-	// Cycle through the circular frame resource array.
-	mCurrFrameResourceIndex = (mCurrFrameResourceIndex + 1) % gNumFrameResources;
-	mCurrFrameResource = mFrameResources[mCurrFrameResourceIndex].get();
+	/*
+	char key = ' ';
+	std::wstring msg;
+	
+	//OutputDebugString(L"This message appears repeatedly.\n");
 
-	// Has the GPU finished processing the commands of the current frame resource?
-	// If not, wait until the GPU has completed commands up to this fence point.
-	if (mCurrFrameResource->Fence != 0 && mFence->GetCompletedValue() < mCurrFrameResource->Fence)
-	{
-		HANDLE eventHandle = CreateEventEx(nullptr, false, false, EVENT_ALL_ACCESS);
-		ThrowIfFailed(mFence->SetEventOnCompletion(mCurrFrameResource->Fence, eventHandle));
-		WaitForSingleObject(eventHandle, INFINITE);
-		CloseHandle(eventHandle);
+	//TODO properly handle input
+	if (_kbhit()) { //If keyboard is pressed
+		OutputDebugString(L"This message does not appear.\n");
+		key = _getch();
+		msg = L"Button Pressed: " + key;
+		OutputDebugString(msg.c_str()); //This message does not appear
 	}
-
-	AnimateMaterials(gt);
-	UpdateObjectCBs(gt);
-	UpdateMaterialCBs(gt);
-	UpdateMainPassCB(gt);
+	*/
 }
 
 void InitDirect3DApp::Draw(const GameTimer& gt)
 {
-	auto cmdListAlloc = mCurrFrameResource->CmdListAlloc;
-
-	// Reuse the memory associated with command recording.
-	// We can only reset when the associated command lists have finished execution on the GPU.
-	ThrowIfFailed(cmdListAlloc->Reset());
+    // Reuse the memory associated with command recording.
+    // We can only reset when the associated command lists have finished execution on the GPU.
+	ThrowIfFailed(mDirectCmdListAlloc->Reset());
 
 	// A command list can be reset after it has been added to the command queue via ExecuteCommandList.
-	// Reusing the command list reuses memory.
-	ThrowIfFailed(mCommandList->Reset(cmdListAlloc.Get(), mOpaquePSO.Get()));
-
-	mCommandList->RSSetViewports(1, &mScreenViewport);
-	mCommandList->RSSetScissorRects(1, &mScissorRect);
+    // Reusing the command list reuses memory.
+    ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
 
 	// Indicate a state transition on the resource usage.
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
+<<<<<<< HEAD
 	// Clear the back buffer and depth buffer.
 
 	if (inMainLoop) {
@@ -176,35 +73,35 @@ void InitDirect3DApp::Draw(const GameTimer& gt)
 		mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::Black, 0, nullptr);
 	}
 	mCommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+=======
+    // Set the viewport and scissor rect.  This needs to be reset whenever the command list is reset.
+    mCommandList->RSSetViewports(1, &mScreenViewport);
+    mCommandList->RSSetScissorRects(1, &mScissorRect);
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
-	// Specify the buffers we are going to render to.
+    // Clear the back buffer and depth buffer.
+	mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::Black, 0, nullptr);
+	mCommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+	
+    // Specify the buffers we are going to render to.
 	mCommandList->OMSetRenderTargets(1, &CurrentBackBufferView(), true, &DepthStencilView());
-
-	ID3D12DescriptorHeap* descriptorHeaps[] = { mSrvDescriptorHeap.Get() };
-	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-
-	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
-
-	auto passCB = mCurrFrameResource->PassCB->Resource();
-	mCommandList->SetGraphicsRootConstantBufferView(2, passCB->GetGPUVirtualAddress());
-
-	DrawRenderItems(mCommandList.Get(), mOpaqueRitems);
-
-	// Indicate a state transition on the resource usage.
+	
+    // Indicate a state transition on the resource usage.
 	mCommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
-	// Done recording commands.
+    // Done recording commands.
 	ThrowIfFailed(mCommandList->Close());
-
-	// Add the command list to the queue for execution.
+ 
+    // Add the command list to the queue for execution.
 	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
 	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
-
-	// Swap the back and front buffers
+	
+	// swap the back and front buffers
 	ThrowIfFailed(mSwapChain->Present(0, 0));
 	mCurrBackBuffer = (mCurrBackBuffer + 1) % SwapChainBufferCount;
 
+<<<<<<< HEAD
 	// Advance the fence value to mark commands up to this fence point.
 	mCurrFrameResource->Fence = ++mCurrentFence;
 
@@ -279,11 +176,23 @@ void InitDirect3DApp::UpdateCamera(const GameTimer& gt)
 		XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
 		XMStoreFloat4x4(&mView, view);
 	}
+=======
+	// Wait until frame commands are complete.  This waiting is inefficient and is
+	// done for simplicity.  Later we will show how to organize our rendering code
+	// so we do not have to wait per frame.
+	FlushCommandQueue();
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 }
 
-void InitDirect3DApp::AnimateMaterials(const GameTimer& gt)
-{
+void InitDirect3DApp::LoadTextures() {
+	auto blueRapsolSplash = std::make_unique<Texture>();
+	blueRapsolSplash->Name = "blueRapsolSplash";
+	blueRapsolSplash->Filename = L"../Assets/blueRapsolSplashTex.DDS";
+	ThrowIfFailed(DirectX::CreateDDSTextureFromFile12(md3dDevice.Get(),
+		mCommandList.Get(), blueRapsolSplash->Filename.c_str(),
+		blueRapsolSplash->Resource, blueRapsolSplash->UploadHeap));
 
+	mTextures[blueRapsolSplash->Name] = std::move(blueRapsolSplash);
 }
 
 void InitDirect3DApp::UpdateObjectCBs(const GameTimer& gt)
@@ -308,6 +217,38 @@ void InitDirect3DApp::UpdateObjectCBs(const GameTimer& gt)
 			e->NumFramesDirty--;
 		}
 	}
+}
+
+void InitDirect3DApp::BuildRootSignature()
+{
+	// Root parameter can be a table, root descriptor or root constants.
+	CD3DX12_ROOT_PARAMETER slotRootParameter[3];
+
+	// Create root CBV.
+	slotRootParameter[0].InitAsConstantBufferView(0);
+	slotRootParameter[1].InitAsConstantBufferView(1);
+	slotRootParameter[2].InitAsConstantBufferView(2);
+
+	// A root signature is an array of root parameters.
+	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(3, slotRootParameter, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+	// create a root signature with a single slot which points to a descriptor range consisting of a single constant buffer
+	ComPtr<ID3DBlob> serializedRootSig = nullptr;
+	ComPtr<ID3DBlob> errorBlob = nullptr;
+	HRESULT hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1,
+		serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
+
+	if (errorBlob != nullptr)
+	{
+		::OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+	}
+	ThrowIfFailed(hr);
+
+	ThrowIfFailed(md3dDevice->CreateRootSignature(
+		0,
+		serializedRootSig->GetBufferPointer(),
+		serializedRootSig->GetBufferSize(),
+		IID_PPV_ARGS(mRootSignature.GetAddressOf())));
 }
 
 void InitDirect3DApp::UpdateMaterialCBs(const GameTimer& gt)
@@ -371,6 +312,7 @@ void InitDirect3DApp::UpdateMainPassCB(const GameTimer& gt)
 	currPassCB->CopyData(0, mMainPassCB);
 }
 
+<<<<<<< HEAD
 void InitDirect3DApp::LoadTextures()
 {
 	auto splashArtTex = std::make_unique<Texture>();
@@ -384,34 +326,13 @@ void InitDirect3DApp::LoadTextures()
 }
 
 void InitDirect3DApp::BuildRootSignature()
+=======
+void InitDirect3DApp::BuildShadersAndInputLayout()
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 {
-	CD3DX12_DESCRIPTOR_RANGE texTable;
-	texTable.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
-
-	// Root parameter can be a table, root descriptor or root constants.
-	CD3DX12_ROOT_PARAMETER slotRootParameter[4];
-
-	// Perfomance TIP: Order from most frequent to least frequent.
-	slotRootParameter[0].InitAsDescriptorTable(1, &texTable, D3D12_SHADER_VISIBILITY_PIXEL);
-	slotRootParameter[1].InitAsConstantBufferView(0);
-	slotRootParameter[2].InitAsConstantBufferView(1);
-	slotRootParameter[3].InitAsConstantBufferView(2);
-
-	auto staticSamplers = GetStaticSamplers();
-
-	// A root signature is an array of root parameters.
-	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(4, slotRootParameter,
-		(UINT)staticSamplers.size(), staticSamplers.data(),
-		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-	// create a root signature with a single slot which points to a descriptor range consisting of a single constant buffer
-	ComPtr<ID3DBlob> serializedRootSig = nullptr;
-	ComPtr<ID3DBlob> errorBlob = nullptr;
-	HRESULT hr = D3D12SerializeRootSignature(&rootSigDesc, D3D_ROOT_SIGNATURE_VERSION_1,
-		serializedRootSig.GetAddressOf(), errorBlob.GetAddressOf());
-
-	if (errorBlob != nullptr)
+	const D3D_SHADER_MACRO alphaTestDefines[] =
 	{
+<<<<<<< HEAD
 		::OutputDebugStringA((char*)errorBlob->GetBufferPointer());
 	}
 	ThrowIfFailed(hr);
@@ -451,11 +372,14 @@ void InitDirect3DApp::BuildDescriptorHeaps()
 
 	md3dDevice->CreateShaderResourceView(splashArtTex.Get(), &srvDesc, hDescriptor);
 }
+=======
+		"ALPHA_TEST", "1",
+		NULL, NULL
+	};
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
-void InitDirect3DApp::BuildShadersAndInputLayout()
-{
-	mShaders["standardVS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "VS", "vs_5_0");
-	mShaders["opaquePS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "PS", "ps_5_0");
+	mShaders["standardVS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "VS", "vs_5_1");
+	mShaders["opaquePS"] = d3dUtil::CompileShader(L"Shaders\\Default.hlsl", nullptr, "PS", "ps_5_1");
 
 	mInputLayout =
 	{
@@ -468,11 +392,15 @@ void InitDirect3DApp::BuildShadersAndInputLayout()
 void InitDirect3DApp::BuildShapeGeometry()
 {
 	GeometryGenerator geoGen;
+<<<<<<< HEAD
 	//GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
 	//GeometryGenerator::MeshData broken = geoGen.CreateBox(1.0f, 1.0f, 1.0f, 3);
 	//GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
 	GeometryGenerator::MeshData box = geoGen.CreateBox(1.0f, 1.0f, 1.0f, 3);
 	GeometryGenerator::MeshData splashArt = geoGen.CreateQuad(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+=======
+	GeometryGenerator::MeshData box = geoGen.CreateBox(1.5f, 0.5f, 1.5f, 3);
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	//
 	// We are concatenating all the geometry into one big vertex/index buffer.  So
@@ -481,21 +409,40 @@ void InitDirect3DApp::BuildShapeGeometry()
 
 	// Cache the vertex offsets to each object in the concatenated vertex buffer.
 	UINT boxVertexOffset = 0;
+<<<<<<< HEAD
 	UINT splashArtVertexOffset = (UINT)box.Vertices.size();
 
 	// Cache the starting index for each object in the concatenated index buffer.
 	UINT boxIndexOffset = 0;
 	UINT splashArtIndexOffset = (UINT)box.Indices32.size();
+=======
+	UINT gridVertexOffset = (UINT)box.Vertices.size();
+	//UINT sphereVertexOffset = gridVertexOffset + (UINT)grid.Vertices.size();
+	//UINT cylinderVertexOffset = sphereVertexOffset + (UINT)sphere.Vertices.size();
+
+	// Cache the starting index for each object in the concatenated index buffer.
+	UINT boxIndexOffset = 0;
+	UINT gridIndexOffset = (UINT)box.Indices32.size();
+	//UINT sphereIndexOffset = gridIndexOffset + (UINT)grid.Indices32.size();
+	//UINT cylinderIndexOffset = sphereIndexOffset + (UINT)sphere.Indices32.size();
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	SubmeshGeometry boxSubmesh;
 	boxSubmesh.IndexCount = (UINT)box.Indices32.size();
 	boxSubmesh.StartIndexLocation = boxIndexOffset;
 	boxSubmesh.BaseVertexLocation = boxVertexOffset;
 
+<<<<<<< HEAD
 	SubmeshGeometry splashArtSubmesh;
 	splashArtSubmesh.IndexCount = (UINT)splashArt.Indices32.size();
 	splashArtSubmesh.StartIndexLocation = splashArtIndexOffset;
 	splashArtSubmesh.BaseVertexLocation = splashArtVertexOffset;
+=======
+	//SubmeshGeometry gridSubmesh;
+	//gridSubmesh.IndexCount = (UINT)grid.Indices32.size();
+	//gridSubmesh.StartIndexLocation = gridIndexOffset;
+	//gridSubmesh.BaseVertexLocation = gridVertexOffset;
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	//
 	// Extract the vertex elements we are interested in and pack the
@@ -503,19 +450,24 @@ void InitDirect3DApp::BuildShapeGeometry()
 	//
 
 	auto totalVertexCount =
+<<<<<<< HEAD
 		box.Vertices.size() +
 		splashArt.Vertices.size();
+=======
+		box.Vertices.size();
+		//grid.Vertices.size() +
+		//sphere.Vertices.size() +
+		//cylinder.Vertices.size();
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	std::vector<Vertex> vertices(totalVertexCount);
 
-	//std::vector<Vertex> vertices(box.Vertices.size());
-
 	UINT k = 0;
-
 	for (size_t i = 0; i < box.Vertices.size(); ++i, ++k)
 	{
 		vertices[k].Pos = box.Vertices[i].Position;
 		vertices[k].Normal = box.Vertices[i].Normal;
+<<<<<<< HEAD
 		vertices[k].TexC = box.Vertices[i].TexC;
 	}
 
@@ -524,14 +476,17 @@ void InitDirect3DApp::BuildShapeGeometry()
 		vertices[k].Pos = splashArt.Vertices[i].Position;
 		vertices[k].Normal = splashArt.Vertices[i].Normal;
 		vertices[k].TexC = splashArt.Vertices[i].TexC;
+=======
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 	}
 
-	//std::vector<std::uint16_t> indices = box.GetIndices16();
-	//std::vector<std::uint16_t> indices = broken.GetIndices16();
 
 	std::vector<std::uint16_t> indices;
 	indices.insert(indices.end(), std::begin(box.GetIndices16()), std::end(box.GetIndices16()));
+<<<<<<< HEAD
 	indices.insert(indices.end(), std::begin(splashArt.GetIndices16()), std::end(splashArt.GetIndices16()));
+=======
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
 	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
@@ -557,7 +512,10 @@ void InitDirect3DApp::BuildShapeGeometry()
 	geo->IndexBufferByteSize = ibByteSize;
 
 	geo->DrawArgs["box"] = boxSubmesh;
+<<<<<<< HEAD
 	geo->DrawArgs["splashArt"] = splashArtSubmesh;
+=======
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	mGeometries[geo->Name] = std::move(geo);
 }
@@ -604,6 +562,7 @@ void InitDirect3DApp::BuildFrameResources()
 	}
 }
 
+<<<<<<< HEAD
 void InitDirect3DApp::BuildMaterials(){
 
 	auto splashMat = std::make_unique<Material>();
@@ -696,10 +655,51 @@ void InitDirect3DApp::BuildMaterials(){
 	mMaterials["blueMat"] = std::move(blueMat);
 	mMaterials["greenMat"] = std::move(greenMat);
 	mMaterials["invisMat"] = std::move(invisMat);
+=======
+void InitDirect3DApp::BuildMaterials()
+{
+	auto bricks0 = std::make_unique<Material>();
+	bricks0->Name = "bricks0";
+	bricks0->MatCBIndex = 0;
+	bricks0->DiffuseSrvHeapIndex = 0;
+	bricks0->DiffuseAlbedo = XMFLOAT4(Colors::ForestGreen);
+	bricks0->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	bricks0->Roughness = 0.1f;
+
+	auto stone0 = std::make_unique<Material>();
+	stone0->Name = "stone0";
+	stone0->MatCBIndex = 1;
+	stone0->DiffuseSrvHeapIndex = 1;
+	stone0->DiffuseAlbedo = XMFLOAT4(Colors::LightSteelBlue);
+	stone0->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05f);
+	stone0->Roughness = 0.3f;
+
+	auto tile0 = std::make_unique<Material>();
+	tile0->Name = "tile0";
+	tile0->MatCBIndex = 2;
+	tile0->DiffuseSrvHeapIndex = 2;
+	tile0->DiffuseAlbedo = XMFLOAT4(Colors::LightGray);
+	tile0->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	tile0->Roughness = 0.2f;
+
+	auto skullMat = std::make_unique<Material>();
+	skullMat->Name = "skullMat";
+	skullMat->MatCBIndex = 3;
+	skullMat->DiffuseSrvHeapIndex = 3;
+	skullMat->DiffuseAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	skullMat->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05);
+	skullMat->Roughness = 0.3f;
+
+	mMaterials["bricks0"] = std::move(bricks0);
+	mMaterials["stone0"] = std::move(stone0);
+	mMaterials["tile0"] = std::move(tile0);
+	mMaterials["skullMat"] = std::move(skullMat);
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 }
 
 void InitDirect3DApp::BuildRenderItems()
 {
+<<<<<<< HEAD
 	std::unique_ptr<RenderItem> shapeHolder;
 	int index = 0;
 
@@ -728,6 +728,21 @@ void InitDirect3DApp::BuildRenderItems()
 	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
 	mAllRitems.push_back(std::move(shapeHolder));
 	index++;
+=======
+	/*
+	auto boxRitem = std::make_unique<RenderItem>();
+	XMStoreFloat4x4(&boxRitem->World, XMMatrixScaling(2.0f, 2.0f, 2.0f)*XMMatrixTranslation(0.0f, 0.5f, 0.0f));
+	XMStoreFloat4x4(&boxRitem->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	boxRitem->ObjCBIndex = 0;
+	boxRitem->Mat = mMaterials["stone0"].get();
+	boxRitem->Geo = mGeometries["shapeGeo"].get();
+	boxRitem->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	boxRitem->IndexCount = boxRitem->Geo->DrawArgs["box"].IndexCount;
+	boxRitem->StartIndexLocation = boxRitem->Geo->DrawArgs["box"].StartIndexLocation;
+	boxRitem->BaseVertexLocation = boxRitem->Geo->DrawArgs["box"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(boxRitem));
+	*/
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
 
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
@@ -751,19 +766,16 @@ void InitDirect3DApp::DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const 
 		cmdList->IASetIndexBuffer(&ri->Geo->IndexBufferView());
 		cmdList->IASetPrimitiveTopology(ri->PrimitiveType);
 
-		CD3DX12_GPU_DESCRIPTOR_HANDLE tex(mSrvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
-		tex.Offset(ri->Mat->DiffuseSrvHeapIndex, mCbvSrvDescriptorSize);
-
 		D3D12_GPU_VIRTUAL_ADDRESS objCBAddress = objectCB->GetGPUVirtualAddress() + ri->ObjCBIndex*objCBByteSize;
 		D3D12_GPU_VIRTUAL_ADDRESS matCBAddress = matCB->GetGPUVirtualAddress() + ri->Mat->MatCBIndex*matCBByteSize;
 
-		cmdList->SetGraphicsRootDescriptorTable(0, tex);
-		cmdList->SetGraphicsRootConstantBufferView(1, objCBAddress);
-		cmdList->SetGraphicsRootConstantBufferView(3, matCBAddress);
+		cmdList->SetGraphicsRootConstantBufferView(0, objCBAddress);
+		cmdList->SetGraphicsRootConstantBufferView(1, matCBAddress);
 
 		cmdList->DrawIndexedInstanced(ri->IndexCount, 1, ri->StartIndexLocation, ri->BaseVertexLocation, 0);
 	}
 }
+<<<<<<< HEAD
 
 std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSamplers()
 {
@@ -823,3 +835,5 @@ std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSampl
 }
 
 
+=======
+>>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX

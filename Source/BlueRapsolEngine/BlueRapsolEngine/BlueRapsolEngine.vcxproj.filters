@@ -60,14 +60,11 @@
     <ClCompile Include="MouseListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\DirectX\Common\FrameResource.cpp">
+      <Filter>Source Files\DirectX</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\DirectX\Common\GeometryGenerator.cpp">
       <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\DirectX\Common\Camera.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameResource.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,14 +116,11 @@
     <ClInclude Include="..\..\DirectX\Common\GraphicsStructures.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\FrameResource.h">
+      <Filter>Header Files\DirectX</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\DirectX\Common\GeometryGenerator.h">
       <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\DirectX\Common\Camera.h">
-      <Filter>Header Files\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameResource.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\DirectX\Common\Camera.cpp" />
     <ClCompile Include="..\..\DirectX\Common\d3dApp.cpp" />
     <ClCompile Include="..\..\DirectX\Common\d3dUtil.cpp" />
     <ClCompile Include="..\..\DirectX\Common\DDSTextureLoader.cpp" />
+    <ClCompile Include="..\..\DirectX\Common\FrameResource.cpp" />
     <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp" />
     <ClCompile Include="..\..\DirectX\Common\GeometryGenerator.cpp" />
     <ClCompile Include="..\..\DirectX\Common\MathHelper.cpp" />
@@ -30,17 +30,16 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
-    <ClCompile Include="FrameResource.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MouseListener.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\DirectX\Common\Camera.h" />
     <ClInclude Include="..\..\DirectX\Common\d3dApp.h" />
     <ClInclude Include="..\..\DirectX\Common\d3dUtil.h" />
     <ClInclude Include="..\..\DirectX\Common\d3dx12.h" />
     <ClInclude Include="..\..\DirectX\Common\DDSTextureLoader.h" />
+    <ClInclude Include="..\..\DirectX\Common\FrameResource.h" />
     <ClInclude Include="..\..\DirectX\Common\GameTimer.h" />
     <ClInclude Include="..\..\DirectX\Common\GeometryGenerator.h" />
     <ClInclude Include="..\..\DirectX\Common\GraphicsStructures.h" />
@@ -51,7 +50,6 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
-    <ClInclude Include="FrameResource.h" />
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="MouseListener.h" />
@@ -60,7 +58,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8F08A3C4-A48D-4EC4-94CB-4442FB5944B0}</ProjectGuid>
     <RootNamespace>BlueRapsolEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
