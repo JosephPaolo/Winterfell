@@ -90,7 +90,7 @@ private:
 
 	PassConstants mMainPassCB;
 
-	XMFLOAT3 mEyePos = { 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 mEyePos = { 0.0f, 0.0f, -10.0f };
 	XMFLOAT4X4 mView = MathHelper::Identity4x4();
 	XMFLOAT4X4 mProj = MathHelper::Identity4x4();
 
@@ -99,4 +99,6 @@ private:
 	float mRadius = 20.0f;
 
 	POINT mLastMousePos;
+
+	//std::unique_ptr<RenderItem> objRef[2];
 };

@@ -168,7 +168,13 @@ void InitDirect3DApp::Draw(const GameTimer& gt)
 		D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
 
 	// Clear the back buffer and depth buffer.
-	mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::LightSteelBlue, 0, nullptr);
+
+	if (inMainLoop) {
+		mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::LightSteelBlue, 0, nullptr);
+	}
+	else {
+		mCommandList->ClearRenderTargetView(CurrentBackBufferView(), Colors::Black, 0, nullptr);
+	}
 	mCommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
 	// Specify the buffers we are going to render to.
@@ -259,18 +265,20 @@ void InitDirect3DApp::OnKeyboardInput(const GameTimer& gt)
 
 void InitDirect3DApp::UpdateCamera(const GameTimer& gt)
 {
-	// Convert Spherical to Cartesian coordinates.
-	mEyePos.x = mRadius * sinf(mPhi)*cosf(mTheta);
-	mEyePos.z = mRadius * sinf(mPhi)*sinf(mTheta);
-	mEyePos.y = mRadius * cosf(mPhi);
+	if (inMainLoop) { //Dont process during initialization phase
+		// Convert Spherical to Cartesian coordinates.
+		mEyePos.x = mRadius * sinf(mPhi)*cosf(mTheta);
+		mEyePos.z = mRadius * sinf(mPhi)*sinf(mTheta);
+		mEyePos.y = mRadius * cosf(mPhi);
 
-	// Build the view matrix.
-	XMVECTOR pos = XMVectorSet(mEyePos.x, mEyePos.y, mEyePos.z, 1.0f);
-	XMVECTOR target = XMVectorZero();
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		// Build the view matrix.
+		XMVECTOR pos = XMVectorSet(mEyePos.x, mEyePos.y, mEyePos.z, 1.0f);
+		XMVECTOR target = XMVectorZero();
+		XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
-	XMStoreFloat4x4(&mView, view);
+		XMMATRIX view = XMMatrixLookAtLH(pos, target, up);
+		XMStoreFloat4x4(&mView, view);
+	}
 }
 
 void InitDirect3DApp::AnimateMaterials(const GameTimer& gt)
@@ -365,14 +373,14 @@ void InitDirect3DApp::UpdateMainPassCB(const GameTimer& gt)
 
 void InitDirect3DApp::LoadTextures()
 {
-	auto rubiksCubeTex = std::make_unique<Texture>();
-	rubiksCubeTex->Name = "rubiksCubeTex";
-	rubiksCubeTex->Filename = L"../../DirectX/Framework/rubiksTexture.DDS";
+	auto splashArtTex = std::make_unique<Texture>();
+	splashArtTex->Name = "splashArtTex";
+	splashArtTex->Filename = L"../../../Assets/splashTex4.DDS";
 	ThrowIfFailed(DirectX::CreateDDSTextureFromFile12(md3dDevice.Get(),
-		mCommandList.Get(), rubiksCubeTex->Filename.c_str(),
-		rubiksCubeTex->Resource, rubiksCubeTex->UploadHeap));
+		mCommandList.Get(), splashArtTex->Filename.c_str(),
+		splashArtTex->Resource, splashArtTex->UploadHeap));
 
-	mTextures[rubiksCubeTex->Name] = std::move(rubiksCubeTex);
+	mTextures[splashArtTex->Name] = std::move(splashArtTex);
 }
 
 void InitDirect3DApp::BuildRootSignature()
@@ -431,17 +439,17 @@ void InitDirect3DApp::BuildDescriptorHeaps()
 	//
 	CD3DX12_CPU_DESCRIPTOR_HANDLE hDescriptor(mSrvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
-	auto rubiksCubeTex = mTextures["rubiksCubeTex"]->Resource;
+	auto splashArtTex = mTextures["splashArtTex"]->Resource;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.Format = rubiksCubeTex->GetDesc().Format;
+	srvDesc.Format = splashArtTex->GetDesc().Format;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MostDetailedMip = 0;
-	srvDesc.Texture2D.MipLevels = rubiksCubeTex->GetDesc().MipLevels;
+	srvDesc.Texture2D.MipLevels = splashArtTex->GetDesc().MipLevels;
 	srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
 
-	md3dDevice->CreateShaderResourceView(rubiksCubeTex.Get(), &srvDesc, hDescriptor);
+	md3dDevice->CreateShaderResourceView(splashArtTex.Get(), &srvDesc, hDescriptor);
 }
 
 void InitDirect3DApp::BuildShadersAndInputLayout()
@@ -461,8 +469,11 @@ void InitDirect3DApp::BuildShapeGeometry()
 {
 	GeometryGenerator geoGen;
 	//GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
-	GeometryGenerator::MeshData broken = geoGen.CreateBox(1.0f, 1.0f, 1.0f, 3);
-	GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
+	//GeometryGenerator::MeshData broken = geoGen.CreateBox(1.0f, 1.0f, 1.0f, 3);
+	//GeometryGenerator::MeshData box = geoGen.CreateSixTexBox(1.0f, 1.0f, 1.0f, 3);
+	GeometryGenerator::MeshData box = geoGen.CreateBox(1.0f, 1.0f, 1.0f, 3);
+	GeometryGenerator::MeshData splashArt = geoGen.CreateQuad(1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+
 	//
 	// We are concatenating all the geometry into one big vertex/index buffer.  So
 	// define the regions in the buffer each submesh covers.
@@ -470,21 +481,21 @@ void InitDirect3DApp::BuildShapeGeometry()
 
 	// Cache the vertex offsets to each object in the concatenated vertex buffer.
 	UINT boxVertexOffset = 0;
-	UINT brokenVertexOffset = (UINT)box.Vertices.size();
+	UINT splashArtVertexOffset = (UINT)box.Vertices.size();
 
 	// Cache the starting index for each object in the concatenated index buffer.
 	UINT boxIndexOffset = 0;
-	UINT brokenIndexOffset = (UINT)box.Indices32.size();
+	UINT splashArtIndexOffset = (UINT)box.Indices32.size();
 
 	SubmeshGeometry boxSubmesh;
 	boxSubmesh.IndexCount = (UINT)box.Indices32.size();
 	boxSubmesh.StartIndexLocation = boxIndexOffset;
 	boxSubmesh.BaseVertexLocation = boxVertexOffset;
 
-	SubmeshGeometry brokenSubmesh;
-	brokenSubmesh.IndexCount = (UINT)broken.Indices32.size();
-	brokenSubmesh.StartIndexLocation = brokenIndexOffset;
-	brokenSubmesh.BaseVertexLocation = brokenVertexOffset;
+	SubmeshGeometry splashArtSubmesh;
+	splashArtSubmesh.IndexCount = (UINT)splashArt.Indices32.size();
+	splashArtSubmesh.StartIndexLocation = splashArtIndexOffset;
+	splashArtSubmesh.BaseVertexLocation = splashArtVertexOffset;
 
 	//
 	// Extract the vertex elements we are interested in and pack the
@@ -493,7 +504,7 @@ void InitDirect3DApp::BuildShapeGeometry()
 
 	auto totalVertexCount =
 		box.Vertices.size() +
-		broken.Vertices.size();
+		splashArt.Vertices.size();
 
 	std::vector<Vertex> vertices(totalVertexCount);
 
@@ -508,11 +519,11 @@ void InitDirect3DApp::BuildShapeGeometry()
 		vertices[k].TexC = box.Vertices[i].TexC;
 	}
 
-	for (size_t i = 0; i < broken.Vertices.size(); ++i, ++k)
+	for (size_t i = 0; i < splashArt.Vertices.size(); ++i, ++k)
 	{
-		vertices[k].Pos = broken.Vertices[i].Position;
-		vertices[k].Normal = broken.Vertices[i].Normal;
-		vertices[k].TexC = broken.Vertices[i].TexC;
+		vertices[k].Pos = splashArt.Vertices[i].Position;
+		vertices[k].Normal = splashArt.Vertices[i].Normal;
+		vertices[k].TexC = splashArt.Vertices[i].TexC;
 	}
 
 	//std::vector<std::uint16_t> indices = box.GetIndices16();
@@ -520,13 +531,13 @@ void InitDirect3DApp::BuildShapeGeometry()
 
 	std::vector<std::uint16_t> indices;
 	indices.insert(indices.end(), std::begin(box.GetIndices16()), std::end(box.GetIndices16()));
-	indices.insert(indices.end(), std::begin(broken.GetIndices16()), std::end(broken.GetIndices16()));
+	indices.insert(indices.end(), std::begin(splashArt.GetIndices16()), std::end(splashArt.GetIndices16()));
 
 	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
 	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
 
 	auto geo = std::make_unique<MeshGeometry>();
-	geo->Name = "boxGeo";
+	geo->Name = "shapeGeo";
 
 	ThrowIfFailed(D3DCreateBlob(vbByteSize, &geo->VertexBufferCPU));
 	CopyMemory(geo->VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize);
@@ -546,7 +557,7 @@ void InitDirect3DApp::BuildShapeGeometry()
 	geo->IndexBufferByteSize = ibByteSize;
 
 	geo->DrawArgs["box"] = boxSubmesh;
-	geo->DrawArgs["broken"] = brokenSubmesh;
+	geo->DrawArgs["splashArt"] = splashArtSubmesh;
 
 	mGeometries[geo->Name] = std::move(geo);
 }
@@ -593,60 +604,130 @@ void InitDirect3DApp::BuildFrameResources()
 	}
 }
 
-void InitDirect3DApp::BuildMaterials()
-{
-	auto cubeHolder = std::make_unique<Material>();
-	cubeHolder->Name = "rubiksCube";
-	cubeHolder->MatCBIndex = 0;
-	cubeHolder->DiffuseSrvHeapIndex = 0;
-	cubeHolder->DiffuseAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	cubeHolder->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05f);
-	cubeHolder->Roughness = 0.2f;
-	mMaterials["rubiksCube"] = std::move(cubeHolder);
+void InitDirect3DApp::BuildMaterials(){
 
+	auto splashMat = std::make_unique<Material>();
+	splashMat->Name = "splashMat";
+	splashMat->MatCBIndex = 0;
+	splashMat->DiffuseSrvHeapIndex = 0;
+	splashMat->DiffuseAlbedo = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	splashMat->FresnelR0 = XMFLOAT3(0.05f, 0.05f, 0.05f);
+	splashMat->Roughness = 0.2f;
+	
+	auto grayMat = std::make_unique<Material>();
+	grayMat->Name = "grayMat";
+	grayMat->MatCBIndex = 1;
+	grayMat->DiffuseSrvHeapIndex = 1;
+	grayMat->DiffuseAlbedo = XMFLOAT4(Colors::LightGray);
+	grayMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	grayMat->Roughness = 0.2f;
+
+	auto darkGrayMat = std::make_unique<Material>();
+	darkGrayMat->Name = "darkGrayMat";
+	darkGrayMat->MatCBIndex = 2;
+	darkGrayMat->DiffuseSrvHeapIndex = 2;
+	darkGrayMat->DiffuseAlbedo = XMFLOAT4(Colors::DarkGray);
+	darkGrayMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	darkGrayMat->Roughness = 0.2f;
+
+	auto yellowMat = std::make_unique<Material>();
+	yellowMat->Name = "yellowMat";
+	yellowMat->MatCBIndex = 3;
+	yellowMat->DiffuseSrvHeapIndex = 3;
+	yellowMat->DiffuseAlbedo = XMFLOAT4(Colors::Yellow);
+	yellowMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	yellowMat->Roughness = 0.2f;
+
+	auto orangeMat = std::make_unique<Material>();
+	orangeMat->Name = "orangeMat";
+	orangeMat->MatCBIndex = 4;
+	orangeMat->DiffuseSrvHeapIndex = 4;
+	orangeMat->DiffuseAlbedo = XMFLOAT4(Colors::Orange);
+	orangeMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	orangeMat->Roughness = 0.2f;
+
+	auto redMat = std::make_unique<Material>();
+	redMat->Name = "redMat";
+	redMat->MatCBIndex = 5;
+	redMat->DiffuseSrvHeapIndex = 6;
+	redMat->DiffuseAlbedo = XMFLOAT4(Colors::Red);
+	redMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	redMat->Roughness = 0.2f;
+
+	auto purpleMat = std::make_unique<Material>();
+	purpleMat->Name = "purpleMat";
+	purpleMat->MatCBIndex = 6;
+	purpleMat->DiffuseSrvHeapIndex = 6;
+	purpleMat->DiffuseAlbedo = XMFLOAT4(Colors::Purple);
+	purpleMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	purpleMat->Roughness = 0.2f;
+
+	auto blueMat = std::make_unique<Material>();
+	blueMat->Name = "blueMat";
+	blueMat->MatCBIndex = 7;
+	blueMat->DiffuseSrvHeapIndex = 7;
+	blueMat->DiffuseAlbedo = XMFLOAT4(Colors::Blue);
+	blueMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	blueMat->Roughness = 0.2f;
+
+	auto greenMat = std::make_unique<Material>();
+	greenMat->Name = "greenMat";
+	greenMat->MatCBIndex = 8;
+	greenMat->DiffuseSrvHeapIndex = 8;
+	greenMat->DiffuseAlbedo = XMFLOAT4(Colors::Green);
+	greenMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
+	greenMat->Roughness = 0.2f;
+
+	auto invisMat = std::make_unique<Material>();
+	invisMat->Name = "invisMat";
+	invisMat->MatCBIndex = 9;
+	invisMat->DiffuseSrvHeapIndex = 9;
+	invisMat->DiffuseAlbedo = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	invisMat->FresnelR0 = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	invisMat->Roughness = 0.0f;
+
+	mMaterials["splashMat"] = std::move(splashMat);
+	mMaterials["grayMat"] = std::move(grayMat);
+	mMaterials["darkGrayMat"] = std::move(darkGrayMat);
+	mMaterials["yellowMat"] = std::move(yellowMat);
+	mMaterials["orangeMat"] = std::move(orangeMat);
+	mMaterials["redMat"] = std::move(redMat);
+	mMaterials["purpleMat"] = std::move(purpleMat);
+	mMaterials["blueMat"] = std::move(blueMat);
+	mMaterials["greenMat"] = std::move(greenMat);
+	mMaterials["invisMat"] = std::move(invisMat);
 }
 
 void InitDirect3DApp::BuildRenderItems()
 {
-	std::unique_ptr<RenderItem> cubeHolder;
+	std::unique_ptr<RenderItem> shapeHolder;
 	int index = 0;
 
-	/* initialize random seed: */
-	srand(time(NULL));
+	shapeHolder = std::make_unique<RenderItem>();
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(8.0f, 8.0f, 8.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
+	//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	shapeHolder->ObjCBIndex = index;
+	shapeHolder->Mat = mMaterials["splashMat"].get();
+	shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["splashArt"].IndexCount;
+	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["splashArt"].StartIndexLocation;
+	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["splashArt"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(shapeHolder));
+	index++;
 
-	//X random range: -12 to 12 (rand() % 24 + -12)
-	//Y random range: -12 to 12 (rand() % 24 + -12)
-	//Z random range: -4 to 20 (rand() % 24 + -4)
-
-	for (int ia = 0; ia < 50; ia++) {
-		cubeHolder = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&cubeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation((rand() % 24 + -12), (rand() % 24 + -12), (rand() % 24 + -4)));
-		//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		cubeHolder->ObjCBIndex = index;
-		cubeHolder->Mat = mMaterials["rubiksCube"].get();
-		cubeHolder->Geo = mGeometries["boxGeo"].get();
-		cubeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		cubeHolder->IndexCount = cubeHolder->Geo->DrawArgs["box"].IndexCount;
-		cubeHolder->StartIndexLocation = cubeHolder->Geo->DrawArgs["box"].StartIndexLocation;
-		cubeHolder->BaseVertexLocation = cubeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(cubeHolder));
-		index++;
-	}
-
-	for (int ib = 0; ib < 50; ib++) {
-		cubeHolder = std::make_unique<RenderItem>();
-		XMStoreFloat4x4(&cubeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation((rand() % 24 + -12), (rand() % 24 + -12), (rand() % 24 + -4)));
-		//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		cubeHolder->ObjCBIndex = index;
-		cubeHolder->Mat = mMaterials["rubiksCube"].get();
-		cubeHolder->Geo = mGeometries["boxGeo"].get();
-		cubeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		cubeHolder->IndexCount = cubeHolder->Geo->DrawArgs["broken"].IndexCount;
-		cubeHolder->StartIndexLocation = cubeHolder->Geo->DrawArgs["broken"].StartIndexLocation;
-		cubeHolder->BaseVertexLocation = cubeHolder->Geo->DrawArgs["broken"].BaseVertexLocation;
-		mAllRitems.push_back(std::move(cubeHolder));
-		index++;
-	}
+	shapeHolder = std::make_unique<RenderItem>();
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+	//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	shapeHolder->ObjCBIndex = index;
+	shapeHolder->Mat = mMaterials["orangeMat"].get();
+	shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
+	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(shapeHolder));
+	index++;
 
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
@@ -740,4 +821,5 @@ std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSampl
 		linearWrap, linearClamp,
 		anisotropicWrap, anisotropicClamp };
 }
+
 

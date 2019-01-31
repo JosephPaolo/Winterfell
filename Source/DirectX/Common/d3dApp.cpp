@@ -72,9 +72,48 @@ void D3DApp::Set4xMsaaState(bool value)
 int D3DApp::Run()
 {
 	MSG msg = {0};
- 
+	std::wstring debugMsg = L"\nmTimer: ";
+	float splashScreenUptime = 4;
 	mTimer.Reset();
 
+	OutputDebugString(L"\nDisplaying Splash Screen...");
+	inMainLoop = false;
+
+	//Initialization phase splash screen
+	while (msg.message != WM_QUIT && mTimer.TotalTime() < splashScreenUptime)
+	{
+		//// If there are Window messages then process them.
+		//if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		//{
+		//	TranslateMessage(&msg);
+		//	DispatchMessage(&msg);
+		//}
+		//// Otherwise, do animation/game stuff.
+		//else
+		//{
+			mTimer.Tick();
+
+			//debugMsg = L"\nmTimer: " + std::to_wstring(mTimer.TotalTime());
+			//OutputDebugString(debugMsg.c_str());
+
+			/*if (!mAppPaused)
+			{*/
+				CalculateFrameStats();
+				Update(mTimer);
+				Draw(mTimer);
+			//}
+			//else
+			//{
+			//	Sleep(100);
+			//}
+		//}
+	}
+
+	OutputDebugString(L"\nEntering Main Loop...");
+	mTimer.Reset();
+	inMainLoop = true;
+
+	//Main Loop
 	while(msg.message != WM_QUIT)
 	{
 		// If there are Window messages then process them.
@@ -100,6 +139,8 @@ int D3DApp::Run()
 			}
         }
     }
+
+	inMainLoop = false;
 
 	return (int)msg.wParam;
 }
