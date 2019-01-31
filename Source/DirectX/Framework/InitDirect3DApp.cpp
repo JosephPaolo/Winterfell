@@ -716,18 +716,18 @@ void InitDirect3DApp::BuildRenderItems()
 	mAllRitems.push_back(std::move(shapeHolder));
 	index++;
 
-	shapeHolder = std::make_unique<RenderItem>();
-	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-	//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-	shapeHolder->ObjCBIndex = index;
-	shapeHolder->Mat = mMaterials["orangeMat"].get();
-	shapeHolder->Geo = mGeometries["shapeGeo"].get();
-	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
-	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
-	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
-	mAllRitems.push_back(std::move(shapeHolder));
-	index++;
+	//shapeHolder = std::make_unique<RenderItem>();
+	//XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+	////XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	//shapeHolder->ObjCBIndex = index;
+	//shapeHolder->Mat = mMaterials["orangeMat"].get();
+	//shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	//shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	//shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
+	//shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+	//shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+	//mAllRitems.push_back(std::move(shapeHolder));
+	//index++;
 
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
