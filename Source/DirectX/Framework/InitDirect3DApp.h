@@ -4,8 +4,9 @@
 #include "../../DirectX/Common/MathHelper.h"
 #include "../../DirectX/Common/UploadBuffer.h"
 #include "../../DirectX/Common/GraphicsStructures.h"
+#include "../../DirectX/Common/ShapeTypes.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h"
-#include "../../BlueRapsolEngine/BlueRapsolEngine/BlueRapsolEngine.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/BRDataTypes.h"
 #include "../../DirectX/Common/GeometryGenerator.h"
 #include <DirectXColors.h>
 #include <Windows.h>
@@ -23,15 +24,23 @@ using namespace BRGraphicType;
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "D3D12.lib")
 
+class BlueRapsolEngine;
 class InitDirect3DApp : public D3DApp
 {
 public:
-	InitDirect3DApp(HINSTANCE hInstance);
+	InitDirect3DApp(HINSTANCE hInstance, BlueRapsolEngine *getEngineRef);
 	InitDirect3DApp(const InitDirect3DApp& rhs) = delete;
 	InitDirect3DApp& operator=(const InitDirect3DApp& rhs) = delete;
 	~InitDirect3DApp();
 
 	virtual bool Initialize()override;
+
+	GameTimer* getTimer();
+	int newRenderItem(); //Creates a box at origin, returns mRenderItem index
+	//int newRenderItem(ShapeType setType, BRDataType::Vector3 setPosition); //Creates the selected shape at set location, returns mRenderItem index
+
+	void setPosition(int renderItemIndex, BRDataType::Vector3 setPosition); //Warning! This resets rotation and scalar to default values.
+	//void setTransform(int renderItemIndex, BRDataType::Vector3 setPosition, BRDataType::Vector3 setEulerAngle, BRDataType::Vector3 setScalar);
 
 private:
 	virtual void OnResize()override;
@@ -104,5 +113,6 @@ private:
 
 	bool awaitingMainLoop = true;
 
+	BlueRapsolEngine* engineRef;
 	//std::unique_ptr<RenderItem> objRef[2];
 };

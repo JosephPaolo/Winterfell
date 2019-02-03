@@ -3,6 +3,7 @@
 //***************************************************************************************
 
 #include "../../DirectX/Framework/InitDirect3DApp.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/BlueRapsolEngine.h"
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
@@ -36,9 +37,11 @@ const int gNumFrameResources = 3;
 //	}
 //}
 
-InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance)
+InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance, BlueRapsolEngine *getEngineRef)
 	: D3DApp(hInstance)
 {
+	engineRef = getEngineRef;
+	engineRef->passD3dRef(this);
 }
 
 InitDirect3DApp::~InitDirect3DApp()
@@ -66,7 +69,6 @@ bool InitDirect3DApp::Initialize()
 	BuildShapeGeometry();
 	BuildMaterials();
 	BuildRenderItems();
-	//HideSplashArt();
 	BuildFrameResources();
 	BuildPSOs();
 
@@ -100,6 +102,14 @@ void InitDirect3DApp::Update(const GameTimer& gt)
 		debugMsg = L"\nHiding Splash Screen...";
 		OutputDebugString(debugMsg.c_str());
 		HideSplashArt();
+
+		if (engineRef) {
+			engineRef->GameStart();
+		}
+	}
+
+	if (GetApp()->inMainLoop && engineRef) {
+		engineRef->GameUpdate();
 	}
 
 	OnKeyboardInput(gt);
@@ -686,19 +696,6 @@ void InitDirect3DApp::BuildRenderItems()
 	std::unique_ptr<RenderItem> shapeHolder;
 	int index = 0;
 
-	//shapeHolder = std::make_unique<RenderItem>();
-	//XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(8.0f, 8.0f, 8.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
-	////XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-	//shapeHolder->ObjCBIndex = index;
-	//shapeHolder->Mat = mMaterials["splashMat"].get();
-	//shapeHolder->Geo = mGeometries["shapeGeo"].get();
-	//shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	//shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["splashArt"].IndexCount;
-	//shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["splashArt"].StartIndexLocation;
-	//shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["splashArt"].BaseVertexLocation;
-	//mAllRitems.push_back(std::move(shapeHolder));
-	//index++;
-
 	shapeHolder = std::make_unique<RenderItem>();
 	shapeHolder->World = MathHelper::Identity4x4();
 	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(8.0f, 8.0f, 8.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
@@ -715,7 +712,7 @@ void InitDirect3DApp::BuildRenderItems()
 
 	shapeHolder = std::make_unique<RenderItem>();
 	shapeHolder->World = MathHelper::Identity4x4();
-	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(2.0f, 2.0f, 2.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
 	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
 	shapeHolder->ObjCBIndex = index;
 	shapeHolder->Mat = mMaterials["orangeMat"].get();
@@ -726,20 +723,6 @@ void InitDirect3DApp::BuildRenderItems()
 	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
 	mAllRitems.push_back(std::move(shapeHolder));
 	index++;
-
-	/*shapeHolder = std::make_unique<RenderItem>();
-	shapeHolder->World = MathHelper::Identity4x4();
-	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
-	shapeHolder->ObjCBIndex = index;
-	shapeHolder->Mat = mMaterials["orangeMat"].get();
-	shapeHolder->Geo = mGeometries["shapeGeo"].get();
-	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
-	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
-	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
-	mAllRitems.push_back(std::move(shapeHolder));
-	index++;*/
 
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
@@ -836,7 +819,7 @@ std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSampl
 
 //TODO revise
 void InitDirect3DApp::HideSplashArt() {
-	//std::unique_ptr<RenderItem> shapeHolder = &mAllRitems.front;
+	//std::unique_ptr<RenderItem> shapeHolder = mAllRitems.at(0);
 
 	XMStoreFloat4x4(&mAllRitems[0]->World, XMMatrixScaling(0.0f, 0.0f, 0.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
 	//mAllRitems.push_back(std::move(mAllRitems.at(0)));
@@ -850,4 +833,67 @@ void InitDirect3DApp::HideSplashArt() {
 	//mAllRitems[0]->BaseVertexLocation = mAllRitems[0]->Geo->DrawArgs["box"].BaseVertexLocation;
 }
 
+GameTimer* InitDirect3DApp::getTimer() {
+	return &mTimer;
+}
 
+//Builds render items at runtime
+int InitDirect3DApp::newRenderItem() {
+	int index = mAllRitems.size();
+	//int index = 1;
+	std::unique_ptr<RenderItem> shapeHolder;
+
+	// Reset the command list to prep for initialization commands.
+	ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
+
+	// Get the increment size of a descriptor in this heap type.  This is hardware specific, 
+	// so we have to query this information.
+	mCbvSrvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	BuildRootSignature();
+	BuildDescriptorHeaps();
+	BuildShadersAndInputLayout();
+
+	shapeHolder = std::make_unique<RenderItem>();
+	shapeHolder->World = MathHelper::Identity4x4();
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	shapeHolder->ObjCBIndex = index;
+	shapeHolder->Mat = mMaterials["orangeMat"].get();
+	shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
+	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(shapeHolder));
+
+	//shapeHolder->NumFramesDirty = gNumFrameResources;
+
+	//All the render items are opaque.
+	for (auto& e : mAllRitems)
+		mOpaqueRitems.push_back(e.get());
+
+	BuildFrameResources();
+	BuildPSOs();
+
+	// Execute the initialization commands.
+	ThrowIfFailed(mCommandList->Close());
+	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
+	// Wait until initialization is complete.
+	FlushCommandQueue();
+
+	return index;
+}
+
+void InitDirect3DApp::setPosition(int renderItemIndex, BRDataType::Vector3 setPosition) {
+	if (&mAllRitems[renderItemIndex]) {
+		XMStoreFloat4x4(&mAllRitems[renderItemIndex]->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(setPosition.x, setPosition.y, setPosition.z));
+		mAllRitems[renderItemIndex]->NumFramesDirty = gNumFrameResources;
+	}
+	else {
+		OutputDebugString(L"[ERROR] RenderItem index invalid!\n");
+	}
+	
+}

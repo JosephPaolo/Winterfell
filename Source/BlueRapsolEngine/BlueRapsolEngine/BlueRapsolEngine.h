@@ -16,6 +16,7 @@
 #include <string>
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/BRDataTypes.h"
 #include "../../DirectX/Common/GameTimer.h"
 #include "../../DirectX/Framework/InitDirect3DApp.h"
 
@@ -44,18 +45,18 @@ public:
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
 
-	void transformUpdate(); //TODO revise
+	void passD3dRef(InitDirect3DApp *getd3dRef);
 
-private:
-	//void Initialize(HINSTANCE hInstance);
-	int GameLoop();
+	void GameStart();
+	void GameUpdate();
 
 protected:
 	// Used to keep track of the “delta-time” and game time (§4.4).
-	GameTimer mTimer;
+	GameTimer* timerRef;
+	InitDirect3DApp* d3dRef; //DirectX system reference
+	BRDataType::Vector3 newPosition;
 
 	//Initialize DirectX
-	//TODO modify; TODO remove user input parameters
 	int InitializeD3d(HINSTANCE hInstance);
 
 	//Check for multiple Instances

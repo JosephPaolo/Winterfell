@@ -27,8 +27,6 @@
     <ClCompile Include="..\..\DirectX\Common\GeometryGenerator.cpp" />
     <ClCompile Include="..\..\DirectX\Common\MathHelper.cpp" />
     <ClCompile Include="..\..\DirectX\Framework\InitDirect3DApp.cpp" />
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
     <ClCompile Include="FrameResource.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
@@ -45,10 +43,9 @@
     <ClInclude Include="..\..\DirectX\Common\GeometryGenerator.h" />
     <ClInclude Include="..\..\DirectX\Common\GraphicsStructures.h" />
     <ClInclude Include="..\..\DirectX\Common\MathHelper.h" />
+    <ClInclude Include="..\..\DirectX\Common\ShapeTypes.h" />
     <ClInclude Include="..\..\DirectX\Common\UploadBuffer.h" />
     <ClInclude Include="..\..\DirectX\Framework\InitDirect3DApp.h" />
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
     <ClInclude Include="FrameResource.h" />

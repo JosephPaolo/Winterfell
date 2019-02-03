@@ -30,12 +30,6 @@
     <ClCompile Include="BlueRapsolEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Actor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ActorComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KeyboardListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,12 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlueRapsolEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ActorComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IUserInput.h">
@@ -127,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="FrameResource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DirectX\Common\ShapeTypes.h">
+      <Filter>Header Files\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -27,7 +27,7 @@ void BlueRapsolEngine::Run(HINSTANCE hInstance) {
 	BlueRapsolEngine::Initialize(hInstance);
 
 	//TODO Program loop. Move loop from d3dApp.cpp
-	BlueRapsolEngine::GameLoop();
+	BlueRapsolEngine::GameUpdate();
 
 }
 
@@ -59,42 +59,37 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 	InitializeD3d(hInstance);
 }
 
-//TODO transfer game loop here
-//Not yet used because the game loop is in d3dApp.cpp
-int BlueRapsolEngine::GameLoop() {
-	MSG msg = { 0 };
-	/*
-	mTimer.Reset();
+//executes once at the beginning of game
+void BlueRapsolEngine::GameStart() {
+	OutputDebugString(L"\nRunning GameStart() commands...\n");
 
-	while (msg.message != WM_QUIT)
-	{
-		// If there are Window messages then process them.
-		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		// Otherwise, do animation/game stuff.
-		else
-		{
-			gameTimer.Tick();
+	if (d3dRef) {
+		//OutputDebugString(L"\nCreating Render Items...\n");
+		//d3dRef->newRenderItem();
 
-			if (!mAppPaused)
-			{
-				CalculateFrameStats();
-				Update(gameTimer);
-				Draw(gameTimer);
-			}
-			else
-			{
-				Sleep(100);
-			}
-		}
 	}
-	*/
+	else {
+		OutputDebugString(L"\n[ERROR] d3dRef missing!\n");
+	}
 
-	return (int)msg.wParam;
 }
+
+//executes every update
+void BlueRapsolEngine::GameUpdate() {
+	//OutputDebugString(L"\nExecuting GameUpdate() commands...\n");
+
+	newPosition.y = newPosition.y - 0.001f;
+
+	if (d3dRef) {
+
+		d3dRef->setPosition(1, newPosition);
+	}
+	else {
+		OutputDebugString(L"\n[ERROR] d3dRef missing!\n");
+	}
+}
+
+
 
 //Insures only one of this application is running
 bool BlueRapsolEngine::IsOnlyInstance(LPCTSTR appName) {
@@ -244,7 +239,7 @@ void BlueRapsolEngine::DisplayCPUArch() {
 //TODO remove user input parameters from this function and theApp.Initialize()
 int BlueRapsolEngine::InitializeD3d(HINSTANCE hInstance) {
 	try {
-		InitDirect3DApp theApp(hInstance);
+		InitDirect3DApp theApp(hInstance, this);
 		if (!theApp.Initialize())
 			return 0;
 
@@ -256,7 +251,6 @@ int BlueRapsolEngine::InitializeD3d(HINSTANCE hInstance) {
 	}
 }
 
-//TODO revise
-void BlueRapsolEngine::transformUpdate() {
-
+void BlueRapsolEngine::passD3dRef(InitDirect3DApp *getd3dRef) {
+	d3dRef = getd3dRef;
 }
