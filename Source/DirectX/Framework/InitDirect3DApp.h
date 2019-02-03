@@ -4,7 +4,12 @@
 #include "../../DirectX/Common/MathHelper.h"
 #include "../../DirectX/Common/UploadBuffer.h"
 #include "../../DirectX/Common/GraphicsStructures.h"
+<<<<<<< HEAD
 #include "../../DirectX/Common/FrameResource.h"
+=======
+#include "../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/BlueRapsolEngine.h"
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 #include "../../DirectX/Common/GeometryGenerator.h"
 #include <DirectXColors.h>
 #include <Windows.h>
@@ -29,6 +34,40 @@ public:
 	//virtual bool Initialize();
 
 private:
+<<<<<<< HEAD
+=======
+	virtual void OnResize()override;
+	virtual void Update(const GameTimer& gt)override;
+	virtual void Draw(const GameTimer& gt)override;
+
+	virtual void OnMouseDown(WPARAM btnState, int x, int y)override;
+	virtual void OnMouseUp(WPARAM btnState, int x, int y)override;
+	virtual void OnMouseMove(WPARAM btnState, int x, int y)override;
+
+	void OnKeyboardInput(const GameTimer& gt);
+	void UpdateCamera(const GameTimer& gt);
+	void AnimateMaterials(const GameTimer& gt);
+	void UpdateObjectCBs(const GameTimer& gt);
+	void UpdateMaterialCBs(const GameTimer& gt);
+	void UpdateMainPassCB(const GameTimer& gt);
+
+	void LoadTextures();
+	void BuildRootSignature();
+	void BuildDescriptorHeaps();
+	void BuildShadersAndInputLayout();
+	void BuildShapeGeometry();
+	void BuildPSOs();
+	void BuildFrameResources();
+	void BuildMaterials();
+	void BuildRenderItems();
+	void DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems);
+	void HideSplashArt(); //test
+
+	std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> GetStaticSamplers();
+
+private:
+
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 	std::vector<std::unique_ptr<FrameResource>> mFrameResources;
 	FrameResource* mCurrFrameResource = nullptr;
 	int mCurrFrameResourceIndex = 0;
@@ -70,6 +109,8 @@ private:
 
 <<<<<<< HEAD
 	POINT mLastMousePos;
+
+	bool awaitingMainLoop = true;
 
 	//std::unique_ptr<RenderItem> objRef[2];
 =======

@@ -3,6 +3,7 @@
 //#include "../../DirectX/Common/d3dUtil.h"
 //#include "../../DirectX/Common/MathHelper.h"
 #include "../../DirectX/Common/UploadBuffer.h"
+#include "../../DirectX/Framework/InitDirect3DApp.h"
 
 //using Microsoft::WRL::ComPtr;
 using namespace DirectX;
@@ -23,7 +24,7 @@ namespace BRGraphicType {
 
 		// Dirty flag indicating the object data has changed and we need to update the constant buffer.
 		// Because we have an object cbuffer for each FrameResource, we have to apply the
-		// update to each FrameResource.  Thus, when we modify obect data we should set 
+		// update to each FrameResource.  Thus, when we modify object data we should set 
 		// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
 		int NumFramesDirty = gNumFrameResources;
 
@@ -42,6 +43,7 @@ namespace BRGraphicType {
 		int BaseVertexLocation = 0;
 	};
 
+<<<<<<< HEAD
 	//Function by Frank Luna
 	struct ObjectConstants
 	{
@@ -82,4 +84,6 @@ namespace BRGraphicType {
 		DirectX::XMFLOAT3 Pos;
 		DirectX::XMFLOAT3 Normal;
 	};
+=======
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 }

@@ -11,6 +11,35 @@
 
 InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance): D3DApp(hInstance) {
 
+<<<<<<< HEAD
+=======
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
+//	PSTR cmdLine, int showCmd)
+//{
+//	// Enable run-time memory check for debug builds.
+//#if defined(DEBUG) | defined(_DEBUG)
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//#endif
+//
+//	try
+//	{
+//		CrateApp theApp(hInstance);
+//		if (!theApp.Initialize())
+//			return 0;
+//
+//		return theApp.Run();
+//	}
+//	catch (DxException& e)
+//	{
+//		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
+//		return 0;
+//	}
+//}
+
+InitDirect3DApp::InitDirect3DApp(HINSTANCE hInstance)
+	: D3DApp(hInstance)
+{
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 }
 
 InitDirect3DApp::~InitDirect3DApp()
@@ -21,7 +50,37 @@ bool InitDirect3DApp::Initialize()
 {
     if(!D3DApp::Initialize())
 		return false;
+<<<<<<< HEAD
 		
+=======
+
+	// Reset the command list to prep for initialization commands.
+	ThrowIfFailed(mCommandList->Reset(mDirectCmdListAlloc.Get(), nullptr));
+
+	// Get the increment size of a descriptor in this heap type.  This is hardware specific, 
+	// so we have to query this information.
+	mCbvSrvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	LoadTextures();
+	BuildRootSignature();
+	BuildDescriptorHeaps();
+	BuildShadersAndInputLayout();
+	BuildShapeGeometry();
+	BuildMaterials();
+	BuildRenderItems();
+	//HideSplashArt();
+	BuildFrameResources();
+	BuildPSOs();
+
+	// Execute the initialization commands.
+	ThrowIfFailed(mCommandList->Close());
+	ID3D12CommandList* cmdsLists[] = { mCommandList.Get() };
+	mCommandQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
+	// Wait until initialization is complete.
+	FlushCommandQueue();
+
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 	return true;
 }
 
@@ -30,8 +89,29 @@ void InitDirect3DApp::OnResize()
 	D3DApp::OnResize();
 }
 
+<<<<<<< HEAD
 //This function is called repeatedly within a loop
 void InitDirect3DApp::Update(const GameTimer& gt){
+=======
+void InitDirect3DApp::Update(const GameTimer& gt)
+{
+	std::wstring debugMsg;
+
+	//triggered once
+	if (GetApp()->inMainLoop && awaitingMainLoop) {
+		awaitingMainLoop = false;
+		debugMsg = L"\nHiding Splash Screen...";
+		OutputDebugString(debugMsg.c_str());
+		HideSplashArt();
+	}
+
+	OnKeyboardInput(gt);
+	UpdateCamera(gt);
+
+	// Cycle through the circular frame resource array.
+	mCurrFrameResourceIndex = (mCurrFrameResourceIndex + 1) % gNumFrameResources;
+	mCurrFrameResource = mFrameResources[mCurrFrameResourceIndex].get();
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 
 	/*
 	char key = ' ';
@@ -317,12 +397,20 @@ void InitDirect3DApp::LoadTextures()
 {
 	auto splashArtTex = std::make_unique<Texture>();
 	splashArtTex->Name = "splashArtTex";
-	splashArtTex->Filename = L"../../../Assets/splashTex4.DDS";
+	splashArtTex->Filename = L"../../../Assets/splashTex.DDS";
 	ThrowIfFailed(DirectX::CreateDDSTextureFromFile12(md3dDevice.Get(),
 		mCommandList.Get(), splashArtTex->Filename.c_str(),
 		splashArtTex->Resource, splashArtTex->UploadHeap));
 
+	auto orangeBoxTex = std::make_unique<Texture>();
+	orangeBoxTex->Name = "orangeBoxTex";
+	orangeBoxTex->Filename = L"../../../Assets/orangeTex.DDS";
+	ThrowIfFailed(DirectX::CreateDDSTextureFromFile12(md3dDevice.Get(),
+		mCommandList.Get(), orangeBoxTex->Filename.c_str(),
+		orangeBoxTex->Resource, orangeBoxTex->UploadHeap));
+
 	mTextures[splashArtTex->Name] = std::move(splashArtTex);
+	mTextures[orangeBoxTex->Name] = std::move(orangeBoxTex);
 }
 
 void InitDirect3DApp::BuildRootSignature()
@@ -350,7 +438,7 @@ void InitDirect3DApp::BuildDescriptorHeaps()
 	// Create the SRV heap.
 	//
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	srvHeapDesc.NumDescriptors = 1;
+	srvHeapDesc.NumDescriptors = 2;
 	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	ThrowIfFailed(md3dDevice->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&mSrvDescriptorHeap)));
@@ -361,6 +449,7 @@ void InitDirect3DApp::BuildDescriptorHeaps()
 	CD3DX12_CPU_DESCRIPTOR_HANDLE hDescriptor(mSrvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 	auto splashArtTex = mTextures["splashArtTex"]->Resource;
+	auto orangeBoxTex = mTextures["orangeBoxTex"]->Resource;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
@@ -369,8 +458,14 @@ void InitDirect3DApp::BuildDescriptorHeaps()
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = splashArtTex->GetDesc().MipLevels;
 	srvDesc.Texture2D.ResourceMinLODClamp = 0.0f;
-
 	md3dDevice->CreateShaderResourceView(splashArtTex.Get(), &srvDesc, hDescriptor);
+
+	//orange box (index 1)
+	hDescriptor.Offset(1, mCbvSrvDescriptorSize); //offset to next descriptor in heap
+	srvDesc.Format = orangeBoxTex->GetDesc().Format;
+	srvDesc.Texture2D.MipLevels = orangeBoxTex->GetDesc().MipLevels;
+	md3dDevice->CreateShaderResourceView(orangeBoxTex.Get(), &srvDesc, hDescriptor);
+
 }
 =======
 		"ALPHA_TEST", "1",
@@ -576,7 +671,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto grayMat = std::make_unique<Material>();
 	grayMat->Name = "grayMat";
 	grayMat->MatCBIndex = 1;
-	grayMat->DiffuseSrvHeapIndex = 1;
+	grayMat->DiffuseSrvHeapIndex = 0;
 	grayMat->DiffuseAlbedo = XMFLOAT4(Colors::LightGray);
 	grayMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	grayMat->Roughness = 0.2f;
@@ -584,7 +679,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto darkGrayMat = std::make_unique<Material>();
 	darkGrayMat->Name = "darkGrayMat";
 	darkGrayMat->MatCBIndex = 2;
-	darkGrayMat->DiffuseSrvHeapIndex = 2;
+	darkGrayMat->DiffuseSrvHeapIndex = 0;
 	darkGrayMat->DiffuseAlbedo = XMFLOAT4(Colors::DarkGray);
 	darkGrayMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	darkGrayMat->Roughness = 0.2f;
@@ -592,7 +687,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto yellowMat = std::make_unique<Material>();
 	yellowMat->Name = "yellowMat";
 	yellowMat->MatCBIndex = 3;
-	yellowMat->DiffuseSrvHeapIndex = 3;
+	yellowMat->DiffuseSrvHeapIndex = 0;
 	yellowMat->DiffuseAlbedo = XMFLOAT4(Colors::Yellow);
 	yellowMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	yellowMat->Roughness = 0.2f;
@@ -600,7 +695,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto orangeMat = std::make_unique<Material>();
 	orangeMat->Name = "orangeMat";
 	orangeMat->MatCBIndex = 4;
-	orangeMat->DiffuseSrvHeapIndex = 4;
+	orangeMat->DiffuseSrvHeapIndex = 1;
 	orangeMat->DiffuseAlbedo = XMFLOAT4(Colors::Orange);
 	orangeMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	orangeMat->Roughness = 0.2f;
@@ -608,7 +703,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto redMat = std::make_unique<Material>();
 	redMat->Name = "redMat";
 	redMat->MatCBIndex = 5;
-	redMat->DiffuseSrvHeapIndex = 6;
+	redMat->DiffuseSrvHeapIndex = 0;
 	redMat->DiffuseAlbedo = XMFLOAT4(Colors::Red);
 	redMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	redMat->Roughness = 0.2f;
@@ -616,7 +711,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto purpleMat = std::make_unique<Material>();
 	purpleMat->Name = "purpleMat";
 	purpleMat->MatCBIndex = 6;
-	purpleMat->DiffuseSrvHeapIndex = 6;
+	purpleMat->DiffuseSrvHeapIndex = 0;
 	purpleMat->DiffuseAlbedo = XMFLOAT4(Colors::Purple);
 	purpleMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	purpleMat->Roughness = 0.2f;
@@ -624,7 +719,7 @@ void InitDirect3DApp::BuildMaterials(){
 	auto blueMat = std::make_unique<Material>();
 	blueMat->Name = "blueMat";
 	blueMat->MatCBIndex = 7;
-	blueMat->DiffuseSrvHeapIndex = 7;
+	blueMat->DiffuseSrvHeapIndex = 0;
 	blueMat->DiffuseAlbedo = XMFLOAT4(Colors::Blue);
 	blueMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	blueMat->Roughness = 0.2f;
@@ -632,18 +727,10 @@ void InitDirect3DApp::BuildMaterials(){
 	auto greenMat = std::make_unique<Material>();
 	greenMat->Name = "greenMat";
 	greenMat->MatCBIndex = 8;
-	greenMat->DiffuseSrvHeapIndex = 8;
+	greenMat->DiffuseSrvHeapIndex = 0;
 	greenMat->DiffuseAlbedo = XMFLOAT4(Colors::Green);
 	greenMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	greenMat->Roughness = 0.2f;
-
-	auto invisMat = std::make_unique<Material>();
-	invisMat->Name = "invisMat";
-	invisMat->MatCBIndex = 9;
-	invisMat->DiffuseSrvHeapIndex = 9;
-	invisMat->DiffuseAlbedo = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	invisMat->FresnelR0 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	invisMat->Roughness = 0.0f;
 
 	mMaterials["splashMat"] = std::move(splashMat);
 	mMaterials["grayMat"] = std::move(grayMat);
@@ -654,6 +741,7 @@ void InitDirect3DApp::BuildMaterials(){
 	mMaterials["purpleMat"] = std::move(purpleMat);
 	mMaterials["blueMat"] = std::move(blueMat);
 	mMaterials["greenMat"] = std::move(greenMat);
+<<<<<<< HEAD
 	mMaterials["invisMat"] = std::move(invisMat);
 =======
 void InitDirect3DApp::BuildMaterials()
@@ -695,6 +783,8 @@ void InitDirect3DApp::BuildMaterials()
 	mMaterials["tile0"] = std::move(tile0);
 	mMaterials["skullMat"] = std::move(skullMat);
 >>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
+=======
+>>>>>>> 3b42b8d5150dcbcccf6bfc7c9cc840505e63c743
 }
 
 void InitDirect3DApp::BuildRenderItems()
@@ -703,9 +793,23 @@ void InitDirect3DApp::BuildRenderItems()
 	std::unique_ptr<RenderItem> shapeHolder;
 	int index = 0;
 
+	//shapeHolder = std::make_unique<RenderItem>();
+	//XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(8.0f, 8.0f, 8.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
+	////XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	//shapeHolder->ObjCBIndex = index;
+	//shapeHolder->Mat = mMaterials["splashMat"].get();
+	//shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	//shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	//shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["splashArt"].IndexCount;
+	//shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["splashArt"].StartIndexLocation;
+	//shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["splashArt"].BaseVertexLocation;
+	//mAllRitems.push_back(std::move(shapeHolder));
+	//index++;
+
 	shapeHolder = std::make_unique<RenderItem>();
+	shapeHolder->World = MathHelper::Identity4x4();
 	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(8.0f, 8.0f, 8.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
-	//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
 	shapeHolder->ObjCBIndex = index;
 	shapeHolder->Mat = mMaterials["splashMat"].get();
 	shapeHolder->Geo = mGeometries["shapeGeo"].get();
@@ -717,8 +821,9 @@ void InitDirect3DApp::BuildRenderItems()
 	index++;
 
 	shapeHolder = std::make_unique<RenderItem>();
+	shapeHolder->World = MathHelper::Identity4x4();
 	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-	//XMStoreFloat4x4(&cubeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
 	shapeHolder->ObjCBIndex = index;
 	shapeHolder->Mat = mMaterials["orangeMat"].get();
 	shapeHolder->Geo = mGeometries["shapeGeo"].get();
@@ -743,6 +848,20 @@ void InitDirect3DApp::BuildRenderItems()
 	mAllRitems.push_back(std::move(boxRitem));
 	*/
 >>>>>>> parent of 2219bf3... Added 3D rendering and texturing to DirectX
+
+	/*shapeHolder = std::make_unique<RenderItem>();
+	shapeHolder->World = MathHelper::Identity4x4();
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	shapeHolder->ObjCBIndex = index;
+	shapeHolder->Mat = mMaterials["orangeMat"].get();
+	shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
+	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(shapeHolder));
+	index++;*/
 
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
@@ -832,6 +951,22 @@ std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSampl
 		pointWrap, pointClamp,
 		linearWrap, linearClamp,
 		anisotropicWrap, anisotropicClamp };
+}
+
+//TODO revise
+void InitDirect3DApp::HideSplashArt() {
+	//std::unique_ptr<RenderItem> shapeHolder = &mAllRitems.front;
+
+	XMStoreFloat4x4(&mAllRitems[0]->World, XMMatrixScaling(0.0f, 0.0f, 0.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
+	//mAllRitems.push_back(std::move(mAllRitems.at(0)));
+
+	//Transform changes require NumFramesDirty = gNumFrameResources so it can be updated
+	mAllRitems.at(0)->NumFramesDirty = gNumFrameResources;
+
+	//mAllRitems[0]->Mat = mMaterials["orangeMat"].get();
+	//mAllRitems[0]->IndexCount = mAllRitems[0]->Geo->DrawArgs["box"].IndexCount;
+	//mAllRitems[0]->StartIndexLocation = mAllRitems[0]->Geo->DrawArgs["box"].StartIndexLocation;
+	//mAllRitems[0]->BaseVertexLocation = mAllRitems[0]->Geo->DrawArgs["box"].BaseVertexLocation;
 }
 
 
