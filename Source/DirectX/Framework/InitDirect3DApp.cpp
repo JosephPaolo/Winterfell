@@ -13,39 +13,6 @@ using namespace DirectX::PackedVector;
 
 const int gNumFrameResources = 3;
 
-//// Lightweight structure stores parameters to draw a shape.  This will
-//// vary from app-to-app.
-//struct RenderItem{
-//	RenderItem() = default;
-//
-//	// World matrix of the shape that describes the object's local space
-//	// relative to the world space, which defines the position, orientation,
-//	// and scale of the object in the world.
-//	XMFLOAT4X4 World = MathHelper::Identity4x4();
-//
-//	XMFLOAT4X4 TexTransform = MathHelper::Identity4x4();
-//
-//	// Dirty flag indicating the object data has changed and we need to update the constant buffer.
-//	// Because we have an object cbuffer for each FrameResource, we have to apply the
-//	// update to each FrameResource.  Thus, when we modify obect data we should set 
-//	// NumFramesDirty = gNumFrameResources so that each frame resource gets the update.
-//	int NumFramesDirty = gNumFrameResources;
-//
-//	// Index into GPU constant buffer corresponding to the ObjectCB for this render item.
-//	UINT ObjCBIndex = -1;
-//
-//	Material* Mat = nullptr;
-//	MeshGeometry* Geo = nullptr;
-//
-//	// Primitive topology.
-//	D3D12_PRIMITIVE_TOPOLOGY PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-//
-//	// DrawIndexedInstanced parameters.
-//	UINT IndexCount = 0;
-//	UINT StartIndexLocation = 0;
-//	int BaseVertexLocation = 0;
-//};
-
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 //	PSTR cmdLine, int showCmd)
 //{
@@ -92,7 +59,6 @@ bool InitDirect3DApp::Initialize()
 	// so we have to query this information.
 	mCbvSrvDescriptorSize = md3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-
 	LoadTextures();
 	BuildRootSignature();
 	BuildDescriptorHeaps();
@@ -100,6 +66,7 @@ bool InitDirect3DApp::Initialize()
 	BuildShapeGeometry();
 	BuildMaterials();
 	BuildRenderItems();
+	//HideSplashArt();
 	BuildFrameResources();
 	BuildPSOs();
 
@@ -125,6 +92,16 @@ void InitDirect3DApp::OnResize()
 
 void InitDirect3DApp::Update(const GameTimer& gt)
 {
+	std::wstring debugMsg;
+
+	//triggered once
+	if (GetApp()->inMainLoop && awaitingMainLoop) {
+		awaitingMainLoop = false;
+		debugMsg = L"\nHiding Splash Screen...";
+		OutputDebugString(debugMsg.c_str());
+		HideSplashArt();
+	}
+
 	OnKeyboardInput(gt);
 	UpdateCamera(gt);
 
@@ -693,14 +670,6 @@ void InitDirect3DApp::BuildMaterials(){
 	greenMat->FresnelR0 = XMFLOAT3(0.02f, 0.02f, 0.02f);
 	greenMat->Roughness = 0.2f;
 
-	auto invisMat = std::make_unique<Material>();
-	invisMat->Name = "invisMat";
-	invisMat->MatCBIndex = 9;
-	invisMat->DiffuseSrvHeapIndex = 0;
-	invisMat->DiffuseAlbedo = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	invisMat->FresnelR0 = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	invisMat->Roughness = 0.0f;
-
 	mMaterials["splashMat"] = std::move(splashMat);
 	mMaterials["grayMat"] = std::move(grayMat);
 	mMaterials["darkGrayMat"] = std::move(darkGrayMat);
@@ -710,7 +679,6 @@ void InitDirect3DApp::BuildMaterials(){
 	mMaterials["purpleMat"] = std::move(purpleMat);
 	mMaterials["blueMat"] = std::move(blueMat);
 	mMaterials["greenMat"] = std::move(greenMat);
-	mMaterials["invisMat"] = std::move(invisMat);
 }
 
 void InitDirect3DApp::BuildRenderItems()
@@ -864,6 +832,22 @@ std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> InitDirect3DApp::GetStaticSampl
 		pointWrap, pointClamp,
 		linearWrap, linearClamp,
 		anisotropicWrap, anisotropicClamp };
+}
+
+//TODO revise
+void InitDirect3DApp::HideSplashArt() {
+	//std::unique_ptr<RenderItem> shapeHolder = &mAllRitems.front;
+
+	XMStoreFloat4x4(&mAllRitems[0]->World, XMMatrixScaling(0.0f, 0.0f, 0.0f)*XMMatrixTranslation(-12.0f, -4.0f, 0.0f));
+	//mAllRitems.push_back(std::move(mAllRitems.at(0)));
+
+	//Transform changes require NumFramesDirty = gNumFrameResources so it can be updated
+	mAllRitems.at(0)->NumFramesDirty = gNumFrameResources;
+
+	//mAllRitems[0]->Mat = mMaterials["orangeMat"].get();
+	//mAllRitems[0]->IndexCount = mAllRitems[0]->Geo->DrawArgs["box"].IndexCount;
+	//mAllRitems[0]->StartIndexLocation = mAllRitems[0]->Geo->DrawArgs["box"].StartIndexLocation;
+	//mAllRitems[0]->BaseVertexLocation = mAllRitems[0]->Geo->DrawArgs["box"].BaseVertexLocation;
 }
 
 

@@ -23,6 +23,8 @@ D3DApp* D3DApp::GetApp()
     return mApp;
 }
 
+bool D3DApp::inMainLoop = false;
+
 D3DApp::D3DApp(HINSTANCE hInstance)
 :	mhAppInst(hInstance)
 {
@@ -82,31 +84,31 @@ int D3DApp::Run()
 	//Initialization phase splash screen
 	while (msg.message != WM_QUIT && mTimer.TotalTime() < splashScreenUptime)
 	{
-		//// If there are Window messages then process them.
-		//if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-		//{
-		//	TranslateMessage(&msg);
-		//	DispatchMessage(&msg);
-		//}
-		//// Otherwise, do animation/game stuff.
-		//else
-		//{
+		// If there are Window messages then process them.
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		// Otherwise, do animation/game stuff.
+		else
+		{
 			mTimer.Tick();
 
 			//debugMsg = L"\nmTimer: " + std::to_wstring(mTimer.TotalTime());
 			//OutputDebugString(debugMsg.c_str());
 
-			/*if (!mAppPaused)
-			{*/
+			if (!mAppPaused)
+			{
 				CalculateFrameStats();
 				Update(mTimer);
 				Draw(mTimer);
-			//}
-			//else
-			//{
-			//	Sleep(100);
-			//}
-		//}
+			}
+			else
+			{
+				Sleep(100);
+			}
+		}
 	}
 
 	OutputDebugString(L"\nEntering Main Loop...");

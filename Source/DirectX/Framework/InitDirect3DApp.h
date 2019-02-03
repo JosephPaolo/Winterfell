@@ -5,6 +5,7 @@
 #include "../../DirectX/Common/UploadBuffer.h"
 #include "../../DirectX/Common/GraphicsStructures.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/BlueRapsolEngine.h"
 #include "../../DirectX/Common/GeometryGenerator.h"
 #include <DirectXColors.h>
 #include <Windows.h>
@@ -58,6 +59,7 @@ private:
 	void BuildMaterials();
 	void BuildRenderItems();
 	void DrawRenderItems(ID3D12GraphicsCommandList* cmdList, const std::vector<RenderItem*>& ritems);
+	void HideSplashArt(); //test
 
 	std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> GetStaticSamplers();
 
@@ -99,6 +101,8 @@ private:
 	float mRadius = 20.0f;
 
 	POINT mLastMousePos;
+
+	bool awaitingMainLoop = true;
 
 	//std::unique_ptr<RenderItem> objRef[2];
 };

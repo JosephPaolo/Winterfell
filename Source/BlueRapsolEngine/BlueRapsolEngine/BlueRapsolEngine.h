@@ -44,6 +44,8 @@ public:
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
 
+	void transformUpdate(); //TODO revise
+
 private:
 	//void Initialize(HINSTANCE hInstance);
 	int GameLoop();

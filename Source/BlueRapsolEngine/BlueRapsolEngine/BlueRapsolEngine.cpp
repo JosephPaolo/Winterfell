@@ -255,3 +255,8 @@ int BlueRapsolEngine::InitializeD3d(HINSTANCE hInstance) {
 		return 0;
 	}
 }
+
+//TODO revise
+void BlueRapsolEngine::transformUpdate() {
+
+}
