@@ -1,22 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  d3dApp.cpp
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(393): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(395): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(398): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(401): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(403): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(406): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(412): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\d3dapp.cpp(415): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned int', possible loss of data
-  d3dUtil.cpp
-  DDSTextureLoader.cpp
-  FrameResource.cpp
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(7): error C2059: syntax error: '<<'
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(10): fatal error C1083: Cannot open include file: '../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h': No such file or directory
-  GameTimer.cpp
-  GeometryGenerator.cpp
-  MathHelper.cpp
   InitDirect3DApp.cpp
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\graphicsstructures.h(46): error C2059: syntax error: '<<'
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\graphicsstructures.h(49): error C2143: syntax error: missing ';' before '{'
@@ -32,8 +15,6 @@ d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\c
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\frameresource.h(32): error C3203: 'UploadBuffer': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(9): error C2059: syntax error: '=='
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(10): fatal error C1083: Cannot open include file: '../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h': No such file or directory
-  Actor.cpp
-  ActorComponent.cpp
   BlueRapsolEngine.cpp
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\graphicsstructures.h(46): error C2059: syntax error: '<<'
@@ -50,8 +31,6 @@ d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\c
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\frameresource.h(32): error C3203: 'UploadBuffer': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(9): error C2059: syntax error: '=='
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(10): fatal error C1083: Cannot open include file: '../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h': No such file or directory
-  KeyboardListener.cpp
-d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(256): warning C4129: '|': unrecognized character escape sequence
   Main.cpp
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\graphicsstructures.h(46): error C2059: syntax error: '<<'
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\graphicsstructures.h(49): error C2143: syntax error: missing ';' before '{'
@@ -67,5 +46,4 @@ d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\c
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\common\frameresource.h(32): error C3203: 'UploadBuffer': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(9): error C2059: syntax error: '=='
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\directx\framework\initdirect3dapp.h(10): fatal error C1083: Cannot open include file: '../../BlueRapsolEngine/BlueRapsolEngine/FrameResource.h': No such file or directory
-  MouseListener.cpp
   Generating Code...
