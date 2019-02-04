@@ -32,6 +32,9 @@
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MouseListener.cpp" />
+    <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\DirectX\Common\Camera.h" />
@@ -49,6 +52,9 @@
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
     <ClInclude Include="FrameResource.h" />
+    <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="MouseListener.h" />
@@ -57,7 +63,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8F08A3C4-A48D-4EC4-94CB-4442FB5944B0}</ProjectGuid>
     <RootNamespace>BlueRapsolEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
