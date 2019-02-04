@@ -82,7 +82,7 @@ void BlueRapsolEngine::GameUpdate() {
 
 	if (d3dRef) {
 
-		d3dRef->setPosition(1, newPosition);
+		//d3dRef->setPosition(1, newPosition);
 	}
 	else {
 		OutputDebugString(L"\n[ERROR] d3dRef missing!\n");

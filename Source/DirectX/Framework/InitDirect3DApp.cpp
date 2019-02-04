@@ -888,7 +888,7 @@ int InitDirect3DApp::newRenderItem() {
 }
 
 void InitDirect3DApp::setPosition(int renderItemIndex, BRDataType::Vector3 setPosition) {
-	if (&mAllRitems[renderItemIndex]) {
+	if (mAllRitems[renderItemIndex]) {
 		XMStoreFloat4x4(&mAllRitems[renderItemIndex]->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(setPosition.x, setPosition.y, setPosition.z));
 		mAllRitems[renderItemIndex]->NumFramesDirty = gNumFrameResources;
 	}

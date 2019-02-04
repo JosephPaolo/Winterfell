@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../DirectX/Common/d3dApp.h"
 #include "../../DirectX/Common/d3dUtil.h"
 #include "../../DirectX/Common/MathHelper.h"
