@@ -724,6 +724,34 @@ void InitDirect3DApp::BuildRenderItems()
 	mAllRitems.push_back(std::move(shapeHolder));
 	index++;
 
+	shapeHolder = std::make_unique<RenderItem>();
+	shapeHolder->World = MathHelper::Identity4x4();
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(1.0f, 1.0f, 1.0f)*XMMatrixTranslation(2.0f, 0.0f, 0.0f));
+	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	shapeHolder->ObjCBIndex = index;
+	shapeHolder->Mat = mMaterials["orangeMat"].get();
+	shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
+	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(shapeHolder));
+	index++;
+
+	shapeHolder = std::make_unique<RenderItem>();
+	shapeHolder->World = MathHelper::Identity4x4();
+	XMStoreFloat4x4(&shapeHolder->World, XMMatrixScaling(0.7f, 0.7f, 0.7f)*XMMatrixTranslation(4.0f, 0.0f, 0.0f));
+	XMStoreFloat4x4(&shapeHolder->TexTransform, XMMatrixScaling(1.0f, 1.0f, 1.0f));
+	shapeHolder->ObjCBIndex = index;
+	shapeHolder->Mat = mMaterials["orangeMat"].get();
+	shapeHolder->Geo = mGeometries["shapeGeo"].get();
+	shapeHolder->PrimitiveType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	shapeHolder->IndexCount = shapeHolder->Geo->DrawArgs["box"].IndexCount;
+	shapeHolder->StartIndexLocation = shapeHolder->Geo->DrawArgs["box"].StartIndexLocation;
+	shapeHolder->BaseVertexLocation = shapeHolder->Geo->DrawArgs["box"].BaseVertexLocation;
+	mAllRitems.push_back(std::move(shapeHolder));
+	index++;
+
 	// All the render items are opaque.
 	for (auto& e : mAllRitems)
 		mOpaqueRitems.push_back(e.get());
@@ -896,4 +924,24 @@ void InitDirect3DApp::setPosition(int renderItemIndex, BRDataType::Vector3 setPo
 		OutputDebugString(L"[ERROR] RenderItem index invalid!\n");
 	}
 	
+}
+
+void InitDirect3DApp::setMatrix(int renderItemIndex, XMFLOAT4X4 newMatrix) {
+	if (mAllRitems[renderItemIndex]) {
+		mAllRitems[renderItemIndex]->World = newMatrix;
+		mAllRitems[renderItemIndex]->NumFramesDirty = gNumFrameResources;
+	}
+	else {
+		OutputDebugString(L"[ERROR] RenderItem index invalid!\n");
+	}
+
+}
+
+XMFLOAT4X4 InitDirect3DApp::getRenderItemTransform(int index) {
+	if (mAllRitems[index]) {
+		return mAllRitems[index]->World;
+	}
+	else {
+		OutputDebugString(L"[ERROR] RenderItem index invalid!\n");
+	}
 }

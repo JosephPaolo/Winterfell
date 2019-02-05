@@ -43,6 +43,9 @@ public:
 	void setPosition(int renderItemIndex, BRDataType::Vector3 setPosition); //Warning! This resets rotation and scalar to default values.
 	//void setTransform(int renderItemIndex, BRDataType::Vector3 setPosition, BRDataType::Vector3 setEulerAngle, BRDataType::Vector3 setScalar);
 
+	XMFLOAT4X4 getRenderItemTransform(int index);
+	void InitDirect3DApp::setMatrix(int renderItemIndex, XMFLOAT4X4 newMatrix);
+
 private:
 	virtual void OnResize()override;
 	virtual void Update(const GameTimer& gt)override;
@@ -72,6 +75,7 @@ private:
 	void HideSplashArt(); //test
 
 	std::array<const CD3DX12_STATIC_SAMPLER_DESC, 6> GetStaticSamplers();
+
 
 private:
 
