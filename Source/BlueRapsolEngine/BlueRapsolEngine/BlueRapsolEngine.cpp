@@ -57,7 +57,7 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 	//std::cout << "\nInitializing...\n";
 	OutputDebugString(L"\nInitializing...\n");
 
-	init.InitializeD3d(hInstance);
+	//init.InitializeD3d(hInstance);
 }
 
 //TODO transfer game loop here

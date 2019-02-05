@@ -17,7 +17,7 @@
 #include <string>
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
-#include "../../DirectX/Framework/InitDirect3DApp.h"
+//#include "../../DirectX/Framework/InitDirect3DApp.h"
 
 class InitBlueRapsol{
 
@@ -40,5 +40,5 @@ public:
 
 	//Initialize DirectX
 	//TODO modify; TODO remove user input parameters
-	int InitializeD3d(HINSTANCE hInstance);
+	//int InitializeD3d(HINSTANCE hInstance);
 };

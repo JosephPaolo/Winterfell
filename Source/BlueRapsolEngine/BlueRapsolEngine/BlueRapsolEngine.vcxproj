@@ -19,73 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\DirectX\Common\d3dApp.cpp" />
-    <ClCompile Include="..\..\DirectX\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\DirectX\Common\DDSTextureLoader.cpp" />
     <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\DirectX\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\DirectX\Framework\InitDirect3DApp.cpp" />
-    <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="ActorComponent.cpp" />
-    <ClCompile Include="AnimationComponent.cpp" />
-    <ClCompile Include="AttackAIComponent.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
-    <ClCompile Include="FlyAIComponent.cpp" />
     <ClCompile Include="InitBlueRapsol.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
-    <ClCompile Include="LevelManager.cpp" />
-    <ClCompile Include="LifeTimeComponent.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MapMaker.cpp" />
     <ClCompile Include="MouseListener.cpp" />
-    <ClCompile Include="OverlapColliderComponent.cpp" />
-    <ClCompile Include="PhysicsManager.cpp" />
-    <ClCompile Include="PickUpComponent.cpp" />
-    <ClCompile Include="PlayerComponent.cpp" />
-    <ClCompile Include="ProjectileAbilityComponent.cpp" />
-    <ClCompile Include="RoomMaker.cpp" />
-    <ClCompile Include="SentryAIComponent.cpp" />
-    <ClCompile Include="SlideShowManager.cpp" />
-    <ClCompile Include="SolidColliderComponent.cpp" />
-    <ClCompile Include="StatManager.cpp" />
-    <ClCompile Include="TextureComponent.cpp" />
-    <ClCompile Include="WanderAIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\DirectX\Common\d3dApp.h" />
-    <ClInclude Include="..\..\DirectX\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\DirectX\Common\d3dx12.h" />
-    <ClInclude Include="..\..\DirectX\Common\DDSTextureLoader.h" />
     <ClInclude Include="..\..\DirectX\Common\GameTimer.h" />
-    <ClInclude Include="..\..\DirectX\Common\MathHelper.h" />
-    <ClInclude Include="..\..\DirectX\Common\UploadBuffer.h" />
-    <ClInclude Include="..\..\DirectX\Framework\InitDirect3DApp.h" />
-    <ClInclude Include="Actor.h" />
-    <ClInclude Include="ActorComponent.h" />
-    <ClInclude Include="AnimationComponent.h" />
-    <ClInclude Include="AttackAIComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
-    <ClInclude Include="FlyAIComponent.h" />
     <ClInclude Include="InitBlueRapsol.h" />
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
-    <ClInclude Include="LevelManager.h" />
-    <ClInclude Include="LifetimeComponent.h" />
-    <ClInclude Include="MapMaker.h" />
     <ClInclude Include="MouseListener.h" />
-    <ClInclude Include="OverlapColliderComponent.h" />
-    <ClInclude Include="PhysicsManager.h" />
-    <ClInclude Include="PickUpComponent.h" />
-    <ClInclude Include="PlayerComponent.h" />
-    <ClInclude Include="ProjectileAbilityComponent.h" />
-    <ClInclude Include="RoomMaker.h" />
-    <ClInclude Include="SentryAIComponent.h" />
-    <ClInclude Include="SlideShowManager.h" />
-    <ClInclude Include="SolidColliderComponent.h" />
-    <ClInclude Include="StatManager.h" />
-    <ClInclude Include="TextureComponent.h" />
-    <ClInclude Include="WanderAIComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

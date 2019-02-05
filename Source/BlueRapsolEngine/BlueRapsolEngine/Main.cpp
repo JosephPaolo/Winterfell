@@ -11,7 +11,7 @@
 //#include <iostream> 
 #include <stdlib.h> 
 #include "BlueRapsolEngine.h" 
-#include "../../DirectX/Common/d3dApp.h"
+//#include "../../DirectX/Common/d3dApp.h"
 
 /*
 int main() {

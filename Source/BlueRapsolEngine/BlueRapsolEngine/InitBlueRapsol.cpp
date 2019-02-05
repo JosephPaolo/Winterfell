@@ -162,16 +162,16 @@ void InitBlueRapsol::DisplayCPUArch() {
 
 //Start DirectX window
 //TODO remove user input parameters from this function and theApp.Initialize()
-int InitBlueRapsol::InitializeD3d(HINSTANCE hInstance) {
-	try {
-		InitDirect3DApp theApp(hInstance);
-		if (!theApp.Initialize())
-			return 0;
-
-		return theApp.Run();
-	}
-	catch (DxException& e){
-		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
-		return 0;
-	}
-}
+//int InitBlueRapsol::InitializeD3d(HINSTANCE hInstance) {
+//	try {
+//		InitDirect3DApp theApp(hInstance);
+//		if (!theApp.Initialize())
+//			return 0;
+//
+//		return theApp.Run();
+//	}
+//	catch (DxException& e){
+//		MessageBox(nullptr, e.ToString().c_str(), L"HR Failed", MB_OK);
+//		return 0;
+//	}
+//}
