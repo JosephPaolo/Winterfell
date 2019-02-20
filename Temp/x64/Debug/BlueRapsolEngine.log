@@ -1,7 +1,83 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  BaseComponent.cpp
   BlueRapsolEngine.cpp
 d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  GameObject.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(11): error C2061: syntax error: identifier 'InitDirect3DApp'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(11): error C2535: 'GameObject::GameObject(void)': member function already defined or declared
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(10): note: see declaration of 'GameObject::GameObject'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(14): error C3646: 'GetLocalTransform': unknown override specifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(14): error C2059: syntax error: '('
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(14): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(15): error C3646: 'GetWorldTransform': unknown override specifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(15): error C2059: syntax error: '('
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(15): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(16): error C2143: syntax error: missing ',' before '&'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(28): error C2039: 'vector': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.15.26726\include\list(20): note: see declaration of 'std'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(28): error C2143: syntax error: missing ';' before '<'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(28): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(28): error C2238: unexpected token(s) preceding ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(29): error C3646: 'matrix': unknown override specifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(29): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(30): error C3646: 'worldTransform': unknown override specifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(31): error C3646: 'localTransform': unknown override specifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(9): error C2065: 'InitDirect3DApp': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(9): error C2065: 'd3dRef': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(9): error C2062: type 'int' unexpected
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(9): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(9): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(22): error C2065: 'children': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(23): error C2065: 'children': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(27): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(27): error C2143: syntax error: missing ',' before '&'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(28): error C2065: 'localTransform': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(28): error C2065: 'matrix': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(32): error C2065: 'children': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(40): error C2039: 'GetLocalTransform': is not a member of 'GameObject'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(7): note: see declaration of 'GameObject'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(40): error C2146: syntax error: missing ';' before identifier 'GetLocalTransform'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(40): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(40): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(44): error C2039: 'GetWorldTransform': is not a member of 'GameObject'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(7): note: see declaration of 'GameObject'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(44): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(44): error C2086: 'int XMFLOAT4X4': redefinition
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(40): note: see declaration of 'XMFLOAT4X4'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(44): error C2146: syntax error: missing ';' before identifier 'GetWorldTransform'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(44): error C2143: syntax error: missing ';' before '{'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(44): error C2447: '{': missing function header (old-style formal list?)
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(53): error C2065: 'XMMATRIX': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(53): error C2146: syntax error: missing ';' before identifier 'a'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(53): error C2065: 'a': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(53): error C2146: syntax error: missing ';' before identifier 'b'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(53): error C2065: 'b': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(57): error C2065: 'worldTransform': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(57): error C2039: 'worldTransform': is not a member of 'GameObject'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.h(7): note: see declaration of 'GameObject'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(57): error C2065: 'localTransform': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(60): error C2065: 'worldTransform': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(60): error C2065: 'localTransform': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(62): error C2065: 'vector': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(62): error C2059: syntax error: '>'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(62): error C2039: 'iterator': is not a member of '`global namespace''
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(62): error C2065: 'i': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(63): error C2065: 'children': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(63): error C2065: 'i': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(63): error C2059: syntax error: ')'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(64): error C2065: 'i': undeclared identifier
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(64): error C2059: syntax error: ';'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(66): error C2059: syntax error: '}'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\gameobject.cpp(66): error C2143: syntax error: missing ';' before '}'
+  KeyboardListener.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(256): warning C4129: '|': unrecognized character escape sequence
   Main.cpp
+  MouseListener.cpp
+  SplashScreen.cpp
+  TransformComponent.cpp
   Generating Code...
-  BlueRapsolEngine.vcxproj -> D:\Files\PROGRAMMING\School\GAME3121\Winterfell Repo\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe

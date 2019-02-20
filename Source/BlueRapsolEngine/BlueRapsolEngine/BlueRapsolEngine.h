@@ -39,6 +39,7 @@ public:
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
 
+	virtual void GameStart();
 	virtual void GameUpdate();
 
 private:

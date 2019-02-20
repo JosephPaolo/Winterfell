@@ -68,6 +68,7 @@ void BlueRapsolEngine::Initialize(sf::RenderWindow & renderWindow) {
 
 void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 	std::wstring msg; //Used for formatting debug messages
+	float splashDuration = 4.0f; //splash screen duration in seconds
 	//sf::RenderTexture renderTexture;
 	//sf::CircleShape shape(100.f);
 	//shape.setFillColor(sf::Color::Green);
@@ -76,13 +77,17 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 	mTimer.Reset();
 
 	//Give some time to show splash screen because initializing might be too quick. All this does is delay the main loop.
-	while (mTimer.TotalTime() < 4.0f) {
+	while (mTimer.TotalTime() < splashDuration && renderWindow.isOpen()) {
 		mTimer.Tick(); //Ticks the timer
 	}
 
 	mTimer.Reset();
 
 	OutputDebugString(L"\nEntering main loop...\n");
+
+	if (renderWindow.isOpen()) {
+		GameStart();
+	}
 
 	while (renderWindow.isOpen()){
 		sf::Event event;
@@ -99,6 +104,10 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 		//window.draw(...); //Draw everything here...
 		renderWindow.display(); //End the current frame
 	}
+}
+
+void BlueRapsolEngine::GameStart() {
+
 }
 
 void BlueRapsolEngine::GameUpdate() {
