@@ -5,8 +5,7 @@
 #ifndef GAMETIMER_H
 #define GAMETIMER_H
 
-class GameTimer
-{
+class GameTimer{
 public:
 	GameTimer();
 

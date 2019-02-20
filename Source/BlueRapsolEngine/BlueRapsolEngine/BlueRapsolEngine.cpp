@@ -27,18 +27,7 @@ const LONGLONG toKB = 1024;
 const LONGLONG toMB = 1024 * toKB;
 const LONGLONG toGB = 1024 * toMB;
 
-void BlueRapsolEngine::Run(HINSTANCE hInstance) {
-
-	//Initialization
-	BlueRapsolEngine::Initialize(hInstance);
-
-	//TODO Program loop. Move loop from d3dApp.cpp
-	BlueRapsolEngine::GameLoop();
-
-}
-
-void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
-
+BlueRapsolEngine::BlueRapsolEngine(HINSTANCE hInstance) {
 	//System Check
 	OutputDebugString(L"\nChecking if another instance of the application is running...\n");
 	if (!IsOnlyInstance(MUTEX_APP_NAME)) {
@@ -52,71 +41,68 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 	OutputDebugString(L"\nChecking CPU...\n");
 	DisplayCPUArch();
 	DisplayCPUSpeed();
+}
+
+void BlueRapsolEngine::Run(HINSTANCE hInstance) {
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Blue Rapsol Game"); //Creates the window
+	isInitializing = true;
 
 	//Initialization
-	OutputDebugString(L"\nInitializing...\n");
+	BlueRapsolEngine::Initialize(window);
 
-
-
+	//TODO Program loop. Move loop from d3dApp.cpp
+	BlueRapsolEngine::GameLoop(window);
 
 }
 
-void BlueRapsolEngine::GameLoop() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Blue Rapsol Game");
+void BlueRapsolEngine::Initialize(sf::RenderWindow & renderWindow) {
+	SplashScreen splashObj;
+
+	OutputDebugString(L"\nInitializing...\n");
+	OutputDebugString(L"\nShowing Splash Screen...\n");
+	if (isInitializing) {
+		splashObj.Show(renderWindow);
+	}
+
+}
+
+void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
+	std::wstring msg; //Used for formatting debug messages
+	//sf::RenderTexture renderTexture;
 	//sf::CircleShape shape(100.f);
 	//shape.setFillColor(sf::Color::Green);
 
+	mTimer.Start(); //Start the game timer
+	mTimer.Reset();
+
+	//Give some time to show splash screen because initializing might be too quick. All this does is delay the main loop.
+	while (mTimer.TotalTime() < 4.0f) {
+		mTimer.Tick(); //Ticks the timer
+	}
 
 	mTimer.Reset();
 
-	while (window.isOpen()){
+	OutputDebugString(L"\nEntering main loop...\n");
+
+	while (renderWindow.isOpen()){
 		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		mTimer.Tick();
-
-		window.clear();
-		//window.draw(shape);
-		window.display();
-	}
-
-
-	/*
-	mTimer.Reset();
-
-	while (msg.message != WM_QUIT)
-	{
-		// If there are Window messages then process them.
-		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		// Otherwise, do animation/game stuff.
-		else
-		{
-			mTimer.Tick();
-
-			if (!mAppPaused)
-			{
-				CalculateFrameStats();
-				Update(mTimer);
-				Draw(mTimer);
-			}
-			else
-			{
-				Sleep(100);
+		while (renderWindow.pollEvent(event)){
+			if (event.type == sf::Event::Closed) { // "close requested" event: we close the window
+				renderWindow.close();
 			}
 		}
-	}
 
-	return (int)msg.wParam;
-	*/
-	
+		mTimer.Tick(); //Ticks the timer
+		GameUpdate(); //Update game logic
+
+		renderWindow.clear(sf::Color::Black); //Clear the window with black color
+		//window.draw(...); //Draw everything here...
+		renderWindow.display(); //End the current frame
+	}
+}
+
+void BlueRapsolEngine::GameUpdate() {
+
 }
 
 //Insures only one of this application is running

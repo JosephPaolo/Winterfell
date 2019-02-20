@@ -32,12 +32,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	#endif
 
-	BlueRapsolEngine engineBR;
-	//std::cout << "Starting Blue Rapsol Engine...\n";
+	BlueRapsolEngine engineBR(hInstance);
+
+	//Starting the engin
 	OutputDebugString(L"Starting Blue Rapsol Engine...\n");
 	engineBR.Run(hInstance); //Start engine
 
-	//std::cout << "\n\nPress Enter to terminate application.\n";
 	OutputDebugString(L"\n\nPress Enter to terminate application.\n");
 	std::getchar(); //Prevents program from terminating immediately by prompting for char user input
 	return 0;

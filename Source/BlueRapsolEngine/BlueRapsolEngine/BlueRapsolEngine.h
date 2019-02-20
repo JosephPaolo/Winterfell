@@ -15,11 +15,15 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/GameTimer.h"
+#include "SplashScreen.h"
 #include <SFML/Graphics.hpp>
 
 class BlueRapsolEngine {
 
 public:
+	BlueRapsolEngine(HINSTANCE hInstance);
+	//~BlueRapsolEngine();
+
 	KeyboardListener kbInput;
 	MouseListener mbInput;
 
@@ -34,12 +38,13 @@ public:
 	//Display CPU speed and architecture
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
+	virtual void GameUpdate();
 
 private:
 	GameTimer mTimer;
+	bool isInitializing = true;
 
 	bool IsOnlyInstance(LPCTSTR appName);
-
-	void Initialize(HINSTANCE hInstance);
-	void GameLoop();
+	void Initialize(sf::RenderWindow & renderWindow);
+	void GameLoop(sf::RenderWindow & renderWindow);
 };
