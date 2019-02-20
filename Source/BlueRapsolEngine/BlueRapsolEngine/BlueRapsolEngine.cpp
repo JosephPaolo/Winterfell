@@ -55,12 +55,19 @@ void BlueRapsolEngine::Initialize(HINSTANCE hInstance) {
 
 	//Initialization
 	OutputDebugString(L"\nInitializing...\n");
+
+
+
+
 }
 
 void BlueRapsolEngine::GameLoop() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Blue Rapsol Game");
 	//sf::CircleShape shape(100.f);
 	//shape.setFillColor(sf::Color::Green);
+
+
+	mTimer.Reset();
 
 	while (window.isOpen()){
 		sf::Event event;
@@ -69,6 +76,8 @@ void BlueRapsolEngine::GameLoop() {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+
+		mTimer.Tick();
 
 		window.clear();
 		//window.draw(shape);

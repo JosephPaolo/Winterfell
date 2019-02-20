@@ -14,6 +14,7 @@
 #include <WinBase.h>
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/GameTimer.h"
 #include <SFML/Graphics.hpp>
 
 class BlueRapsolEngine {
@@ -35,6 +36,7 @@ public:
 	void DisplayCPUSpeed();
 
 private:
+	GameTimer mTimer;
 
 	bool IsOnlyInstance(LPCTSTR appName);
 
