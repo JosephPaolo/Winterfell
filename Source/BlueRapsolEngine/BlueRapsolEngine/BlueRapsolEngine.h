@@ -38,6 +38,7 @@ public:
 	//Display CPU speed and architecture
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
+
 	virtual void GameUpdate();
 
 private:

@@ -45,6 +45,7 @@ namespace BRDataType {
 			x = getX; y = getY; z = getZ; w = getW;
 		}
 	};
+
 }
 
 
