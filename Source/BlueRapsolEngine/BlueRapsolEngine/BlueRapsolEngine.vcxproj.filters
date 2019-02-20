@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\DirectX">
-      <UniqueIdentifier>{3463e1a5-e2bf-40f6-9912-a210a615c1b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DirectX">
-      <UniqueIdentifier>{7fc373bd-0334-4cd7-a182-0a7965fedc84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Structures">
       <UniqueIdentifier>{bd32c327-2b99-4d12-a922-2779d0df3cc1}</UniqueIdentifier>
     </Filter>
@@ -27,34 +21,25 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InitBlueRapsol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlueRapsolEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp">
-      <Filter>Source Files\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="MouseListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InitBlueRapsol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BlueRapsolEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IUserInput.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\DirectX\Common\GameTimer.h">
-      <Filter>Header Files\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="BRDataTypes.h">
       <Filter>Header Files\Structures</Filter>
@@ -63,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

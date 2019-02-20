@@ -19,18 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\DirectX\Common\GameTimer.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
-    <ClCompile Include="InitBlueRapsol.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MouseListener.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\DirectX\Common\GameTimer.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
-    <ClInclude Include="InitBlueRapsol.h" />
+    <ClInclude Include="GameTimer.h" />
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="MouseListener.h" />
@@ -116,7 +114,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\SFML\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,10 +144,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\SFML\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,7 +14,7 @@
 #include <WinBase.h>
 #include "../../BlueRapsolEngine/BlueRapsolEngine/KeyboardListener.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/MouseListener.h"
-#include "InitBlueRapsol.h" 
+#include <SFML/Graphics.hpp>
 
 class BlueRapsolEngine {
 
@@ -24,7 +24,20 @@ public:
 
 	void Run(HINSTANCE hInstance);
 
+	//Check for sufficient storage space
+	bool ChkStorage(unsigned long long requiredBytes, LPCWSTR directory);
+
+	//Check for available RAM and virtual memory
+	void ChkMem();
+
+	//Display CPU speed and architecture
+	void DisplayCPUArch();
+	void DisplayCPUSpeed();
+
 private:
+
+	bool IsOnlyInstance(LPCTSTR appName);
+
 	void Initialize(HINSTANCE hInstance);
-	int GameLoop();
+	void GameLoop();
 };

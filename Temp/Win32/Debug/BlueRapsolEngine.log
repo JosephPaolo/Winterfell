@@ -1,0 +1,123 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  GameTimer.cpp
+  BlueRapsolEngine.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.h(18): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  InitBlueRapsol.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(25): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [58]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(25): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(29): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [56]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(29): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(37): error C2664: 'BOOL GetDiskFreeSpaceExA(LPCSTR,PULARGE_INTEGER,PULARGE_INTEGER,PULARGE_INTEGER)': cannot convert argument 1 from 'LPCWSTR' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(37): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(40): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(40): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(45): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(45): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(64): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(64): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(66): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(66): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(80): error C2664: 'LSTATUS RegOpenKeyExA(HKEY,LPCSTR,DWORD,REGSAM,PHKEY)': cannot convert argument 2 from 'const wchar_t [48]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(80): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(83): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [60]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(83): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(86): error C2664: 'LSTATUS RegQueryValueExA(HKEY,LPCSTR,LPDWORD,LPDWORD,LPBYTE,LPDWORD)': cannot convert argument 2 from 'const wchar_t [5]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(86): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(91): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(91): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(105): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [59]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(105): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(109): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [58]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(109): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(113): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [33]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(113): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(117): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [23]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(117): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(121): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [25]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(121): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(125): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [39]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(125): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(129): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [22]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(129): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(133): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [29]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(133): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(137): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [24]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(137): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(141): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [24]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(141): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(145): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [27]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(145): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(149): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [23]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(149): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(153): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [27]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(153): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(157): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [32]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\initbluerapsol.cpp(157): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+  KeyboardListener.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(12): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(12): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(22): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(22): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(256): warning C4129: '|': unrecognized character escape sequence
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(269): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(269): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(270): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [2]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(270): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+  Main.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolengine.h(18): fatal error C1083: Cannot open include file: 'SFML/Graphics.hpp': No such file or directory
+  MouseListener.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(17): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(17): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(27): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(27): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(67): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const _Elem *' to 'LPCSTR'
+          with
+          [
+              _Elem=wchar_t
+          ]
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(67): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(68): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'const wchar_t [2]' to 'LPCSTR'
+  d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\mouselistener.cpp(68): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+  Generating Code...
