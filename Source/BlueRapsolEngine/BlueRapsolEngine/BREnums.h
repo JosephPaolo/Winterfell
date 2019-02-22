@@ -1,7 +1,17 @@
 #pragma once
 
-enum ShapeType {
-	None,
-	Square,
-	Circle
-};
+namespace BRShapeType {
+	enum ShapeType {
+		None,
+		Square,
+		Circle
+	};
+}
+
+namespace BRComponentType {
+	enum ComponentType {
+		None,
+		Transform,
+		Physics
+	};
+}

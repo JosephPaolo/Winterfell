@@ -1,6 +1,10 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/TransformComponent.h"
 
+using namespace BRComponentType;
+
 TransformComponent::TransformComponent() {
+	type = Transform;
+
 	position.x = 0;
 	position.y = 0;
 	position.z = 0;

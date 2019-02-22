@@ -20,6 +20,9 @@
 #include "GameObject.h"
 #include "BRDataTypes.h"
 #include "BREnums.h"
+#include "AudioSystem.h"
+#include "GraphicsSystem.h"
+#include "PhysicsSystem.h"
 #include <SFML/Graphics.hpp>
 
 class BlueRapsolEngine {
@@ -45,6 +48,7 @@ public:
 
 	virtual void GameStart();
 	virtual void GameUpdate();
+	void PhysicsUpdate();
 
 	int Instantiate(); //Creates a square shape at origin
 	void SetOBjPosition(int getObjIndex, float setX, float setY);
@@ -55,6 +59,10 @@ public:
 	//void SetTransform(GameObject & targetObject, sf::Transform newTransform);
 
 private:
+	AudioSystem audioSys;
+	GraphicsSystem graphicsSys;
+	PhysicsSystem physicsSys;
+
 	std::vector<std::unique_ptr<GameObject>> allObjects; // List of all the objects.
 	std::vector<sf::RectangleShape*> allRenderObjects; // List of all the renderable items
 

@@ -1,9 +1,15 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/BaseComponent.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/TransformComponent.h"
+#include "BRDataTypes.h"
+#include "PhysicsComponent.h"
 #include <list>
 #include <SFML/Graphics.hpp>
 
 #pragma once
+
+using namespace BRDataType;
+using namespace BRComponentType;
+using namespace BRShapeType;
 
 class GameObject {
 
@@ -17,6 +23,7 @@ public:
 	ShapeType GetShape();
 	sf::Color GetColor();
 	sf::Vector2f GetPosition(); //TEMP
+	Vector2 GetVelocity();
 
 	void SetTransform(const sf::Transform &matrix);
 	void SetTransform(sf::Transform &matrix);
@@ -27,13 +34,21 @@ public:
 	void SetPosition(sf::Vector2f setPosition);
 	void SetPosition(float setX, float setY);
 	void SetDrawableIndex(int setIndex);
+	void SetVelocity(float setX, float setY);
+	void SetVelocity(Vector2 newVelocity);
+
+	BaseComponent* GetComponent(int atIndex);
+	BaseComponent* GetComponent(ComponentType ofType); //Doesn't work rn
+	PhysicsComponent* GetPhysicsComponent();
+	//void AddComponent();
 
 	void Update();
 	void Update(float msec); //TODO: figure out why we need msec parameter
 
 protected: 
-	//std::list<BaseComponent> componentList;
-	//BaseComponent* componentArray[1]; //temp
+	std::vector<BaseComponent*> componentList; //TODO broken rn
+	TransformComponent transformComponent; //Temp
+	PhysicsComponent physicsComponent; //Temp
 	GameObject* parent;
 	std::vector<GameObject*> children;
 	sf::Transform worldTransform;
@@ -42,4 +57,5 @@ protected:
 	sf::Color color;
 	int drawableIndex; //index to the sf::drawable array. It is a list of all things that should be rendered.
 	sf::Vector2f position; //TEMP
+	Vector2 velocity; //Velocity moves the object per tick
 };

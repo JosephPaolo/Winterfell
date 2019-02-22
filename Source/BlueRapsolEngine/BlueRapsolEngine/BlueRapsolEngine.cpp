@@ -97,25 +97,42 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 
 		mTimer.Tick(); //Ticks the timer
 		GameUpdate(); //Update game logic
+		PhysicsUpdate(); //Simulate Physics
 		DrawRenderObjects(renderWindow, allRenderObjects); //Draw Object in the scene
 	}
 }
 
+//this code executes once at the beginning
 void BlueRapsolEngine::GameStart() {
-	Instantiate();
-	//GameObject* test = Instantiate();
-	//test->SetPosition(sf::Vector2f(10,10));
+	std::wstring msg; //Used for formatting debug messages
+
+	//Example
+	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
+	//Note: It uses a unique pointer so you cannot have multiple references of the same object. So you access the object through allObjects[ObjIndex].get().
+	int ObjIndex = Instantiate(); //Creates a new GameObject and since it is the first one its index will be '0'
+	allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.1f, 0.1f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
+	
+	Instantiate(); //Creates a second new GameObject and since it is the second one its index will be '1'
+
+	//Debugging Example
+	msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
+	OutputDebugString(msg.c_str());
 }
 
+//This code executes every tick
 void BlueRapsolEngine::GameUpdate() {
 
+	//Example
+	//This moves our second created object (index 1) towards the right by 0.2f every tick
+	float newPositionX = allObjects[1].get()->GetPosition().x + 0.2f; //The original x position + 0.2f
+	float newPositionY = allObjects[1].get()->GetPosition().y; //The original y position doesnt change
+	allObjects[1].get()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
 }
 
 void BlueRapsolEngine::DrawRenderObjects(sf::RenderWindow & renderWindow, const std::vector<sf::RectangleShape*>& ritems) {
 	std::wstring msg; //Used for formatting debug messages
 	sf::RectangleShape *shapePtr;
 	sf::RectangleShape shapeHolder;
-
 
 	renderWindow.clear(sf::Color::Black); //Clear the window with black color
 
@@ -161,11 +178,15 @@ int BlueRapsolEngine::Instantiate() {
 	allObjects.push_back(std::move(objHolder));
 	allRenderObjects.push_back(&drawableHolder);
 
-	return allObjects.size(); //return allObjects index 
+	return allObjects.size() - 1; //return allObjects index 
 }
 
 void BlueRapsolEngine::SetOBjPosition(int getObjIndex, float setX, float setY) {
 	allObjects[getObjIndex].get()->SetPosition(setX, setY);
+}
+
+void BlueRapsolEngine::PhysicsUpdate() {
+	physicsSys.UpdatePhysics(allObjects);
 }
 
 //Insures only one of this application is running

@@ -47,23 +47,6 @@ namespace BRDataType {
 			x = getX; y = getY; z = getZ; w = getW;
 		}
 	};
-
-	struct RenderObj2D {
-		Vector2 position;
-		float length;
-		float width;
-		float eulerRotation;
-		ShapeType primitiveType;
-
-		//Constructors
-		RenderObj2D() {
-			position.x = 0; position.y = 0;
-			length = 1; width = 1;
-			eulerRotation = 0;
-			primitiveType = None;
-		}
-
-	};
 }
 
 

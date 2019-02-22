@@ -1,21 +1,26 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/GameObject.h"
 
+using namespace BRComponentType;
+using namespace BRShapeType;
+
 GameObject::GameObject() {
-	TransformComponent newTransformComponent; //TODO
+	//Add new Transfrom and Physics component to the object
+	TransformComponent* ptrTransformComponent;
+	PhysicsComponent* ptrPhysicsComponent;
+	TransformComponent newTransformComponent; 
+	PhysicsComponent newPhysicsComponent;
+	ptrTransformComponent = &newTransformComponent;
+	ptrPhysicsComponent = &newPhysicsComponent;
+	componentList.push_back(ptrTransformComponent);
+	componentList.push_back(ptrPhysicsComponent);
+
 	//sf::Transform defaultValues;
 	//sf::Transform defaultValues(10, 10, 10, 10, 10, 10, 10, 10, 10);
 	parent = NULL;
 	shape = Square;
 	color = sf::Color(100, 250, 50);
 	position.x = 0; position.y = 0; //TEMP
-	//defaultValues.translate(10, 10);
-	//worldTransform.
-	//worldTransform.translate(10, 10);
-	//worldTransform.scale(1, 1);
-	//localTransform.translate(10, 10);
-	//localTransform.scale(1, 1);
-	//worldTransform = defaultValues;
-	//localTransform = defaultValues;
+
 }
 
 GameObject::~GameObject(void) {
@@ -32,6 +37,14 @@ void GameObject::SetTransform(const sf::Transform &matrix) {
 	}
 
 	Update();
+}
+
+void GameObject::SetVelocity(Vector2 newVelocity) {
+	velocity = newVelocity;
+}
+
+void GameObject::SetVelocity(float setX, float setY) {
+	velocity.x = setX; velocity.y = setY;
 }
 
 void GameObject::SetDrawableIndex(int setIndex) {
@@ -93,6 +106,39 @@ sf::Vector2f GameObject::GetPosition() {
 	return position;
 }
 
+Vector2 GameObject::GetVelocity() {
+	return velocity;
+}
+
+//Getcomponent by index
+BaseComponent* GameObject::GetComponent(int atIndex) {
+	return componentList[atIndex];
+}
+
+//Get Component by type
+BaseComponent* GameObject::GetComponent(ComponentType ofType) {
+	BaseComponent* empty;
+	BaseComponent blank;
+
+	for (size_t i = 0; i < componentList.size(); ++i) { 
+		if (ofType == ComponentType::None) {
+
+		}
+		else if (ofType == ComponentType::Transform && componentList[i]->type == ComponentType::Transform) {
+			return componentList[i];
+		}
+		else if (ofType == ComponentType::Physics && componentList[i]->type == ComponentType::Physics) {
+			return componentList[i];
+		}
+	}
+
+	empty = &blank;
+	return empty;
+}
+
+PhysicsComponent* GameObject::GetPhysicsComponent() {
+	return &physicsComponent;
+}
 
 void GameObject::Update(float msec) {
 	if (parent) { //This node has a parent...
