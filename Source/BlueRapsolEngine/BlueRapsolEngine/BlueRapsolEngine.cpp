@@ -1,9 +1,9 @@
 //*************************************************************************** 
-// File name: InitBlueRapsol.h
+// File name: BlueRapsolEnigne.cpp
 // Authors: Joseph Malibiran, Tsuzuri Okada, Terence Stewart (C) 2018 All Rights Reserved. 
 // Created: Sept. 19, 2018
-// Last Updated: Sept. 19, 2018
-// Version: 0.0.1A
+// Last Updated: Feb. 21, 2019
+// Version: 0.1.0A
 // Description: 
 //   This Class will represent the Game Application layer of the Blue Rapsol Engine
 // *****************************************************************************
@@ -68,10 +68,7 @@ void BlueRapsolEngine::Initialize(sf::RenderWindow & renderWindow) {
 
 void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 	std::wstring msg; //Used for formatting debug messages
-	float splashDuration = 4.0f; //splash screen duration in seconds
-	//sf::RenderTexture renderTexture;
-	//sf::CircleShape shape(100.f);
-	//shape.setFillColor(sf::Color::Green);
+	float splashDuration = 1.0f; //splash screen duration in seconds
 
 	mTimer.Start(); //Start the game timer
 	mTimer.Reset();
@@ -81,11 +78,12 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 		mTimer.Tick(); //Ticks the timer
 	}
 
-	mTimer.Reset();
-
 	OutputDebugString(L"\nEntering main loop...\n");
 
+	mTimer.Reset();
+
 	if (renderWindow.isOpen()) {
+		
 		GameStart();
 	}
 
@@ -99,19 +97,75 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 
 		mTimer.Tick(); //Ticks the timer
 		GameUpdate(); //Update game logic
-
-		renderWindow.clear(sf::Color::Black); //Clear the window with black color
-		//window.draw(...); //Draw everything here...
-		renderWindow.display(); //End the current frame
+		DrawRenderObjects(renderWindow, allRenderObjects); //Draw Object in the scene
 	}
 }
 
 void BlueRapsolEngine::GameStart() {
-
+	Instantiate();
+	//GameObject* test = Instantiate();
+	//test->SetPosition(sf::Vector2f(10,10));
 }
 
 void BlueRapsolEngine::GameUpdate() {
 
+}
+
+void BlueRapsolEngine::DrawRenderObjects(sf::RenderWindow & renderWindow, const std::vector<sf::RectangleShape*>& ritems) {
+	std::wstring msg; //Used for formatting debug messages
+	sf::RectangleShape *shapePtr;
+	sf::RectangleShape shapeHolder;
+
+
+	renderWindow.clear(sf::Color::Black); //Clear the window with black color
+
+	//TEMP
+	for (size_t i = 0; i < ritems.size(); ++i) { //Draw all render items
+		sf::RectangleShape newShape(sf::Vector2f(50, 50));
+		newShape.setPosition(allObjects[i].get()->GetPosition());
+		shapePtr = &newShape;
+		shapeHolder = *shapePtr;
+		renderWindow.draw(shapeHolder);
+	}
+
+	/*sf::RectangleShape test(sf::Vector2f(50, 50));
+	test.setPosition(sf::Vector2f(10, 10));
+	shapePtr = &test;
+	shapeHolder = *shapePtr;
+	renderWindow.draw(shapeHolder);*/
+
+	//msg = L"ritems.size(): " + std::to_wstring(ritems.size()) + L"\n";
+	//OutputDebugString(msg.c_str());
+
+	//for (size_t i = 0; i < ritems.size(); ++i) { //Draw all render items
+	//	//auto ri = *ritems[i];
+	//	shapePtr = ritems[i];
+	//	shapeHolder = *shapePtr;
+	//	//shapeHolder.setFillColor(sf::Color::White);
+	//	renderWindow.draw(shapeHolder);
+	//}
+
+	renderWindow.display(); //End the current frame
+}
+
+int BlueRapsolEngine::Instantiate() {
+	auto objHolder = std::make_unique<GameObject>();
+	//auto drawableHolder = std::make_unique<sf::RectangleShape>(sf::Vector2f(50, 50));
+	sf::RectangleShape drawableHolder(sf::Vector2f(50, 50));
+	sf::RectangleShape *drawablePtr;
+	drawablePtr = &drawableHolder;
+	//drawableHolder->setFillColor(sf::Color::White);
+
+	objHolder->SetDrawableIndex(allRenderObjects.size()); //save the index of its assigned sf::drawable
+
+	allObjects.push_back(std::move(objHolder));
+	allRenderObjects.push_back(&drawableHolder);
+
+	return allObjects.size(); //return allObjects index 
+}
+
+void BlueRapsolEngine::SetOBjPosition(int getObjIndex, float setX, float setY) {
+	allObjects[getObjIndex].get()->SetPosition(setX, setY);
 }
 
 //Insures only one of this application is running
@@ -119,11 +173,9 @@ bool BlueRapsolEngine::IsOnlyInstance(LPCTSTR appName) {
 	HANDLE handle = CreateMutex(NULL, TRUE, appName);
 
 	if (GetLastError() != ERROR_SUCCESS) {
-		//std::cout << "Error: An instance of this appication is already running" << std::endl;
 		OutputDebugString(L"Error: An instance of this appication is already running\n");
 		return false;
 	}
-	//std::cout << "No other instance of this application is found running" << std::endl;
 	OutputDebugString(L"No other instance of this application is found running\n");
 	return true;
 }
@@ -133,12 +185,10 @@ bool BlueRapsolEngine::ChkStorage(unsigned long long requiredBytes, LPCWSTR dire
 	std::wstring msg;
 	ULARGE_INTEGER availableStorage;
 	::GetDiskFreeSpaceEx(directory, &availableStorage, NULL, NULL);
-	//std::cout << "Available storage memory: " + std::to_string(availableStorage.QuadPart / toMB) + " MB\n";
 	msg = L"Available storage memory: " + std::to_wstring(availableStorage.QuadPart / toMB) + L" MB\n";
 	OutputDebugString(msg.c_str());
 
 	if (availableStorage.QuadPart < requiredBytes) {
-		//std::cout << "Insufficient storage space! You require at least " + std::to_string(requiredBytes / toMB) + "MB in storage space.\n";
 		msg = L"Insufficient storage space! You require at least " + std::to_wstring(requiredBytes / toMB) + L"MB in storage space.\n";
 		OutputDebugString(msg.c_str());
 		return false;
@@ -155,9 +205,6 @@ void BlueRapsolEngine::ChkMem() {
 	GlobalMemoryStatusEx(&memStat);
 
 	//Display memory stats
-	//std::cout << "Available physical memory: " + std::to_string(memStat.ullAvailPhys / toMB) + " MB\n";
-	//std::cout << "Available virtual memory: " + std::to_string(memStat.ullAvailVirtual / toMB) + " MB\n";
-
 	msg = L"Available physical memory: " + std::to_wstring(memStat.ullAvailPhys / toMB) + L" MB\n";
 	OutputDebugString(msg.c_str());
 	msg = L"Available virtual memory: " + std::to_wstring(memStat.ullAvailVirtual / toMB) + L" MB\n";
@@ -177,14 +224,12 @@ void BlueRapsolEngine::DisplayCPUSpeed() {
 
 	long lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0)", 0, KEY_READ, &hKey);
 	if (lError != ERROR_SUCCESS) {
-		//std::cout << "CPU Speed: Error! Cannot display CPU Speed; Key not found." << std::endl;
 		OutputDebugString(L"CPU Speed: Error! Cannot display CPU Speed; Key not found.\n");
 		return;
 	}
 	RegQueryValueEx(hKey, L"~MHz", NULL, NULL, (LPBYTE)&dwMHz, &BufSize);
 	sMHz = std::to_wstring(dwMHz);
 
-	//std::cout << "CPU Speed: " << sMHz << std::endl;
 	msg = L"CPU Speed: " + sMHz;
 	OutputDebugString(msg.c_str());
 }
@@ -199,59 +244,45 @@ void BlueRapsolEngine::DisplayCPUArch() {
 	//Info on https://msdn.microsoft.com/en-us/library/windows/desktop/ms724958(v=vs.85).aspx
 	switch (system.wProcessorArchitecture) {
 	case PROCESSOR_ARCHITECTURE_ALPHA:
-		//std::cout << "CPU Architecture: Alpha 32 bit by Digital Equipment Corp" << std::endl;
 		OutputDebugString(L"CPU Architecture : Alpha 32 bit by Digital Equipment Corp\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_ALPHA64:
-		//std::cout << "CPU Architecture: Alpha 64 bit by Digital Equipment Corp" << std::endl;
 		OutputDebugString(L"CPU Architecture: Alpha 64 bit by Digital Equipment Corp\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_AMD64:
-		//std::cout << "CPU Architecture: AMD/Intel x64" << std::endl;
 		OutputDebugString(L"CPU Architecture: AMD/Intel x64\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_ARM:
-		//std::cout << "CPU Architecture: ARM" << std::endl;
 		OutputDebugString(L"CPU Architecture: ARM\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_ARM64:
-		//std::cout << "CPU Architecture: ARM64" << std::endl;
 		OutputDebugString(L"CPU Architecture: ARM64\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_IA64:
-		//std::cout << "CPU Architecture: Intel Itanium Based" << std::endl;
 		OutputDebugString(L"CPU Architecture: Intel Itanium Based\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_IA32_ON_WIN64:
-		//std::cout << "CPU Architecture: 0A" << std::endl;
 		OutputDebugString(L"CPU Architecture: 0A\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_INTEL:
-		//std::cout << "CPU Architecture: Intel x86" << std::endl;
 		OutputDebugString(L"CPU Architecture: Intel x86\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_MIPS:
-		//std::cout << "CPU Architecture: MIPS" << std::endl;
 		OutputDebugString(L"CPU Architecture: MIPS\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_MSIL:
-		//std::cout << "CPU Architecture: MSIL" << std::endl;
 		OutputDebugString(L"CPU Architecture: MSIL\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_PPC:
-		//std::cout << "CPU Architecture: PowerPC" << std::endl;
 		OutputDebugString(L"CPU Architecture: PowerPC\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_SHX:
-		//std::cout << "CPU Architecture: ShX" << std::endl;
 		OutputDebugString(L"CPU Architecture: ShX\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_UNKNOWN:
-		//std::cout << "CPU Architecture: Unknown" << std::endl;
 		OutputDebugString(L"CPU Architecture: Unknown\n");
 		return;
 	default:
-		//std::cout << "CPU Architecture: Not Detected" << std::endl;
 		OutputDebugString(L"CPU Architecture: Not Detected\n");
 		return;
 	}
