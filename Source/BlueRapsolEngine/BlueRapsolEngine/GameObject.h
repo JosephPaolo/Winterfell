@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "../../BlueRapsolEngine/BlueRapsolEngine/BaseComponent.h"
 #include "../../BlueRapsolEngine/BlueRapsolEngine/TransformComponent.h"
 #include "BRDataTypes.h"
@@ -58,4 +59,21 @@ protected:
 	int drawableIndex; //index to the sf::drawable array. It is a list of all things that should be rendered.
 	sf::Vector2f position; //TEMP
 	Vector2 velocity; //Velocity moves the object per tick
+=======
+
+#include "../../BlueRapsolEngine/BlueRapsolEngine/BaseComponent.h"
+#include "../../BlueRapsolEngine/BlueRapsolEngine/TransformComponent.h"
+#include <list>
+
+#pragma once
+
+class GameObject {
+
+public:
+	GameObject::GameObject();
+
+protected:
+	std::list<BaseComponent> componentList;
+
+>>>>>>> d026f1bd18fea1e55892bb25cf994f43d2ab8489
 };

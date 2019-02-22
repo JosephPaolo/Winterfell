@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\vc141.pdb
 d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\vc141.idb
 d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\splashscreen.obj
@@ -21,3 +22,12 @@ d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\b
 d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\bluerapsolengine.tlog\link.command.1.tlog
 d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\bluerapsolengine.tlog\link.read.1.tlog
 d:\files\programming\school\game3121\winterfell repo\winterfell\temp\x64\debug\bluerapsolengine.tlog\link.write.1.tlog
+=======
+d:\engine2.0\temp\x64\debug\vc141.pdb
+d:\engine2.0\temp\x64\debug\vc141.idb
+d:\engine2.0\temp\x64\debug\transformcomponent.obj
+d:\engine2.0\temp\x64\debug\basecomponent.obj
+d:\engine2.0\temp\x64\debug\bluerapsolengine.tlog\cl.command.1.tlog
+d:\engine2.0\temp\x64\debug\bluerapsolengine.tlog\cl.read.1.tlog
+d:\engine2.0\temp\x64\debug\bluerapsolengine.tlog\cl.write.1.tlog
+>>>>>>> d026f1bd18fea1e55892bb25cf994f43d2ab8489

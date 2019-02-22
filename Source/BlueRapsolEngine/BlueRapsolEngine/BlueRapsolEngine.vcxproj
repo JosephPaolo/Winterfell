@@ -28,9 +28,14 @@
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MouseListener.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
+=======
+    <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+>>>>>>> d026f1bd18fea1e55892bb25cf994f43d2ab8489
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,10 +43,17 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
+<<<<<<< HEAD
     <ClInclude Include="BREnums.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GraphicsSystem.h" />
+=======
+    <ClInclude Include="FrameResource.h" />
+    <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="TransformComponent.h" />
+>>>>>>> d026f1bd18fea1e55892bb25cf994f43d2ab8489
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="MouseListener.h" />
@@ -54,7 +66,11 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{8F08A3C4-A48D-4EC4-94CB-4442FB5944B0}</ProjectGuid>
     <RootNamespace>BlueRapsolEngine</RootNamespace>
+<<<<<<< HEAD
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+=======
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+>>>>>>> d026f1bd18fea1e55892bb25cf994f43d2ab8489
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

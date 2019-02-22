@@ -1,5 +1,6 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/GameObject.h"
 
+<<<<<<< HEAD
 using namespace BRComponentType;
 using namespace BRShapeType;
 
@@ -163,3 +164,10 @@ void GameObject::Update() {
 		(*i)->Update();
 	}
 }
+=======
+GameObject::GameObject() {
+	TransformComponent newTransformComponent;
+	//componentList.assign();
+}
+
+>>>>>>> d026f1bd18fea1e55892bb25cf994f43d2ab8489
