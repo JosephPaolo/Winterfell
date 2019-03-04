@@ -23,6 +23,7 @@
 #include "AudioSystem.h"
 #include "GraphicsSystem.h"
 #include "PhysicsSystem.h"
+#include "InputSystem.h"
 #include <SFML/Graphics.hpp>
 
 class BlueRapsolEngine {
@@ -48,10 +49,9 @@ public:
 
 	virtual void GameStart();
 	virtual void GameUpdate();
-	void PhysicsUpdate();
 
 	int Instantiate(); //Creates a square shape at origin
-	void SetOBjPosition(int getObjIndex, float setX, float setY);
+	//void SetOBjPosition(int getObjIndex, float setX, float setY);
 	//GameObject* Instantiate(ShapeType setShape, BRDataType::Vector3 setPosition);
 	//void SetPosition(GameObject & targetObject, BRDataType::Vector3 newPosition);
 	//void SetScale(GameObject & targetObject, BRDataType::Vector3 newScalar);
@@ -62,9 +62,11 @@ private:
 	AudioSystem audioSys;
 	GraphicsSystem graphicsSys;
 	PhysicsSystem physicsSys;
+	InputSystem inputSys;
 
 	std::vector<std::unique_ptr<GameObject>> allObjects; // List of all the objects.
-	std::vector<sf::RectangleShape*> allRenderObjects; // List of all the renderable items
+	//std::vector<sf::RectangleShape*> allRenderObjects; // List of all the renderable items
+	//std::vector< std::unique_ptr<sf::RectangleShape>> allRenderObjects; // List of all the renderable items
 
 	GameTimer mTimer;
 	bool isInitializing = true;
@@ -72,5 +74,5 @@ private:
 	bool IsOnlyInstance(LPCTSTR appName);
 	void Initialize(sf::RenderWindow & renderWindow);
 	void GameLoop(sf::RenderWindow & renderWindow);
-	void DrawRenderObjects(sf::RenderWindow & renderWindow, const std::vector<sf::RectangleShape*>& ritems);
+	void DrawRenderObjects(sf::RenderWindow & renderWindow);
 };

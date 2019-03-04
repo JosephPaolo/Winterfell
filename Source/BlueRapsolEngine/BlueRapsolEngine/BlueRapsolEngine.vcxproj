@@ -25,11 +25,13 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
+    <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyboardListener.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MouseListener.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="SplashScreen.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
@@ -42,11 +44,13 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GraphicsSystem.h" />
+    <ClInclude Include="InputSystem.h" />
     <ClInclude Include="IUserInput.h" />
     <ClInclude Include="KeyboardListener.h" />
     <ClInclude Include="MouseListener.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="TransformComponent.h" />
   </ItemGroup>

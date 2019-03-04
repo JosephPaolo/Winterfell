@@ -97,8 +97,11 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 
 		mTimer.Tick(); //Ticks the timer
 		GameUpdate(); //Update game logic
-		PhysicsUpdate(); //Simulate Physics
-		DrawRenderObjects(renderWindow, allRenderObjects); //Draw Object in the scene
+		physicsSys.UpdatePhysics(allObjects);
+		//graphicsSys.UpdateGraphics();
+		graphicsSys.DrawRenderObjects(renderWindow, allObjects);
+
+		//DrawRenderObjects(renderWindow); //Draw Object in the scene
 	}
 }
 
@@ -110,13 +113,13 @@ void BlueRapsolEngine::GameStart() {
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
 	//Note: It uses a unique pointer so you cannot have multiple references of the same object. So you access the object through allObjects[ObjIndex].get().
 	int ObjIndex = Instantiate(); //Creates a new GameObject and since it is the first one its index will be '0'
-	allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.1f, 0.1f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
+	//allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.1f, 0.1f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
 	
-	Instantiate(); //Creates a second new GameObject and since it is the second one its index will be '1'
+	//Instantiate(); //Creates a second new GameObject and since it is the second one its index will be '1'
 
 	//Debugging Example
-	msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
-	OutputDebugString(msg.c_str());
+	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
+	//OutputDebugString(msg.c_str());
 }
 
 //This code executes every tick
@@ -124,69 +127,36 @@ void BlueRapsolEngine::GameUpdate() {
 
 	//Example
 	//This moves our second created object (index 1) towards the right by 0.2f every tick
-	float newPositionX = allObjects[1].get()->GetPosition().x + 0.2f; //The original x position + 0.2f
-	float newPositionY = allObjects[1].get()->GetPosition().y; //The original y position doesnt change
-	allObjects[1].get()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+	//float newPositionX = allObjects[1].get()->GetPosition().x + 0.2f; //The original x position + 0.2f
+	//float newPositionY = allObjects[1].get()->GetPosition().y; //The original y position doesnt change
+	//allObjects[1].get()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
 }
 
-void BlueRapsolEngine::DrawRenderObjects(sf::RenderWindow & renderWindow, const std::vector<sf::RectangleShape*>& ritems) {
-	std::wstring msg; //Used for formatting debug messages
-	sf::RectangleShape *shapePtr;
-	sf::RectangleShape shapeHolder;
-
-	renderWindow.clear(sf::Color::Black); //Clear the window with black color
-
-	//TEMP
-	for (size_t i = 0; i < ritems.size(); ++i) { //Draw all render items
-		sf::RectangleShape newShape(sf::Vector2f(50, 50));
-		newShape.setPosition(allObjects[i].get()->GetPosition());
-		shapePtr = &newShape;
-		shapeHolder = *shapePtr;
-		renderWindow.draw(shapeHolder);
-	}
-
-	/*sf::RectangleShape test(sf::Vector2f(50, 50));
-	test.setPosition(sf::Vector2f(10, 10));
-	shapePtr = &test;
-	shapeHolder = *shapePtr;
-	renderWindow.draw(shapeHolder);*/
-
-	//msg = L"ritems.size(): " + std::to_wstring(ritems.size()) + L"\n";
-	//OutputDebugString(msg.c_str());
-
-	//for (size_t i = 0; i < ritems.size(); ++i) { //Draw all render items
-	//	//auto ri = *ritems[i];
-	//	shapePtr = ritems[i];
-	//	shapeHolder = *shapePtr;
-	//	//shapeHolder.setFillColor(sf::Color::White);
-	//	renderWindow.draw(shapeHolder);
-	//}
-
-	renderWindow.display(); //End the current frame
-}
+//void BlueRapsolEngine::DrawRenderObjects(sf::RenderWindow & renderWindow) {
+//	std::wstring msg; //Used for formatting debug messages
+//
+//	renderWindow.clear(sf::Color::Black); //Clear the window with black color
+//
+//	for (int i = 0; i < allRenderObjects.size(); i++) { //Draw all render items
+//		try {
+//			renderWindow.draw(*allRenderObjects[i]);
+//		}
+//		catch (...) {
+//			OutputDebugString(L"Exception Happened.\n");
+//		}
+//	}
+//
+//	renderWindow.display(); //End the current frame
+//}
 
 int BlueRapsolEngine::Instantiate() {
 	auto objHolder = std::make_unique<GameObject>();
-	//auto drawableHolder = std::make_unique<sf::RectangleShape>(sf::Vector2f(50, 50));
-	sf::RectangleShape drawableHolder(sf::Vector2f(50, 50));
-	sf::RectangleShape *drawablePtr;
-	drawablePtr = &drawableHolder;
+
 	//drawableHolder->setFillColor(sf::Color::White);
 
-	objHolder->SetDrawableIndex(allRenderObjects.size()); //save the index of its assigned sf::drawable
-
 	allObjects.push_back(std::move(objHolder));
-	allRenderObjects.push_back(&drawableHolder);
 
 	return allObjects.size() - 1; //return allObjects index 
-}
-
-void BlueRapsolEngine::SetOBjPosition(int getObjIndex, float setX, float setY) {
-	allObjects[getObjIndex].get()->SetPosition(setX, setY);
-}
-
-void BlueRapsolEngine::PhysicsUpdate() {
-	physicsSys.UpdatePhysics(allObjects);
 }
 
 //Insures only one of this application is running
