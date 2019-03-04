@@ -113,9 +113,12 @@ void BlueRapsolEngine::GameStart() {
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
 	//Note: It uses a unique pointer so you cannot have multiple references of the same object. So you access the object through allObjects[ObjIndex].get().
 	int ObjIndex = Instantiate(); //Creates a new GameObject and since it is the first one its index will be '0'
-	//allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.1f, 0.1f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
+	allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.05f, 0.05f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
 	
-	//Instantiate(); //Creates a second new GameObject and since it is the second one its index will be '1'
+	Instantiate(); //Creates a second new GameObject and since it is the second one its index will be '1'
+
+	Instantiate(); //Creates a third new GameObject and since it is the third one its index will be '2'
+	allObjects[2].get()->GetTransformComponent()->SetParent(*allObjects[0].get()->GetTransformComponent()); //sets parent
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
@@ -127,9 +130,11 @@ void BlueRapsolEngine::GameUpdate() {
 
 	//Example
 	//This moves our second created object (index 1) towards the right by 0.2f every tick
-	//float newPositionX = allObjects[1].get()->GetPosition().x + 0.2f; //The original x position + 0.2f
-	//float newPositionY = allObjects[1].get()->GetPosition().y; //The original y position doesnt change
-	//allObjects[1].get()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+	float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
+	float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
+	allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+
+
 }
 
 //void BlueRapsolEngine::DrawRenderObjects(sf::RenderWindow & renderWindow) {

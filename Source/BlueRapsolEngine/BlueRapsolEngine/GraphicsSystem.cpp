@@ -11,7 +11,7 @@ void GraphicsSystem::DrawRenderObjects(sf::RenderWindow & renderWindow, const st
 
 	for (int i = 0; i < getAllObjRef.size(); i++) { //Draw all render items
 		try {
-			renderWindow.draw(*getAllObjRef[i].get()->GetRenderComponent()->renderObjPtr);
+			renderWindow.draw(*getAllObjRef[i].get()->GetRenderComponent()->renderObjPtr, getAllObjRef[i].get()->GetTransformComponent()->GetWorldTransform());
 		}
 		catch (...) {
 			OutputDebugString(L"Exception Happened.\n");

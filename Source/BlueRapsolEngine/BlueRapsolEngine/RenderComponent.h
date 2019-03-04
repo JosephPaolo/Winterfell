@@ -15,8 +15,8 @@ public:
 	std::unique_ptr<sf::RectangleShape> renderObjPtr;
 
 	//void UpdateRenderObj(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef);
-	void UpdateRenderObjPos(float getPosX, float getPosY);
-	//void UpdateRenderObjTransform(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef);
+	sf::Transform UpdateRenderObjPos(float getPosX, float getPosY);
+	void UpdateRenderObjTransform(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef);
 
 private:
 	

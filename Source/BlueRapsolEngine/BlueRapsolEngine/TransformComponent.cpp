@@ -14,19 +14,23 @@ TransformComponent::TransformComponent() {
 	scalar.y = 1;
 }
 
-//TransformComponent::TransformComponent(GameObject &getObjRef) {
-//	type = Transform;
-//
-//	objRef = &getObjRef;
-//
-//	position.x = 0;
-//	position.y = 0;
-//
-//	eulerAngle = 0;
-//
-//	scalar.x = 1;
-//	scalar.y = 1;
-//}
+TransformComponent::TransformComponent(RenderComponent &getRenderRef) {
+	type = Transform;
+
+	renderPtr = &getRenderRef;
+
+	position.x = 0;
+	position.y = 0;
+
+	eulerAngle = 0;
+
+	scalar.x = 1;
+	scalar.y = 1;
+}
+
+void TransformComponent::SetRenderRef(RenderComponent &getRenderRef) {
+	renderPtr = &getRenderRef;
+}
 
 TransformComponent::~TransformComponent(void) {
 	for (unsigned int i = 0; i < children.size(); i++) {
@@ -69,28 +73,31 @@ void TransformComponent::SetPosition(sf::Vector2f setPosition) {
 	//localTransform = sf::Transform::Identity;
 	//localTransform.translate(setPosition.x, setPosition.y);
 
-	/*try {
-		objRef->GetRenderComponent()->UpdateRenderObjPos(setPosition.x, setPosition.y);
+	try {
+		SetTransform(renderPtr->UpdateRenderObjPos(setPosition.x, setPosition.y));
+		//renderPtr->UpdateRenderObjPos(setPosition.x, setPosition.y);
 	}
 	catch (...) {
 		OutputDebugString(L"Exception Happened.\n");
-	}*/
+	}
 
 	Update();
 }
 
+//Sets the position of render object, gets the transform, uses it to update transform as well as its children
 void TransformComponent::SetPosition(float setX, float setY) {
 	position.x = setX; position.y = setY;
 
 	//localTransform = sf::Transform::Identity;
 	//localTransform.translate(setX, setY);
 
-	/*try {
-		objRef->GetRenderComponent()->UpdateRenderObjPos(setX, setY);
+	try {
+		SetTransform(renderPtr->UpdateRenderObjPos(setX, setY));
+		//renderPtr->UpdateRenderObjPos(setX, setY);
 	}
 	catch (...) {
 		OutputDebugString(L"Exception Happened.\n");
-	}*/
+	}
 
 	Update();
 }

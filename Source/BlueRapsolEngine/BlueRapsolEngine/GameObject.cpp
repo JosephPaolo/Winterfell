@@ -4,7 +4,8 @@ using namespace BRComponentType;
 using namespace BRShapeType;
 
 GameObject::GameObject() {
-
+	transformComponent.SetRenderRef(renderComponent);
+	transformComponent.SetTransform(renderComponent.renderObjPtr.get()->getTransform()); //Set SFML shape transform to transform component
 }
 
 GameObject::~GameObject(void) {
