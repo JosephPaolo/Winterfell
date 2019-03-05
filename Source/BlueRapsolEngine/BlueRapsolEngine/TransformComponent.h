@@ -25,6 +25,8 @@ public:
 	void SetPosition(sf::Vector2f setPosition);
 	void SetPosition(float setX, float setY);
 	void SetRenderRef(RenderComponent &getRenderRef);
+	void SetEulerAngle(float setDegree);
+	float GetEulerAngle();
 
 	BRDataType::Vector2 GetPosition();
 

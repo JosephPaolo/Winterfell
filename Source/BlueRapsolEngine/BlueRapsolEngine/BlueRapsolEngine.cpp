@@ -8,7 +8,7 @@
 //   This Class will represent the Game Application layer of the Blue Rapsol Engine
 // *****************************************************************************
 
-
+#include <stdio.h>
 #include "BlueRapsolEngine.h"; 
 //#include <iostream> 
 
@@ -95,12 +95,16 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 			}
 		}
 
+		
 		mTimer.Tick(); //Ticks the timer
 		GameUpdate(); //Update game logic
-		physicsSys.UpdatePhysics(allObjects);
-		//graphicsSys.UpdateGraphics();
-		graphicsSys.DrawRenderObjects(renderWindow, allObjects);
 
+		if (!stopObjs) {
+			physicsSys.UpdatePhysics(allObjects);
+			//graphicsSys.UpdateGraphics();
+		}
+
+		graphicsSys.DrawRenderObjects(renderWindow, allObjects);
 		//DrawRenderObjects(renderWindow); //Draw Object in the scene
 	}
 }
@@ -108,6 +112,12 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 //this code executes once at the beginning
 void BlueRapsolEngine::GameStart() {
 	std::wstring msg; //Used for formatting debug messages
+
+	//Load Sound
+	audioSys.LoadBuffer();
+
+	//Play Sound
+	audioSys.SoundPlay();
 
 	//Example
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
@@ -128,33 +138,42 @@ void BlueRapsolEngine::GameStart() {
 //This code executes every tick
 void BlueRapsolEngine::GameUpdate() {
 
-	//Example
-	//This moves our second created object (index 1) towards the right by 0.2f every tick
-	float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
-	float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
-	allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+		audioSys.SoundPlay();
+	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		if (stopObjs) {
+			stopObjs = false;
+		}
+		else {
+			stopObjs = true;
+		}
+	}
+	
+	if (!stopObjs) {
+		//Example
+		//This moves our second created object (index 1) towards the right by 0.2f every tick
+		float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
+		float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
+		allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
 
+		float newAngle = allObjects[1].get()->GetTransformComponent()->GetEulerAngle() + 0.04;
+		allObjects[1].get()->GetTransformComponent()->SetEulerAngle(newAngle);
+	}
 }
 
-//void BlueRapsolEngine::DrawRenderObjects(sf::RenderWindow & renderWindow) {
-//	std::wstring msg; //Used for formatting debug messages
-//
-//	renderWindow.clear(sf::Color::Black); //Clear the window with black color
-//
-//	for (int i = 0; i < allRenderObjects.size(); i++) { //Draw all render items
-//		try {
-//			renderWindow.draw(*allRenderObjects[i]);
-//		}
-//		catch (...) {
-//			OutputDebugString(L"Exception Happened.\n");
-//		}
-//	}
-//
-//	renderWindow.display(); //End the current frame
-//}
-
 int BlueRapsolEngine::Instantiate() {
+	auto objHolder = std::make_unique<GameObject>();
+
+	//drawableHolder->setFillColor(sf::Color::White);
+
+	allObjects.push_back(std::move(objHolder));
+
+	return allObjects.size() - 1; //return allObjects index 
+}
+
+int BlueRapsolEngine::Instantiate(float xPos, float yPos) {
 	auto objHolder = std::make_unique<GameObject>();
 
 	//drawableHolder->setFillColor(sf::Color::White);

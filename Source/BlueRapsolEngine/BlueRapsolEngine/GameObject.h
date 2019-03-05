@@ -16,6 +16,7 @@ class GameObject {
 
 public: 
 	GameObject::GameObject(); //Makes new render item TODO
+	GameObject::GameObject(float getX, float getY);
 	GameObject::~GameObject(void);
 
 	ShapeType GetShape();

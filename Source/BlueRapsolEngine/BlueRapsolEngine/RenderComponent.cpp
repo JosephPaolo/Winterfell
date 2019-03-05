@@ -14,3 +14,9 @@ sf::Transform RenderComponent::UpdateRenderObjPos(float getPosX, float getPosY) 
 void RenderComponent::UpdateRenderObjTransform(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef) {
 
 }
+
+sf::Transform RenderComponent::UpdateRenderObjEuler(float getAngle) {
+	renderObjPtr.get()->setRotation(getAngle);
+
+	return renderObjPtr.get()->getTransform();
+}

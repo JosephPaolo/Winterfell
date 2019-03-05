@@ -51,12 +51,7 @@ public:
 	virtual void GameUpdate();
 
 	int Instantiate(); //Creates a square shape at origin
-	//void SetOBjPosition(int getObjIndex, float setX, float setY);
-	//GameObject* Instantiate(ShapeType setShape, BRDataType::Vector3 setPosition);
-	//void SetPosition(GameObject & targetObject, BRDataType::Vector3 newPosition);
-	//void SetScale(GameObject & targetObject, BRDataType::Vector3 newScalar);
-	//void SetEulerAngle(GameObject & targetObject, BRDataType::Vector3 newEulerAngle);
-	//void SetTransform(GameObject & targetObject, sf::Transform newTransform);
+	int Instantiate(float getX, float getY);
 
 private:
 	AudioSystem audioSys;
@@ -65,14 +60,13 @@ private:
 	InputSystem inputSys;
 
 	std::vector<std::unique_ptr<GameObject>> allObjects; // List of all the objects.
-	//std::vector<sf::RectangleShape*> allRenderObjects; // List of all the renderable items
-	//std::vector< std::unique_ptr<sf::RectangleShape>> allRenderObjects; // List of all the renderable items
 
 	GameTimer mTimer;
 	bool isInitializing = true;
+	bool stopObjs = false; //temp
 
 	bool IsOnlyInstance(LPCTSTR appName);
 	void Initialize(sf::RenderWindow & renderWindow);
 	void GameLoop(sf::RenderWindow & renderWindow);
-	void DrawRenderObjects(sf::RenderWindow & renderWindow);
+	//void DrawRenderObjects(sf::RenderWindow & renderWindow);
 };

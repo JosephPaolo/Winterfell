@@ -17,6 +17,7 @@ public:
 	//void UpdateRenderObj(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef);
 	sf::Transform UpdateRenderObjPos(float getPosX, float getPosY);
 	void UpdateRenderObjTransform(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef);
+	sf::Transform UpdateRenderObjEuler(float getAngle);
 
 private:
 	

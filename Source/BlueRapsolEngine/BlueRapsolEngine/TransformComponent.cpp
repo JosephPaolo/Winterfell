@@ -48,12 +48,10 @@ void TransformComponent::SetTransform(const sf::Transform &matrix) {
 	Update();
 }
 
-//TODO revise to get true transfrom
 sf::Transform TransformComponent::GetLocalTransform() {
 	return localTransform;
 }
 
-//TODO revise to get true transfrom
 sf::Transform TransformComponent::GetWorldTransform() {
 	return worldTransform;
 }
@@ -100,6 +98,24 @@ void TransformComponent::SetPosition(float setX, float setY) {
 	}
 
 	Update();
+}
+
+//Sets the position of render object, gets the transform, uses it to update transform as well as its children
+void TransformComponent::SetEulerAngle(float setDegree) {
+	eulerAngle = setDegree;
+
+	try {
+		SetTransform(renderPtr->UpdateRenderObjEuler(setDegree));
+	}
+	catch (...) {
+		OutputDebugString(L"Exception Happened.\n");
+	}
+
+	Update();
+}
+
+float TransformComponent::GetEulerAngle() {
+	return eulerAngle;
 }
 
 BRDataType::Vector2 TransformComponent::GetPosition() {
