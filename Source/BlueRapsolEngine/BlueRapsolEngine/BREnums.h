@@ -15,3 +15,12 @@ namespace BRComponentType {
 		Physics
 	};
 }
+
+namespace BRAxisType {
+	enum AxisType {
+		None = 0,
+		Diagonal = 1,
+		Vertical = 2,
+		Horizontal = 3
+	};
+}

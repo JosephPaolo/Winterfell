@@ -17,8 +17,9 @@ class GameObject {
 public: 
 	GameObject::GameObject(); //Makes new render item TODO
 	GameObject::GameObject(float getX, float getY);
+	GameObject::GameObject(float getX, float getY, float width, float height);
 	GameObject::~GameObject(void);
-
+	
 	ShapeType GetShape();
 	sf::Color GetColor();
 	

@@ -87,22 +87,19 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 		GameStart();
 	}
 
-	while (renderWindow.isOpen()){
+	while (renderWindow.isOpen()) {
 		sf::Event event;
-		while (renderWindow.pollEvent(event)){
+		while (renderWindow.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) { // "close requested" event: we close the window
 				renderWindow.close();
 			}
 		}
 
-		
-		mTimer.Tick(); //Ticks the timer
-		GameUpdate(); //Update game logic
-
-		//if (!stopObjs) {
+		if (!isPaused) {
+			mTimer.Tick(); //Ticks the timer
+			GameUpdate(); //Update game logic
 			physicsSys.UpdatePhysics(allObjects);
-			//graphicsSys.UpdateGraphics();
-		//}
+		}
 
 		graphicsSys.DrawRenderObjects(renderWindow, allObjects);
 		//DrawRenderObjects(renderWindow); //Draw Object in the scene
@@ -122,10 +119,10 @@ void BlueRapsolEngine::GameStart() {
 	//Example
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
 	//Note: It uses a unique pointer so you cannot have multiple references of the same object. So you access the object through allObjects[ObjIndex].get().
-	int ObjIndex = Instantiate(); //Creates a new GameObject and since it is the first one its index will be '0'
-	allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.05f, 0.05f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
+	int ObjIndex = Instantiate(600,150); //Creates a new GameObject and since it is the first one its index will be '0'
+	allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(-0.05f, 0.00f); //The GameObject will visually move horizontally towards the left. Use GetPhysicsComponent() to access Physics component properties.
 	
-	Instantiate(100,100); //Creates a second new GameObject and since it is the second one its index will be '1'
+	Instantiate(0,150,50,50); //Creates a second new GameObject and since it is the second one its index will be '1'
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
@@ -137,9 +134,10 @@ void BlueRapsolEngine::GameUpdate() {
 	
 	//Example
 	//This moves our second created object (index 1) towards the right by 0.2f every tick
-	float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
-	float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
-	allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+	//float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
+	//float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
+	//allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+
 
 }
 
@@ -154,12 +152,24 @@ int BlueRapsolEngine::Instantiate() {
 }
 
 int BlueRapsolEngine::Instantiate(float xPos, float yPos) {
+	auto objHolder = std::make_unique<GameObject>(xPos, yPos);
+	//objHolder.get()->GetTransformComponent()->SetPosition(xPos, yPos);
+	allObjects.push_back(std::move(objHolder));
+
+	return allObjects.size() - 1; //return allObjects index 
+}
+
+int BlueRapsolEngine::Instantiate(float xPos, float yPos, float width, float height) {
+	
+	auto objHolder = std::make_unique<GameObject>(xPos, yPos, width, height);
+	allObjects.push_back(std::move(objHolder));
+
+	return allObjects.size() - 1; //return allObjects index 
+}
+
+int BlueRapsolEngine::Instantiate(BRDataType::Vector2 setPos) {
 	auto objHolder = std::make_unique<GameObject>();
-
-	objHolder.get()->GetTransformComponent()->SetPosition(xPos, yPos);
-
-	//drawableHolder->setFillColor(sf::Color::White);
-
+	objHolder.get()->GetTransformComponent()->SetPosition(setPos.x, setPos.y);
 	allObjects.push_back(std::move(objHolder));
 
 	return allObjects.size() - 1; //return allObjects index 

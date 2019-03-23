@@ -49,11 +49,11 @@ namespace BRDataType {
 	};
 
 	struct AABB {
-		Vector2 min;
-		Vector2 max;
+		Vector2 min; //Bottom Left
+		Vector2 max; //Top Right
 
 		AABB() {
-			min.x = 0; min.y = 0;
+			min.x = 0; min.y = 0; 
 			max.x = 0; max.y = 0;
 		}
 

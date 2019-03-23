@@ -52,6 +52,8 @@ public:
 
 	int Instantiate(); //Creates a square shape at origin
 	int Instantiate(float getX, float getY);
+	int Instantiate(BRDataType::Vector2 setPos);
+	int Instantiate(float getX, float getY, float width, float height);
 
 private:
 	AudioSystem audioSys;
@@ -63,6 +65,7 @@ private:
 
 	GameTimer mTimer;
 	bool isInitializing = true;
+	bool isPaused = false;
 
 	bool IsOnlyInstance(LPCTSTR appName);
 	void Initialize(sf::RenderWindow & renderWindow);
