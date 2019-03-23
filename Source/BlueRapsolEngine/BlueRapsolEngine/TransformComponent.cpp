@@ -48,6 +48,16 @@ void TransformComponent::SetTransform(const sf::Transform &matrix) {
 	Update();
 }
 
+void TransformComponent::SetTransform(sf::Transform &matrix) {
+	localTransform = matrix;
+
+	if (!parent) {
+		worldTransform = matrix;
+	}
+
+	Update();
+}
+
 sf::Transform TransformComponent::GetLocalTransform() {
 	return localTransform;
 }
@@ -73,7 +83,6 @@ void TransformComponent::SetPosition(sf::Vector2f setPosition) {
 
 	try {
 		SetTransform(renderPtr->UpdateRenderObjPos(setPosition.x, setPosition.y));
-		//renderPtr->UpdateRenderObjPos(setPosition.x, setPosition.y);
 	}
 	catch (...) {
 		OutputDebugString(L"Exception Happened.\n");
@@ -90,14 +99,15 @@ void TransformComponent::SetPosition(float setX, float setY) {
 	//localTransform.translate(setX, setY);
 
 	try {
-		SetTransform(renderPtr->UpdateRenderObjPos(setX, setY));
-		//renderPtr->UpdateRenderObjPos(setX, setY);
+		//Current Issue: Given new xy coordinates, We can only acquire the new transform of an object after applying the xy changes to the render object. 
+		//So we can't truly have the transform component separate from the render component if we want to multiply object transform.
+		SetTransform(renderPtr->UpdateRenderObjPos(setX, setY)); //UpdateRenderObjPos() returns a transform AND applies the new coordinates to the render object.
 	}
 	catch (...) {
 		OutputDebugString(L"Exception Happened.\n");
 	}
 
-	Update();
+	//Update();
 }
 
 //Sets the position of render object, gets the transform, uses it to update transform as well as its children
@@ -129,18 +139,33 @@ void TransformComponent::Update(float msec) {
 	else { //Root node, world transform is local transform!
 		worldTransform = localTransform;
 	}
+
+	//Update with new x y position
+	position = renderPtr->GetRenderObjPos();
+
+	//Update render object
+	renderPtr->UpdateRenderObjPos(position.x, position.y);
+
 	for (std::vector<TransformComponent*>::iterator i = children.begin(); i != children.end(); ++i) {
 		(*i)->Update(msec);
 	}
 }
 
 void TransformComponent::Update() {
+
 	if (parent) { //This node has a parent...
 		worldTransform = parent->worldTransform * localTransform;
 	}
 	else { //Root node, world transform is local transform!
 		worldTransform = localTransform;
 	}
+
+	//Update with new x y position
+	//position = renderPtr->GetRenderObjPos();
+
+	//Update render object
+	//renderPtr->UpdateRenderObjPos(position.x, position.y);
+
 	for (std::vector<TransformComponent*>::iterator i = children.begin(); i != children.end(); ++i) {
 		(*i)->Update();
 	}

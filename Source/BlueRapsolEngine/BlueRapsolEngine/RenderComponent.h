@@ -3,6 +3,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include "BaseComponent.h"
+#include "BRDataTypes.h"
 
 class RenderComponent : BaseComponent {
 
@@ -18,6 +19,8 @@ public:
 	sf::Transform UpdateRenderObjPos(float getPosX, float getPosY);
 	void UpdateRenderObjTransform(const std::unique_ptr<sf::RectangleShape>& getRenderObjRef);
 	sf::Transform UpdateRenderObjEuler(float getAngle);
+	BRDataType::Vector2 GetRenderObjPos();
+
 
 private:
 	

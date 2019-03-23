@@ -20,3 +20,9 @@ sf::Transform RenderComponent::UpdateRenderObjEuler(float getAngle) {
 
 	return renderObjPtr.get()->getTransform();
 }
+
+BRDataType::Vector2 RenderComponent::GetRenderObjPos() {
+	BRDataType::Vector2 getVector(renderObjPtr.get()->getPosition().x, renderObjPtr.get()->getPosition().y);
+
+	return getVector;
+}

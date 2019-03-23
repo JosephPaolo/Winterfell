@@ -16,6 +16,10 @@ void GraphicsSystem::DrawRenderObjects(sf::RenderWindow & renderWindow, const st
 		catch (...) {
 			OutputDebugString(L"Exception Happened.\n");
 		}
+
+		//Update transform component position with render object position
+		getAllObjRef[i].get()->GetTransformComponent()->SetPosition(getAllObjRef[i].get()->GetRenderComponent()->renderObjPtr.get()->getPosition());
+
 	}
 
 	renderWindow.display(); //End the current frame

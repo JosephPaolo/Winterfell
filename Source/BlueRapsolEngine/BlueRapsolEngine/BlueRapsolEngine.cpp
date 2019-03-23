@@ -99,10 +99,10 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 		mTimer.Tick(); //Ticks the timer
 		GameUpdate(); //Update game logic
 
-		if (!stopObjs) {
+		//if (!stopObjs) {
 			physicsSys.UpdatePhysics(allObjects);
 			//graphicsSys.UpdateGraphics();
-		}
+		//}
 
 		graphicsSys.DrawRenderObjects(renderWindow, allObjects);
 		//DrawRenderObjects(renderWindow); //Draw Object in the scene
@@ -117,7 +117,7 @@ void BlueRapsolEngine::GameStart() {
 	audioSys.LoadBuffer();
 
 	//Play Sound
-	audioSys.SoundPlay();
+	//audioSys.SoundPlay();
 
 	//Example
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
@@ -125,10 +125,7 @@ void BlueRapsolEngine::GameStart() {
 	int ObjIndex = Instantiate(); //Creates a new GameObject and since it is the first one its index will be '0'
 	allObjects[ObjIndex].get()->GetPhysicsComponent()->SetVelocity(0.05f, 0.05f); //The GameObject will visually move diagonally to the bottom right. Use GetPhysicsComponent() to access Physics component properties.
 	
-	Instantiate(); //Creates a second new GameObject and since it is the second one its index will be '1'
-
-	Instantiate(); //Creates a third new GameObject and since it is the third one its index will be '2'
-	allObjects[2].get()->GetTransformComponent()->SetParent(*allObjects[0].get()->GetTransformComponent()); //sets parent
+	Instantiate(100,100); //Creates a second new GameObject and since it is the second one its index will be '1'
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
@@ -137,30 +134,13 @@ void BlueRapsolEngine::GameStart() {
 
 //This code executes every tick
 void BlueRapsolEngine::GameUpdate() {
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-		audioSys.SoundPlay();
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-		if (stopObjs) {
-			stopObjs = false;
-		}
-		else {
-			stopObjs = true;
-		}
-	}
 	
-	if (!stopObjs) {
-		//Example
-		//This moves our second created object (index 1) towards the right by 0.2f every tick
-		float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
-		float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
-		allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
+	//Example
+	//This moves our second created object (index 1) towards the right by 0.2f every tick
+	float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
+	float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
+	allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
 
-		float newAngle = allObjects[1].get()->GetTransformComponent()->GetEulerAngle() + 0.04;
-		allObjects[1].get()->GetTransformComponent()->SetEulerAngle(newAngle);
-	}
 }
 
 int BlueRapsolEngine::Instantiate() {
@@ -175,6 +155,8 @@ int BlueRapsolEngine::Instantiate() {
 
 int BlueRapsolEngine::Instantiate(float xPos, float yPos) {
 	auto objHolder = std::make_unique<GameObject>();
+
+	objHolder.get()->GetTransformComponent()->SetPosition(xPos, yPos);
 
 	//drawableHolder->setFillColor(sf::Color::White);
 
@@ -259,7 +241,7 @@ void BlueRapsolEngine::DisplayCPUArch() {
 	//Info on https://msdn.microsoft.com/en-us/library/windows/desktop/ms724958(v=vs.85).aspx
 	switch (system.wProcessorArchitecture) {
 	case PROCESSOR_ARCHITECTURE_ALPHA:
-		OutputDebugString(L"CPU Architecture : Alpha 32 bit by Digital Equipment Corp\n");
+		OutputDebugString(L"CPU Architecture: Alpha 32 bit by Digital Equipment Corp\n");
 		return;
 	case PROCESSOR_ARCHITECTURE_ALPHA64:
 		OutputDebugString(L"CPU Architecture: Alpha 64 bit by Digital Equipment Corp\n");

@@ -63,7 +63,6 @@ private:
 
 	GameTimer mTimer;
 	bool isInitializing = true;
-	bool stopObjs = false; //temp
 
 	bool IsOnlyInstance(LPCTSTR appName);
 	void Initialize(sf::RenderWindow & renderWindow);

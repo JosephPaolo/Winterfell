@@ -2,7 +2,7 @@
 
 
 AudioSystem::AudioSystem() {
-	LoadBuffer();
+
 }
 
 
