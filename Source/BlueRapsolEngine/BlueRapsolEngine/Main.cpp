@@ -10,6 +10,7 @@
 
 #include <stdlib.h> 
 #include "BlueRapsolEngine.h" 
+#include "BlueRapsolApp.h" 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) {
 	// Enable run-time memory check for debug builds.
@@ -17,13 +18,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	#endif
 
-	BlueRapsolEngine engineBR(hInstance);
+	try {
+		BlueRapsolApp theGame(hInstance);
+
+		OutputDebugString(L"Initializing Blue Rapsol Game...\n");
+		if (!theGame.Initialize()) {
+			return 0;
+		}
+
+		OutputDebugString(L"Starting Blue Rapsol Game...\n");
+		theGame.Run(hInstance);
+	}
+	catch (...) {
+		OutputDebugString(L"Exception Happened.\n");
+	}
+
+	//BlueRapsolEngine engineBR(hInstance);
 
 	//Starting the engin
-	OutputDebugString(L"Starting Blue Rapsol Engine...\n");
-	engineBR.Run(hInstance); //Start engine
-
-	//OutputDebugString(L"\n\nPress Enter to terminate application.\n");
-	//std::getchar(); //Prevents program from terminating immediately by prompting for char user input
+	//OutputDebugString(L"Starting Blue Rapsol Engine...\n");
+	//engineBR.Run(hInstance); //Start engine
 	return 0;
 }

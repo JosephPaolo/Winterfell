@@ -28,14 +28,18 @@
 
 class BlueRapsolEngine {
 
-public:
+public: 
+	void Run(HINSTANCE hInstance);
+
+protected:
 	BlueRapsolEngine(HINSTANCE hInstance);
 	//~BlueRapsolEngine();
 
 	KeyboardListener kbInput;
 	MouseListener mbInput;
 
-	void Run(HINSTANCE hInstance);
+	//Check if it's the onyl instance
+	bool IsOnlyInstance(LPCTSTR appName);
 
 	//Check for sufficient storage space
 	bool ChkStorage(unsigned long long requiredBytes, LPCWSTR directory);
@@ -47,15 +51,15 @@ public:
 	void DisplayCPUArch();
 	void DisplayCPUSpeed();
 
-	virtual void GameStart();
-	virtual void GameUpdate();
-
 	int Instantiate(); //Creates a square shape at origin
 	int Instantiate(float getX, float getY);
 	int Instantiate(BRDataType::Vector2 setPos);
 	int Instantiate(float getX, float getY, float width, float height);
 
-private:
+	virtual void GameStart();
+	virtual void GameUpdate();
+	virtual bool Initialize();
+
 	AudioSystem audioSys;
 	GraphicsSystem graphicsSys;
 	PhysicsSystem physicsSys;
@@ -63,11 +67,11 @@ private:
 
 	std::vector<std::unique_ptr<GameObject>> allObjects; // List of all the objects.
 
+private:
 	GameTimer mTimer;
 	bool isInitializing = true;
 	bool isPaused = false;
 
-	bool IsOnlyInstance(LPCTSTR appName);
 	void Initialize(sf::RenderWindow & renderWindow);
 	void GameLoop(sf::RenderWindow & renderWindow);
 	//void DrawRenderObjects(sf::RenderWindow & renderWindow);

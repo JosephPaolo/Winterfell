@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BlueRapsolApp.cpp" />
     <ClCompile Include="BlueRapsolEngine.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
@@ -38,6 +39,7 @@
   <ItemGroup>
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BlueRapsolApp.h" />
     <ClInclude Include="BlueRapsolEngine.h" />
     <ClInclude Include="BRDataTypes.h" />
     <ClInclude Include="BREnums.h" />
