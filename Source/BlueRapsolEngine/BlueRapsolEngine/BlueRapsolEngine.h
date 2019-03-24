@@ -52,9 +52,11 @@ protected:
 	void DisplayCPUSpeed();
 
 	int Instantiate(); //Creates a square shape at origin
-	int Instantiate(float getX, float getY);
-	int Instantiate(BRDataType::Vector2 setPos);
-	int Instantiate(float getX, float getY, float width, float height);
+	int Instantiate(std::string setKey);
+	int Instantiate(std::string setKey, float getX, float getY);
+	int Instantiate(std::string setKey, BRDataType::Vector2 setPos);
+	int Instantiate(std::string setKey, float getX, float getY, float width, float height);
+	int Instantiate(std::string setKey, std::string setSprite, float getX, float getY, float width, float height);
 
 	virtual void GameStart();
 	virtual void GameUpdate();
@@ -66,6 +68,8 @@ protected:
 	InputSystem inputSys;
 
 	std::vector<std::unique_ptr<GameObject>> allObjects; // List of all the objects.
+	//std::vector<GameObject*> allObjects; // List of all the objects.
+	std::map<std::string, int> getObjIndex; //Get the index value from name
 
 private:
 	GameTimer mTimer;

@@ -59,22 +59,22 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 
 				//Determine the direction of collision based on x and y position differences. 
 				if ( (boundsWorldPosA.max.x > boundsWorldPosB.min.x) && (boundsWorldPosA.max.x < boundsWorldPosB.min.x + collisionPadding) ) { // A collides with B from left
-					OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
 					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
 					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
 				}
 				else if ( (boundsWorldPosA.min.x < boundsWorldPosB.max.x) && (boundsWorldPosA.min.x > boundsWorldPosB.max.x - collisionPadding)) { // A collides with B from the right
-					OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
 					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
 					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
 				}
 				else if ( (boundsWorldPosA.max.y < boundsWorldPosB.min.y) && (boundsWorldPosA.max.y > boundsWorldPosB.min.y - collisionPadding) ) { // A collides with B from below
-					OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
 					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
 					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
 				}
 				else if ( (boundsWorldPosA.min.y > boundsWorldPosB.max.y) && (boundsWorldPosA.min.y < boundsWorldPosB.max.y + collisionPadding) ) { // A collides with B from above
-					OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
 					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
 					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
 				}
