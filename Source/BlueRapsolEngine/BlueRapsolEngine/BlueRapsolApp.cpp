@@ -23,21 +23,24 @@ void BlueRapsolApp::GameStart() {
 	//Play Sound
 	//audioSys.SoundPlay();
 
+	//Load Texture
+	graphicsSys.LoadTextureFromFile("myTextureName", "../../../Assets/50x50.png");
+
 	//Example
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
 	//Note: It uses a unique pointer so you cannot have multiple references of the same object. So you access the object through allObjects[ObjIndex].get().
-	int ObjIndex = Instantiate("Ball",300, 200); //Creates a new GameObject and since it is the first one its index will be '0'
+	int ObjIndex = Instantiate("Ball", "myTextureName", 300, 200, 50, 50); //Creates a new GameObject and since it is the first one its index will be '0'
 	allObjects[getObjIndex["Ball"]].get()->GetPhysicsComponent()->SetVelocity(0.05f, 0.07f); //The GameObject will visually move diagonally. Use GetPhysicsComponent() to access Physics component properties.
 
 	//Making the walls
-	//Use Instantiate(x position, y position, width, height);
+	//Use Instantiate(Object name, Texture name, x position, y position, width, height);
 	//Note: The origin of a shape is at the top left.
 	//Note: The origin of the world is at the top left. Positive x is rightward and positive y is downward.
 	//Note: Collision only works with velocity; you can't change position in BlueRapsolEngine::GameUpdate() and expect it to collide.
-	Instantiate("Wall A", 150, 50, 700, 50); //Creates a second new GameObject and since it is the second one its index will be '1'
-	Instantiate("Wall B", 150, 275, 700, 50); //its index will be '2'
-	Instantiate("Wall C", 125, 50, 50, 500); //its index will be '3'
-	Instantiate("Wall D", 500, 50, 50, 500); //its index will be '4'
+	Instantiate("Wall A", "myTextureName", 150, 50, 700, 50); //Creates a second new GameObject and since it is the second one its index will be '1'
+	Instantiate("Wall B", "myTextureName", 150, 275, 700, 50); //its index will be '2'
+	Instantiate("Wall C", "myTextureName", 125, 50, 50, 500); //its index will be '3'
+	Instantiate("Wall D", "myTextureName", 500, 50, 50, 500); //its index will be '4'
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";

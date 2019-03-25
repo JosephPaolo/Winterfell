@@ -124,10 +124,8 @@ void BlueRapsolEngine::GameUpdate() {
 
 int BlueRapsolEngine::Instantiate() {
 	auto objHolder = std::make_unique<GameObject>();
-	//GameObject newObj;
 
 	allObjects.push_back(std::move(objHolder));
-	//allObjects.push_back(&newObj);
 	getObjIndex.insert(std::make_pair(std::to_string(getObjIndex.size() - 1), getObjIndex.size() - 1));
 
 	return allObjects.size() - 1; //return allObjects index 
@@ -135,10 +133,8 @@ int BlueRapsolEngine::Instantiate() {
 
 int BlueRapsolEngine::Instantiate(std::string setKey) {
 	auto objHolder = std::make_unique<GameObject>();
-	//GameObject newObj;
 
 	allObjects.push_back(std::move(objHolder));
-	//allObjects.push_back(&newObj);
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
 
 	return allObjects.size() - 1; //return allObjects index 
@@ -146,10 +142,8 @@ int BlueRapsolEngine::Instantiate(std::string setKey) {
 
 int BlueRapsolEngine::Instantiate(std::string setKey, float xPos, float yPos) {
 	auto objHolder = std::make_unique<GameObject>(xPos, yPos);
-	//GameObject newObj;
 
 	allObjects.push_back(std::move(objHolder));
-	//allObjects.push_back(&newObj);
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
 
 	return allObjects.size() - 1; //return allObjects index 
@@ -157,10 +151,8 @@ int BlueRapsolEngine::Instantiate(std::string setKey, float xPos, float yPos) {
 
 int BlueRapsolEngine::Instantiate(std::string setKey, BRDataType::Vector2 setPos) {
 	auto objHolder = std::make_unique<GameObject>(setPos.x, setPos.y);
-	//GameObject newObj;
 
 	allObjects.push_back(std::move(objHolder));
-	//allObjects.push_back(&newObj);
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
 
 	return allObjects.size() - 1; //return allObjects index 
@@ -168,55 +160,32 @@ int BlueRapsolEngine::Instantiate(std::string setKey, BRDataType::Vector2 setPos
 
 int BlueRapsolEngine::Instantiate(std::string setKey, float xPos, float yPos, float width, float height) {
 	auto objHolder = std::make_unique<GameObject>(xPos, yPos, width, height);
-	//GameObject newObj;
 
 	allObjects.push_back(std::move(objHolder));
-	//allObjects.push_back(&newObj);
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
 
 	return allObjects.size() - 1; //return allObjects index 
 }
 
-int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos, float width, float height) {
-	auto objHolder = std::make_unique<GameObject>(xPos, yPos, width, height);
-	//GameObject newObj;
-
+int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos) {
+	auto objHolder = std::make_unique<GameObject>(xPos, yPos);
+	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[setSprite]);
+	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setScale(sf::Vector2f(1.0f, 1.0f));
 	allObjects.push_back(std::move(objHolder));
-	//allObjects.push_back(&newObj);
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
 
 	return allObjects.size() - 1; //return allObjects index 
 }
 
-//int BlueRapsolEngine::Instantiate(float xPos, float yPos) {
-	//auto objHolder = std::make_unique<GameObject>(xPos, yPos);
+int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos, float colliderWidth, float colliderHeight) {
+	auto objHolder = std::make_unique<GameObject>(xPos, yPos, colliderWidth, colliderHeight);
+	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[setSprite]);
+	//objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setScale(sf::Vector2f(scaleWidth, scaleHeight));
+	allObjects.push_back(std::move(objHolder));
+	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
 
-	//allObjects.push_back(std::move(objHolder));
-	//mapOfObjects.insert(std::make_pair(std::to_string(mapOfObjects.size() - 1), std::move(objHolder)));
-
-	//return allObjects.size() - 1; //return allObjects index 
-	//return mapOfObjects.size() - 1; //return allObjects index 
-//}
-
-//int BlueRapsolEngine::Instantiate(float xPos, float yPos, float width, float height) {
-	
-	//auto objHolder = std::make_unique<GameObject>(xPos, yPos, width, height);
-	//allObjects.push_back(std::move(objHolder));
-	//mapOfObjects.insert(std::make_pair(std::to_string(mapOfObjects.size() - 1), std::move(objHolder)));
-
-	//return allObjects.size() - 1; //return allObjects index 
-	//return mapOfObjects.size() - 1; //return allObjects index 
-//}
-
-//int BlueRapsolEngine::Instantiate(BRDataType::Vector2 setPos) {
-	//auto objHolder = std::make_unique<GameObject>();
-	//objHolder.get()->GetTransformComponent()->SetPosition(setPos.x, setPos.y);
-	//allObjects.push_back(std::move(objHolder));
-	//mapOfObjects.insert(std::make_pair(std::to_string(mapOfObjects.size() - 1), std::move(objHolder)));
-
-	//return allObjects.size() - 1; //return allObjects index 
-	//return mapOfObjects.size() - 1; //return allObjects index 
-//}
+	return allObjects.size() - 1; //return allObjects index 
+}
 
 //Insures only one of this application is running
 bool BlueRapsolEngine::IsOnlyInstance(LPCTSTR appName) {

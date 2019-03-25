@@ -2,7 +2,8 @@
 #include "RenderComponent.h"
 
 RenderComponent::RenderComponent() {
-	renderObjPtr = std::make_unique<sf::RectangleShape>(sf::Vector2f(50, 50));
+	//renderObjPtr = std::make_unique<sf::RectangleShape>(sf::Vector2f(50, 50));
+	renderObjPtr = std::make_unique<sf::Sprite>();
 }
 
 sf::Transform RenderComponent::UpdateRenderObjPos(float getPosX, float getPosY) {
@@ -25,4 +26,8 @@ BRDataType::Vector2 RenderComponent::GetRenderObjPos() {
 	BRDataType::Vector2 getVector(renderObjPtr.get()->getPosition().x, renderObjPtr.get()->getPosition().y);
 
 	return getVector;
+}
+
+void RenderComponent::SetTexture(sf::Texture newTexture) {
+	renderObjPtr->setTexture(newTexture, false);
 }
