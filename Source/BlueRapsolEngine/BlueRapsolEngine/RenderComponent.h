@@ -5,7 +5,7 @@
 #include "BaseComponent.h"
 #include "BRDataTypes.h"
 
-class RenderComponent : BaseComponent {
+class RenderComponent : public BaseComponent {
 
 public:
 	//void setRenderObjIndex(int newRenderObjIndex);

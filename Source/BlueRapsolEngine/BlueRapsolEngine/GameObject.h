@@ -32,8 +32,13 @@ public:
 	RenderComponent* GetRenderComponent();
 	TransformComponent* GetTransformComponent();
 
+	template<class T>
+	T GetComponent(T componentType);
+
 protected: 
 	//std::vector<BaseComponent*> componentList; //TODO broken rn
+	std::vector<BaseComponent*> componentList;
+
 	TransformComponent transformComponent; //Temp
 	PhysicsComponent physicsComponent; //Temp
 	RenderComponent renderComponent; //Temp

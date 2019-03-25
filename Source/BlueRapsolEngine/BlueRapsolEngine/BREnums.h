@@ -12,7 +12,9 @@ namespace BRComponentType {
 	enum ComponentType {
 		None,
 		Transform,
-		Physics
+		Physics,
+		Renderer,
+		Player
 	};
 }
 
@@ -23,4 +25,18 @@ namespace BRAxisType {
 		Vertical = 2,
 		Horizontal = 3
 	};
+}
+
+namespace BRObjectType {
+	enum ObjectType {
+		None,
+		Doodad, //Traversible
+		Solid,
+		Liquid,
+		Player,
+		Enemy,
+		PickUp,
+		PowerUp
+	};
+
 }

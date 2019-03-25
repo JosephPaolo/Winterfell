@@ -4,9 +4,18 @@ using namespace BRComponentType;
 using namespace BRShapeType;
 
 GameObject::GameObject() {
+
+	TransformComponent newTransform;
+	PhysicsComponent newPhysics; 
+	RenderComponent newRender; 
+
 	transformComponent.SetRenderRef(renderComponent);
 	transformComponent.SetTransform(renderComponent.renderObjPtr.get()->getTransform()); //Set SFML shape transform to transform component
 	physicsComponent.SetBounds(Vector2(0, 50), Vector2(50, 0));
+
+	componentList.push_back(&newTransform);
+	componentList.push_back(&physicsComponent);
+	componentList.push_back(&renderComponent);
 }
 
 GameObject::GameObject(float xPos, float yPos) {
@@ -73,4 +82,38 @@ RenderComponent* GameObject::GetRenderComponent() {
 
 TransformComponent* GameObject::GetTransformComponent() {
 	return &transformComponent;
+}
+
+template<class T>
+T GameObject::GetComponent(T componentType) {
+	TransformComponent* transformHolder;
+	PhysicsComponent* physicsHolder;
+	RenderComponent* renderHolder;
+
+	switch (componentType) {
+	case TransformComponent:
+		for each (BaseComponent component in componentList) {
+			if (component.type == BRComponentType::ComponentType::Transform) {
+				transformHolder = component;
+				return transformHolder;
+			}
+		}
+
+	case PhysicsComponent:
+		for each (BaseComponent component in componentList) {
+			if (component.type == BRComponentType::ComponentType::Physics) {
+				physicsHolder = component;
+				return physicsHolder;
+			}
+		}
+
+	case RenderComponent:
+		for each (BaseComponent component in componentList) {
+			if (component.type == BRComponentType::ComponentType::Renderer) {
+				renderHolder = component;
+				return renderHolder;
+			}
+		}
+	}
+
 }
