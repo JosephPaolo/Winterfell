@@ -1,12 +1,16 @@
 #pragma once
 
 #include "BaseComponent.h"
-#include "BRDataTypes.h"
+#include "PhysicsComponent.h"
+#include "BREnums.h"
 
 class ControllableComponent : BaseComponent {
 
 public:
-	void Move();
+
+	void Move(CardinalDirection direction, PhysicsComponent* physicsRef);
+
+	void Stop(PhysicsComponent* physicsRef);
 
 	void Fire();
 

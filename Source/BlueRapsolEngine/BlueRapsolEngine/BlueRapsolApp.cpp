@@ -37,10 +37,10 @@ void BlueRapsolApp::GameStart() {
 	//Note: The origin of a shape is at the top left.
 	//Note: The origin of the world is at the top left. Positive x is rightward and positive y is downward.
 	//Note: Collision only works with velocity; you can't change position in BlueRapsolEngine::GameUpdate() and expect it to collide.
-	Instantiate("Wall A", "myTextureName", 150, 50, 700, 50); //Creates a second new GameObject and since it is the second one its index will be '1'
-	Instantiate("Wall B", "myTextureName", 150, 275, 700, 50); //its index will be '2'
-	Instantiate("Wall C", "myTextureName", 125, 50, 50, 500); //its index will be '3'
-	Instantiate("Wall D", "myTextureName", 500, 50, 50, 500); //its index will be '4'
+	Instantiate("Wall A", "myTextureName", 450, 0); //Creates a second new GameObject and since it is the second one its index will be '1'
+	Instantiate("Wall B", "myTextureName", 325, 275); //its index will be '2'
+	Instantiate("Wall C", "myTextureName", 300, 275); //its index will be '3'
+	Instantiate("Wall D", "myTextureName", 500, 50); //its index will be '4'
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";

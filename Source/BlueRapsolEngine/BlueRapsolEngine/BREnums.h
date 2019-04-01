@@ -22,6 +22,13 @@ namespace BlueRapsolEnums {
 		Horizontal = 3
 	};
 
+	enum CardinalDirection {
+		North,
+		South,
+		East,
+		West
+	};
+
 	enum ObjectType {
 		Doodad, //Traversible
 		Solid,
