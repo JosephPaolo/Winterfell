@@ -10,7 +10,9 @@ namespace BlueRapsolEnums {
 		Transform,
 		Physics,
 		Renderer,
-		Player
+		Mobile,
+		Controllable,
+		Projectile
 	};
 
 	enum AxisType {

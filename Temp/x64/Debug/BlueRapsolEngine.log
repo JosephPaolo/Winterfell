@@ -86,14 +86,17 @@ c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.1
               _Kty=std::string,
               _Valty=std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char>>,unsigned __int64>
           ]
+  ControllableComponent.cpp
   GameObject.cpp
   GraphicsSystem.cpp
   KeyboardListener.cpp
 c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\keyboardlistener.cpp(256): warning C4129: '|': unrecognized character escape sequence
   Main.cpp
+  MobComponent.cpp
   MouseListener.cpp
   PhysicsComponent.cpp
   PhysicsSystem.cpp
+  ProjectileComponent.cpp
   RenderComponent.cpp
   TransformComponent.cpp
   Generating Code...
