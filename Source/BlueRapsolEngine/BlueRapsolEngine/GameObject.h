@@ -9,8 +9,7 @@
 #pragma once
 
 using namespace BRDataType;
-using namespace BRComponentType;
-using namespace BRShapeType;
+using namespace BlueRapsolEnums;
 
 class GameObject {
 
@@ -33,7 +32,7 @@ public:
 	TransformComponent* GetTransformComponent();
 
 	template<class T>
-	T GetComponent(T componentType);
+	T GetComponent(ComponentType componentType);
 
 protected: 
 	//std::vector<BaseComponent*> componentList; //TODO broken rn

@@ -1,6 +1,6 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/TransformComponent.h"
 
-using namespace BRComponentType;
+using namespace BlueRapsolEnums;
 
 TransformComponent::TransformComponent() {
 	type = Transform;

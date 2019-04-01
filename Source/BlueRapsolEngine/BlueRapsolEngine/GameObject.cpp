@@ -1,7 +1,6 @@
 #include "../../BlueRapsolEngine/BlueRapsolEngine/GameObject.h"
 
-using namespace BRComponentType;
-using namespace BRShapeType;
+using namespace BlueRapsolEnums;
 
 GameObject::GameObject() {
 
@@ -85,15 +84,15 @@ TransformComponent* GameObject::GetTransformComponent() {
 }
 
 template<class T>
-T GameObject::GetComponent(T componentType) {
+T GameObject::GetComponent(ComponentType compType) {
 	TransformComponent* transformHolder;
 	PhysicsComponent* physicsHolder;
 	RenderComponent* renderHolder;
 
-	switch (componentType) {
+	switch (compType) {
 	case TransformComponent:
 		for each (BaseComponent component in componentList) {
-			if (component.type == BRComponentType::ComponentType::Transform) {
+			if (compType == ComponentType::Transform) {
 				transformHolder = component;
 				return transformHolder;
 			}
@@ -101,7 +100,7 @@ T GameObject::GetComponent(T componentType) {
 
 	case PhysicsComponent:
 		for each (BaseComponent component in componentList) {
-			if (component.type == BRComponentType::ComponentType::Physics) {
+			if (compType == ComponentType::Physics) {
 				physicsHolder = component;
 				return physicsHolder;
 			}
@@ -109,7 +108,7 @@ T GameObject::GetComponent(T componentType) {
 
 	case RenderComponent:
 		for each (BaseComponent component in componentList) {
-			if (component.type == BRComponentType::ComponentType::Renderer) {
+			if (compType == ComponentType::Renderer) {
 				renderHolder = component;
 				return renderHolder;
 			}

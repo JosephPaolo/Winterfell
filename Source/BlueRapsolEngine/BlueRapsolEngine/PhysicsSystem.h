@@ -4,6 +4,8 @@
 #include "BRDataTypes.h"
 #include <SFML/Graphics.hpp>
 
+using namespace BlueRapsolEnums;
+
 class PhysicsSystem {
 
 public:
@@ -14,6 +16,6 @@ public:
 	bool TestAABBOverlap(AABB* a, AABB* b);
 	
 private: 
-	void DeflectObj(PhysicsComponent* physComponentRef, BRAxisType::AxisType collisionType);
+	void DeflectObj(PhysicsComponent* physComponentRef, AxisType collisionType);
 
 };

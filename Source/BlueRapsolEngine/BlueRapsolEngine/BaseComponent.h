@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BREnums.h"
-using namespace BRComponentType;
+using namespace BlueRapsolEnums;
 
 class BaseComponent {
 

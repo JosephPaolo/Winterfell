@@ -1,6 +1,6 @@
 #include "PhysicsComponent.h"
 
-using namespace BRComponentType;
+using namespace BlueRapsolEnums;
 
 PhysicsComponent::PhysicsComponent() {
 	type = Physics;

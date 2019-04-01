@@ -60,23 +60,23 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				//Determine the direction of collision based on x and y position differences. 
 				if ( (boundsWorldPosA.max.x > boundsWorldPosB.min.x) && (boundsWorldPosA.max.x < boundsWorldPosB.min.x + collisionPadding) ) { // A collides with B from left
 					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
+					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
+					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
 				}
 				else if ( (boundsWorldPosA.min.x < boundsWorldPosB.max.x) && (boundsWorldPosA.min.x > boundsWorldPosB.max.x - collisionPadding)) { // A collides with B from the right
 					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Horizontal);
+					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
+					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
 				}
 				else if ( (boundsWorldPosA.max.y < boundsWorldPosB.min.y) && (boundsWorldPosA.max.y > boundsWorldPosB.min.y - collisionPadding) ) { // A collides with B from below
 					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
+					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
+					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
 				}
 				else if ( (boundsWorldPosA.min.y > boundsWorldPosB.max.y) && (boundsWorldPosA.min.y < boundsWorldPosB.max.y + collisionPadding) ) { // A collides with B from above
 					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), BRAxisType::AxisType::Vertical);
+					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
+					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
 				}
 				//else if ( (getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x == getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y) 
 				//	   && (getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().x == getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y) ) { //A collides with B diagonally
@@ -115,16 +115,16 @@ bool PhysicsSystem::TestAABBOverlap(AABB* a, AABB* b) {
 }
 
 //Change object velocity to simulate deflection upon collision
-void PhysicsSystem::DeflectObj(PhysicsComponent* physComponentRef, BRAxisType::AxisType collisionType) {
+void PhysicsSystem::DeflectObj(PhysicsComponent* physComponentRef, AxisType collisionType) {
 	//Note: deflecting an object with(0, 0) velocity will not apply changes because anything multiplied by 0 is 0.
 
-	if (collisionType == BRAxisType::Diagonal) { //Diagonal
+	if (collisionType == Diagonal) { //Diagonal
 		physComponentRef->SetVelocity(physComponentRef->GetVelocity().x * -1, physComponentRef->GetVelocity().y * -1);
 	}
-	else if (collisionType == BRAxisType::Vertical) { //Vertical
+	else if (collisionType == Vertical) { //Vertical
 		physComponentRef->SetVelocity(physComponentRef->GetVelocity().x, physComponentRef->GetVelocity().y * -1);
 	}
-	else if (collisionType == BRAxisType::Horizontal) { //Horizontal
+	else if (collisionType == Horizontal) { //Horizontal
 		physComponentRef->SetVelocity(physComponentRef->GetVelocity().x * -1, physComponentRef->GetVelocity().y);
 	}
 }
