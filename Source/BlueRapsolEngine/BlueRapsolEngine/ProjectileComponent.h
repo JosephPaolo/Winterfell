@@ -5,7 +5,7 @@
 
 using namespace BRDataType;
 
-class ProjectileComponent : BaseComponent{
+class ProjectileComponent : public BaseComponent{
 	
 public:
 	Vector2 vector;

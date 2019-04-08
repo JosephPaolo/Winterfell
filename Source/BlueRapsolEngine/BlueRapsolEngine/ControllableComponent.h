@@ -4,7 +4,7 @@
 #include "PhysicsComponent.h"
 #include "BREnums.h"
 
-class ControllableComponent : BaseComponent {
+class ControllableComponent : public BaseComponent {
 
 public:
 

@@ -3,6 +3,10 @@
 #include "BRDataTypes.h"
 #include "PhysicsComponent.h"
 #include "RenderComponent.h"
+#include "MobComponent.h"
+#include "ProjectileComponent.h"
+#include "ControllableComponent.h"
+#include "MobComponent.h"
 #include <list>
 #include <SFML/Graphics.hpp>
 
@@ -33,6 +37,8 @@ public:
 
 	template<class T>
 	T GetComponent(ComponentType componentType);
+
+	void AddComponent(ComponentType componentType);
 
 protected: 
 	//std::vector<BaseComponent*> componentList; //TODO broken rn

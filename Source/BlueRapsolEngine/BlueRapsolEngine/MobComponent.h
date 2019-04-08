@@ -2,7 +2,7 @@
 
 #include "BaseComponent.h"
 
-class MobComponent : BaseComponent{
+class MobComponent : public BaseComponent{
 
 public:
 	int maxhealth;
