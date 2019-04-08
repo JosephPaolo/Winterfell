@@ -8,11 +8,13 @@ void PhysicsSystem::UpdatePhysics() {
 
 }
 
-//TODO: figure out why Diameter is divided by 4 instead of 2 when the size of the shape is 50x50
+//TODO: Diameter is divided by 4 instead of 2 because apparently shape size in pixels differ in measurement from scene positions
 void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>& getObjRef) {
 	std::wstring msg;
 
 	sf::Vector2f newPosition;
+	Vector2 velocityHolderA;
+	Vector2 velocityHolderB;
 
 	BRDataType::AABB boundsWorldPosA;
 	BRDataType::AABB boundsWorldPosB;
@@ -50,6 +52,12 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 			boundsWorldPosB.min.y = getObjRef[ib].get()->GetTransformComponent()->GetPosition().y + heightHolder; //Note: Remember, In this case Y positive is downwards
 			boundsWorldPosB.max.y = getObjRef[ib].get()->GetTransformComponent()->GetPosition().y; //and Y negative is upwards
 
+			//TODO
+			velocityHolderA.x = getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x;
+			velocityHolderA.y = getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y;
+			velocityHolderB.x = getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().x;
+			velocityHolderB.y = getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y;
+
 			//Check if there is overlap and that at least one of the pair is moving velocity wise
 			if (TestAABBOverlap(&boundsWorldPosA, &boundsWorldPosB)
 				&& !(getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x == 0 
@@ -57,27 +65,117 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				&& getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().x == 0 
 				&& getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y == 0) ) {
 
+				//Prevent going further upon collision
+
+				if ((boundsWorldPosA.max.x > boundsWorldPosB.min.x) && (boundsWorldPosA.max.x < boundsWorldPosB.min.x + collisionPadding)) { // A collides with B from left
+					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+
+					//if player is A prevent it from moving further
+					if (getObjRef[ia].get()->isPlayer && getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x > 0) {
+						getObjRef[ia].get()->GetPhysicsComponent()->SetVelocity(0, getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y);
+					}
+					else if (!getObjRef[ia].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
+					}
+					//else allow current velocity
+
+					//if player is B prevent it from moving further
+					if (getObjRef[ib].get()->isPlayer && getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().x < 0) {
+						getObjRef[ib].get()->GetPhysicsComponent()->SetVelocity(0, getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y);
+					}
+					else if (!getObjRef[ib].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
+					}
+					//else allow current velocity
+
+				}
+				else if ((boundsWorldPosA.min.x < boundsWorldPosB.max.x) && (boundsWorldPosA.min.x > boundsWorldPosB.max.x - collisionPadding)) { // A collides with B from the right
+					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+
+					//if player is A prevent it from moving further
+					if (getObjRef[ia].get()->isPlayer && getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x < 0) {
+						getObjRef[ia].get()->GetPhysicsComponent()->SetVelocity(0, getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y);
+					}
+					else if (!getObjRef[ia].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
+					}
+					//else allow current velocity
+
+					//if player is B prevent it from moving further
+					if (getObjRef[ib].get()->isPlayer && getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().x > 0) {
+						getObjRef[ib].get()->GetPhysicsComponent()->SetVelocity(0, getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y);
+					}
+					else if (!getObjRef[ib].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
+					}
+					//else allow current velocity
+				}
+				else if ((boundsWorldPosA.max.y < boundsWorldPosB.min.y) && (boundsWorldPosA.max.y > boundsWorldPosB.min.y - collisionPadding)) { // A collides with B from below
+					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+
+					//if player is A prevent it from moving further
+					if (getObjRef[ia].get()->isPlayer && getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y < 0) {
+						getObjRef[ia].get()->GetPhysicsComponent()->SetVelocity(getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x, 0);
+					}
+					else if (!getObjRef[ia].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
+					}
+					//else allow current velocity
+
+					//if player is B prevent it from moving further
+					if (getObjRef[ib].get()->isPlayer && getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y > 0) {
+						getObjRef[ib].get()->GetPhysicsComponent()->SetVelocity(getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x, 0);
+					}
+					else if (!getObjRef[ib].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
+					}
+					//else allow current velocity
+				}
+				else if ((boundsWorldPosA.min.y > boundsWorldPosB.max.y) && (boundsWorldPosA.min.y < boundsWorldPosB.max.y + collisionPadding)) { // A collides with B from above
+					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+
+					//if player is A prevent it from moving further
+					if (getObjRef[ia].get()->isPlayer && getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y > 0) {
+						getObjRef[ia].get()->GetPhysicsComponent()->SetVelocity(getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x, 0);
+					}
+					else if (!getObjRef[ia].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
+					}
+					//else allow current velocity
+
+					//if player is B prevent it from moving further
+					if (getObjRef[ib].get()->isPlayer && getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y < 0) {
+						getObjRef[ib].get()->GetPhysicsComponent()->SetVelocity(getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x, 0);
+					}
+					else if (!getObjRef[ib].get()->isPlayer) { //Deflect if not player
+						DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
+					}
+					//else allow current velocity
+				}
+
+				//Deflect on collision. Ideal for bouncing projectiles
+
 				//Determine the direction of collision based on x and y position differences. 
-				if ( (boundsWorldPosA.max.x > boundsWorldPosB.min.x) && (boundsWorldPosA.max.x < boundsWorldPosB.min.x + collisionPadding) ) { // A collides with B from left
-					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
-				}
-				else if ( (boundsWorldPosA.min.x < boundsWorldPosB.max.x) && (boundsWorldPosA.min.x > boundsWorldPosB.max.x - collisionPadding)) { // A collides with B from the right
-					//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
-				}
-				else if ( (boundsWorldPosA.max.y < boundsWorldPosB.min.y) && (boundsWorldPosA.max.y > boundsWorldPosB.min.y - collisionPadding) ) { // A collides with B from below
-					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
-				}
-				else if ( (boundsWorldPosA.min.y > boundsWorldPosB.max.y) && (boundsWorldPosA.min.y < boundsWorldPosB.max.y + collisionPadding) ) { // A collides with B from above
-					//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
-					DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
-					DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
-				}
+				//if ( (boundsWorldPosA.max.x > boundsWorldPosB.min.x) && (boundsWorldPosA.max.x < boundsWorldPosB.min.x + collisionPadding) ) { // A collides with B from left
+				//	//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+				//	DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
+				//	DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
+				//}
+				//else if ( (boundsWorldPosA.min.x < boundsWorldPosB.max.x) && (boundsWorldPosA.min.x > boundsWorldPosB.max.x - collisionPadding)) { // A collides with B from the right
+				//	//OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+				//	DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Horizontal);
+				//	DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Horizontal);
+				//}
+				//else if ( (boundsWorldPosA.max.y < boundsWorldPosB.min.y) && (boundsWorldPosA.max.y > boundsWorldPosB.min.y - collisionPadding) ) { // A collides with B from below
+				//	//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+				//	DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
+				//	DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
+				//}
+				//else if ( (boundsWorldPosA.min.y > boundsWorldPosB.max.y) && (boundsWorldPosA.min.y < boundsWorldPosB.max.y + collisionPadding) ) { // A collides with B from above
+				//	//OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+				//	DeflectObj(getObjRef[ia].get()->GetPhysicsComponent(), AxisType::Vertical);
+				//	DeflectObj(getObjRef[ib].get()->GetPhysicsComponent(), AxisType::Vertical);
+				//}
 				//else if ( (getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().x == getObjRef[ia].get()->GetPhysicsComponent()->GetVelocity().y) 
 				//	   && (getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().x == getObjRef[ib].get()->GetPhysicsComponent()->GetVelocity().y) ) { //A collides with B diagonally
 				//	OutputDebugString(L"[Notice] Diagonal Collision detected.\n");

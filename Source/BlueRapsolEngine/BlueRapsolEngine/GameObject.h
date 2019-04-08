@@ -25,6 +25,8 @@ public:
 	GameObject::GameObject(sf::Texture, float getX, float getY, float width, float height);
 	GameObject::~GameObject(void);
 	
+	bool isPlayer = false;
+
 	ShapeType GetShape();
 	sf::Color GetColor();
 	

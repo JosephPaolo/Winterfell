@@ -42,16 +42,142 @@ void BlueRapsolApp::GameStart() {
 	Instantiate("Wall C", "myTextureName", 300, 275); //its index will be '3'
 	Instantiate("Wall D", "myTextureName", 500, 50); //its index will be '4'
 
+	Instantiate("Player1", "myTextureName", 0, 0);
+	player1Key = "Player1";
+	allObjects[getObjIndex["Player1"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
+
+	Instantiate("Player2", "myTextureName", 100, 0);
+	player1Key = "Player2";
+	allObjects[getObjIndex["Player2"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
+
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
 	//OutputDebugString(msg.c_str());
 }
 
 void BlueRapsolApp::GameUpdate() {
+
+	CheckInput();
+
 	//Example
 	//This moves our second created object (index 1) towards the right by 0.2f every tick
 	//float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
 	//float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
 	//allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
 
+}
+
+void BlueRapsolApp::CheckInput() {
+	Vector2 playerDir;
+
+	//TODO Check if player 1's object exist
+	if (false) {
+		return;
+	}
+
+	//Remember: scene origin is top left, y positive is downwards, x positive is rightwards
+
+	//Player 1 control
+	// Northward
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = 0;
+		playerDir.y = -1;
+	}
+	// Northeastward
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = 0.707;
+		playerDir.y = -0.707;
+	}
+	// Eastward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = 1;
+		playerDir.y = 0;
+	}
+	// Southeastward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = 0.707;
+		playerDir.y = 0.707;
+	}
+	// Southward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = 0;
+		playerDir.y = 1;
+	}
+	// Southwestward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = -0.707;
+		playerDir.y = 0.707;
+	}
+	// Westward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = -1;
+		playerDir.y = 0;
+	}
+	// Northwestward
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerDir.x = -0.707;
+		playerDir.y = -0.707;
+	}
+	else {
+		playerDir.x = 0;
+		playerDir.y = 0;
+	}
+	playerDir.x = playerDir.x * 0.05;
+	playerDir.y = playerDir.y * 0.05;
+	allObjects[getObjIndex[player1Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
+
+
+	//TODO Check if player 2's object exist
+	if (false) {
+		return;
+	}
+
+	//Player 2 control
+	// Northward
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = 0;
+		playerDir.y = -1;
+	}
+	// Northeastward
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = 0.707;
+		playerDir.y = -0.707;
+	}
+	// Eastward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = 1;
+		playerDir.y = 0;
+	}
+	// Southeastward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = 0.707;
+		playerDir.y = 0.707;
+	}
+	// Southward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = 0;
+		playerDir.y = 1;
+	}
+	// Southwestward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = -0.707;
+		playerDir.y = 0.707;
+	}
+	// Westward
+	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = -1;
+		playerDir.y = 0;
+	}
+	// Northwestward
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		playerDir.x = -0.707;
+		playerDir.y = -0.707;
+	}
+	else {
+		playerDir.x = 0;
+		playerDir.y = 0;
+	}
+	playerDir.x = playerDir.x * 0.05;
+	playerDir.y = playerDir.y * 0.05;
+	allObjects[getObjIndex[player2Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 }

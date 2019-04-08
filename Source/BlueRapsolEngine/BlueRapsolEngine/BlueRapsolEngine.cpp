@@ -5,7 +5,7 @@
 // Last Updated: Feb. 21, 2019
 // Version: 0.1.0A
 // Description: 
-//   This Class will represent the Game Application layer of the Blue Rapsol Engine
+//   This Class will represent the Game Engine layer of the Blue Rapsol Engine
 // *****************************************************************************
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ void BlueRapsolEngine::Run(HINSTANCE hInstance) {
 	//Initialization
 	BlueRapsolEngine::Initialize(window);
 
-	//TODO Program loop. Move loop from d3dApp.cpp
+	//Program loop
 	BlueRapsolEngine::GameLoop(window);
 
 }

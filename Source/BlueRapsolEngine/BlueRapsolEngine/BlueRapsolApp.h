@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BlueRapsolEngine.h"
+#include <string>
 
 //Name of this program for Mutex
 #define MUTEX_APP_NAME L"BlueRapsolEngineMutex"
@@ -15,4 +16,9 @@ protected:
 	virtual void GameStart();
 	virtual void GameUpdate();
 
+private:
+	void CheckInput();
+
+	std::string player1Key;
+	std::string player2Key;
 };
