@@ -7,6 +7,8 @@
 //Name of this program for Mutex
 #define MUTEX_APP_NAME L"BlueRapsolEngineMutex"
 
+using namespace BlueRapsolEnums;
+
 class BlueRapsolApp : public BlueRapsolEngine {
 
 public:
@@ -28,7 +30,7 @@ private:
 	Vector2 initPlayer2Dir;
 
 	float bulletSpeed = 0.3;
-	int recycledBullets[20];
+	int recycledBullets[20]; //TODO use a stack instead and utilize bullets after being removed from the level instead of simply iterating through the bullets
 	int maxBullets = 20;
 	int nextBullet = 0;
 	int bulletCooldownInTicks = 360;
@@ -36,4 +38,7 @@ private:
 	int player2BulletCooldownTickCounter = 0;
 	bool player1ReadyToFire = false;
 	bool player2ReadyToFire = false;
+
+	CardinalDirection player1CarDir = CardinalDirection::North;
+	CardinalDirection player2CarDir = CardinalDirection::North;
 };

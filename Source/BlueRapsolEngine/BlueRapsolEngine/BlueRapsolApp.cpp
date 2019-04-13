@@ -152,6 +152,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0;
 		playerDir.y = -1;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::North;
 		SetTexture("Player1", "Player1TexNorth");
 	}
 	// Northeastward
@@ -159,6 +160,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0.707;
 		playerDir.y = -0.707;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::Northeast;
 		SetTexture("Player1", "Player1TexNortheast");
 	}
 	// Eastward
@@ -166,6 +168,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 1;
 		playerDir.y = 0;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::East;
 		SetTexture("Player1", "Player1TexEast");
 	}
 	// Southeastward
@@ -173,6 +176,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0.707;
 		playerDir.y = 0.707;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::Southeast;
 		SetTexture("Player1", "Player1TexSoutheast");
 	}
 	// Southward
@@ -180,6 +184,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0;
 		playerDir.y = 1;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::South;
 		SetTexture("Player1", "Player1TexSouth");
 	}
 	// Southwestward
@@ -187,6 +192,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = -0.707;
 		playerDir.y = 0.707;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::Southwest;
 		SetTexture("Player1", "Player1TexSouthwest");
 	}
 	// Westward
@@ -194,6 +200,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = -1;
 		playerDir.y = 0;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::West;
 		SetTexture("Player1", "Player1TexWest");
 	}
 	// Northwestward
@@ -201,6 +208,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = -0.707;
 		playerDir.y = -0.707;
 		initPlayer1Dir = playerDir;
+		player1CarDir = CardinalDirection::Northwest;
 		SetTexture("Player1", "Player1TexNorthwest");
 	}
 	else {
@@ -215,7 +223,37 @@ void BlueRapsolApp::CheckInput() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && player1ReadyToFire) {
 		OutputDebugString(L"Player 1 Bullet Fired\n");
 		player1ReadyToFire = false;
-		allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+
+		//Spawn bullet at the appropriate side outside of the player's hitbox
+		if (player1CarDir == CardinalDirection::North) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+		}
+		else if (player1CarDir == CardinalDirection::Northeast) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+		}
+		else if (player1CarDir == CardinalDirection::East) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+		}
+		else if (player1CarDir == CardinalDirection::Southeast) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+		}
+		else if (player1CarDir == CardinalDirection::South) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+		}
+		else if (player1CarDir == CardinalDirection::Southwest) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+		}
+		else if (player1CarDir == CardinalDirection::West) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+		}
+		else if (player1CarDir == CardinalDirection::Northwest) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+		}
+		else {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+		}
+
+		allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
 		allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer1Dir.x * bulletSpeed, initPlayer1Dir.y * bulletSpeed); //TODO right now bullet speed is tied to player speed, rectify for future when player speed is variable
 		//switch next bullet
 		if ((nextBullet + 1) >= maxBullets) {
@@ -237,6 +275,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0;
 		playerDir.y = -1;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::North;
 		SetTexture("Player2", "Player2TexNorth");
 	}
 	// Northeastward
@@ -244,6 +283,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0.707;
 		playerDir.y = -0.707;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::Northeast;
 		SetTexture("Player2", "Player2TexNortheast");
 	}
 	// Eastward
@@ -251,6 +291,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 1;
 		playerDir.y = 0;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::East;
 		SetTexture("Player2", "Player2TexEast");
 	}
 	// Southeastward
@@ -258,6 +299,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0.707;
 		playerDir.y = 0.707;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::Southeast;
 		SetTexture("Player2", "Player2TexSoutheast");
 	}
 	// Southward
@@ -265,6 +307,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0;
 		playerDir.y = 1;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::South;
 		SetTexture("Player2", "Player2TexSouth");
 	}
 	// Southwestward
@@ -272,6 +315,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = -0.707;
 		playerDir.y = 0.707;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::Southwest;
 		SetTexture("Player2", "Player2TexSouthwest");
 	}
 	// Westward
@@ -279,6 +323,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = -1;
 		playerDir.y = 0;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::West;
 		SetTexture("Player2", "Player2TexWest");
 	}
 	// Northwestward
@@ -286,6 +331,7 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = -0.707;
 		playerDir.y = -0.707;
 		initPlayer2Dir = playerDir;
+		player2CarDir = CardinalDirection::Northwest;
 		SetTexture("Player2", "Player2TexNorthwest");
 	}
 	else {
@@ -297,10 +343,40 @@ void BlueRapsolApp::CheckInput() {
 	allObjects[getObjIndex[player2Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 
 	//Shoot bullet
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0) && player2ReadyToFire) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && player2ReadyToFire) {
 		OutputDebugString(L"Player 2 Bullet Fired\n");
 		player2ReadyToFire = false;
-		allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+		
+		//Spawn bullet at the appropriate side outside of the player's hitbox
+		if (player2CarDir == CardinalDirection::North) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
+		}
+		else if (player2CarDir == CardinalDirection::Northeast) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
+		}
+		else if (player2CarDir == CardinalDirection::East) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+		}
+		else if (player2CarDir == CardinalDirection::Southeast) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
+		}
+		else if (player2CarDir == CardinalDirection::South) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
+		}
+		else if (player2CarDir == CardinalDirection::Southwest) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
+		}
+		else if (player2CarDir == CardinalDirection::West) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+		}
+		else if (player2CarDir == CardinalDirection::Northwest) {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
+		}
+		else {
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+		}
+
+		allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
 		allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer2Dir.x * bulletSpeed, initPlayer2Dir.y * bulletSpeed); //right now bullet speed is tied to player direction
 		//switch next bullet
 		if ( (nextBullet + 1) >= maxBullets) {

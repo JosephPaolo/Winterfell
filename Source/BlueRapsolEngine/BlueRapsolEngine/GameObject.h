@@ -32,6 +32,7 @@ public:
 	bool isWall = false;
 	bool isDoodad = false;
 	bool isBackground = false;
+	bool isEnabled = false;
 
 	ShapeType GetShape();
 	sf::Color GetColor();

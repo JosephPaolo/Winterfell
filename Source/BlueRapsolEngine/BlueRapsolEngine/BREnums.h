@@ -26,7 +26,11 @@ namespace BlueRapsolEnums {
 		North,
 		South,
 		East,
-		West
+		West,
+		Northeast,
+		Southeast,
+		Southwest,
+		Northwest
 	};
 
 	enum ObjectType {
