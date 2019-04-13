@@ -187,6 +187,10 @@ int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, flo
 	return allObjects.size() - 1; //return allObjects index 
 }
 
+void BlueRapsolEngine::SetTexture(std::string objKey, std::string sprite) {
+	allObjects[getObjIndex[objKey]].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[sprite]);
+}
+
 //Insures only one of this application is running
 bool BlueRapsolEngine::IsOnlyInstance(LPCTSTR appName) {
 	HANDLE handle = CreateMutex(NULL, TRUE, appName);

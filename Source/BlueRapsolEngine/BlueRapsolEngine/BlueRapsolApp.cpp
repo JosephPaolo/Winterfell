@@ -26,7 +26,21 @@ void BlueRapsolApp::GameStart() {
 	//Load Texture
 	graphicsSys.LoadTextureFromFile("WallTex", "../../../Assets/50x50Brick.png");
 	graphicsSys.LoadTextureFromFile("Player1TexNorth", "../../../Assets/P1North.png");
+	graphicsSys.LoadTextureFromFile("Player1TexEast", "../../../Assets/P1East.png");
+	graphicsSys.LoadTextureFromFile("Player1TexSouth", "../../../Assets/P1South.png");
+	graphicsSys.LoadTextureFromFile("Player1TexWest", "../../../Assets/P1West.png");
+	graphicsSys.LoadTextureFromFile("Player1TexNortheast", "../../../Assets/P1Northeast.png");
+	graphicsSys.LoadTextureFromFile("Player1TexNorthwest", "../../../Assets/P1Northwest.png");
+	graphicsSys.LoadTextureFromFile("Player1TexSoutheast", "../../../Assets/P1Southeast.png");
+	graphicsSys.LoadTextureFromFile("Player1TexSouthwest", "../../../Assets/P1Southwest.png");
 	graphicsSys.LoadTextureFromFile("Player2TexNorth", "../../../Assets/P2North.png");
+	graphicsSys.LoadTextureFromFile("Player2TexEast", "../../../Assets/P2East.png");
+	graphicsSys.LoadTextureFromFile("Player2TexSouth", "../../../Assets/P2South.png");
+	graphicsSys.LoadTextureFromFile("Player2TexWest", "../../../Assets/P2West.png");
+	graphicsSys.LoadTextureFromFile("Player2TexNortheast", "../../../Assets/P2Northeast.png");
+	graphicsSys.LoadTextureFromFile("Player2TexNorthwest", "../../../Assets/P2Northwest.png");
+	graphicsSys.LoadTextureFromFile("Player2TexSoutheast", "../../../Assets/P2Southeast.png");
+	graphicsSys.LoadTextureFromFile("Player2TexSouthwest", "../../../Assets/P2Southwest.png");
 	graphicsSys.LoadTextureFromFile("BulletTex", "../../../Assets/bullet.png");
 
 	//Example
@@ -111,41 +125,49 @@ void BlueRapsolApp::CheckInput() {
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = 0;
 		playerDir.y = -1;
+		SetTexture("Player1", "Player1TexNorth");
 	}
 	// Northeastward
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = 0.707;
 		playerDir.y = -0.707;
+		SetTexture("Player1", "Player1TexNortheast");
 	}
 	// Eastward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = 1;
 		playerDir.y = 0;
+		SetTexture("Player1", "Player1TexEast");
 	}
 	// Southeastward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = 0.707;
 		playerDir.y = 0.707;
+		SetTexture("Player1", "Player1TexSoutheast");
 	}
 	// Southward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = 0;
 		playerDir.y = 1;
+		SetTexture("Player1", "Player1TexSouth");
 	}
 	// Southwestward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = -0.707;
 		playerDir.y = 0.707;
+		SetTexture("Player1", "Player1TexSouthwest");
 	}
 	// Westward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = -1;
 		playerDir.y = 0;
+		SetTexture("Player1", "Player1TexWest");
 	}
 	// Northwestward
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		playerDir.x = -0.707;
 		playerDir.y = -0.707;
+		SetTexture("Player1", "Player1TexNorthwest");
 	}
 	else {
 		playerDir.x = 0;
@@ -166,41 +188,49 @@ void BlueRapsolApp::CheckInput() {
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = 0;
 		playerDir.y = -1;
+		SetTexture("Player2", "Player2TexNorth");
 	}
 	// Northeastward
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = 0.707;
 		playerDir.y = -0.707;
+		SetTexture("Player2", "Player2TexNortheast");
 	}
 	// Eastward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = 1;
 		playerDir.y = 0;
+		SetTexture("Player2", "Player2TexEast");
 	}
 	// Southeastward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = 0.707;
 		playerDir.y = 0.707;
+		SetTexture("Player2", "Player2TexSoutheast");
 	}
 	// Southward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = 0;
 		playerDir.y = 1;
+		SetTexture("Player2", "Player2TexSouth");
 	}
 	// Southwestward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = -0.707;
 		playerDir.y = 0.707;
+		SetTexture("Player2", "Player2TexSouthwest");
 	}
 	// Westward
 	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = -1;
 		playerDir.y = 0;
+		SetTexture("Player2", "Player2TexWest");
 	}
 	// Northwestward
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		playerDir.x = -0.707;
 		playerDir.y = -0.707;
+		SetTexture("Player2", "Player2TexNorthwest");
 	}
 	else {
 		playerDir.x = 0;

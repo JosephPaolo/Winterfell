@@ -59,6 +59,8 @@ protected:
 	int Instantiate(std::string setKey, std::string setSprite, float getX, float getY);
 	int Instantiate(std::string setKey, std::string setSprite, float getX, float getY, float width, float height);
 
+	void SetTexture(std::string objKey, std::string setSprite);
+
 	virtual void GameStart();
 	virtual void GameUpdate();
 	virtual bool Initialize();
