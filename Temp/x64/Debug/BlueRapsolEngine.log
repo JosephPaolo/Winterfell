@@ -1,24 +1,4 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  BlueRapsolApp.cpp
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(88): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(89): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(98): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(99): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(108): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(109): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(118): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(119): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(125): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(126): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(143): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(144): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(153): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(154): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(163): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(164): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(173): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(174): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(180): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\paolo school profile\documents\repository\git repo 4\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(181): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  BlueRapsolEngine.vcxproj -> C:\Users\Paolo School Profile\Documents\Repository\Git repo 4\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe
+  PhysicsSystem.cpp
+  BlueRapsolEngine.vcxproj -> D:\Files\PROGRAMMING\School\GAME3121\Winterfell Repo\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe

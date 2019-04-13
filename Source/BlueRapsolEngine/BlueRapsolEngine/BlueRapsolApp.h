@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdio.h>
 #include "BlueRapsolEngine.h"
 #include <string>
 

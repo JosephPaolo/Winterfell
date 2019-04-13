@@ -25,7 +25,13 @@ public:
 	GameObject::GameObject(sf::Texture, float getX, float getY, float width, float height);
 	GameObject::~GameObject(void);
 	
+	//Temp until components are properly implemented
+	//Tags
 	bool isPlayer = false;
+	bool isProjectile = false;
+	bool isWall = false;
+	bool isDoodad = false;
+	bool isBackground = false;
 
 	ShapeType GetShape();
 	sf::Color GetColor();
