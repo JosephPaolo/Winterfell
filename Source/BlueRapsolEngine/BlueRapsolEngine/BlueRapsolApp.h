@@ -19,7 +19,21 @@ protected:
 
 private:
 	void CheckInput();
+	void TickCounters();
 
 	std::string player1Key;
 	std::string player2Key;
+
+	Vector2 initPlayer1Dir;
+	Vector2 initPlayer2Dir;
+
+	float bulletSpeed = 0.3;
+	int recycledBullets[20];
+	int maxBullets = 20;
+	int nextBullet = 0;
+	int bulletCooldownInTicks = 360;
+	int player1BulletCooldownTickCounter = 0;
+	int player2BulletCooldownTickCounter = 0;
+	bool player1ReadyToFire = false;
+	bool player2ReadyToFire = false;
 };
