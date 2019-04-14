@@ -33,6 +33,7 @@ public:
 	bool isDoodad = false;
 	bool isBackground = false;
 	bool isEnabled = false;
+	bool isDestroyed = false;
 
 	ShapeType GetShape();
 	sf::Color GetColor();

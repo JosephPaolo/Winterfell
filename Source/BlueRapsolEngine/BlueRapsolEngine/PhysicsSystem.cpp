@@ -95,9 +95,12 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				}
 
 				if (getObjRef[i].get()->isProjectile) { //player death
+					OutputDebugString(L"[Notice] Player 1 collides with bullet.\n");
 					getObjRef[i].get()->isEnabled = false; //Disable the bullet
 					getObjRef[i].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the bullet
 					getObjRef[i].get()->GetTransformComponent()->SetPosition(-100, -100); //Hide the bullet away from the stage
+					getObjRef[0].get()->isDestroyed = true; //destroy player which leads to other player's victory
+					getObjRef[1].get()->isDestroyed = false; //destroy player which leads to other player's victory
 				}
 			}
 
@@ -113,34 +116,34 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 			playerVelocityHolder.x = getObjRef[1].get()->GetPhysicsComponent()->GetVelocity().x;
 			playerVelocityHolder.y = getObjRef[1].get()->GetPhysicsComponent()->GetVelocity().y;
 
-			//Check if there is overlap and that player 2 is moving velocity wise
+			//Check if there is overlap and that player 2 or object is moving velocity wise
 			if (TestAABBOverlap(&playerBounds, &wallBounds)
 				&& !(playerVelocityHolder.x == 0 && playerVelocityHolder.y == 0 && objVelocityHolder.x == 0 && objVelocityHolder.y == 0)) {
 
 				//Prevent going further upon collision
 				if ((playerBounds.max.x > wallBounds.min.x) && (playerBounds.max.x < wallBounds.min.x + collisionPadding)) { // Player collides with Wall from left
-					OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+					OutputDebugString(L"[Notice] Player 2 collides with object from left.\n");
 					if (getObjRef[i].get()->isWall && playerVelocityHolder.x > 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, playerVelocityHolder.y);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.min.x < wallBounds.max.x) && (playerBounds.min.x > wallBounds.max.x - collisionPadding)) { // Player collides with Wall from right
-					OutputDebugString(L"[Notice] Horiontal Collision detected.\n");
+					OutputDebugString(L"[Notice] Player 2 collides with object from right.\n");
 					if (getObjRef[i].get()->isWall && playerVelocityHolder.x < 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, playerVelocityHolder.y);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.max.y < wallBounds.min.y) && (playerBounds.max.y > wallBounds.min.y - collisionPadding)) { // Player collides with Wall from below
-					OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+					OutputDebugString(L"[Notice] Player 2 collides with object from below.\n");
 					if (getObjRef[i].get()->isWall && playerVelocityHolder.y < 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(playerVelocityHolder.x, 0);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.min.y > wallBounds.max.y) && (playerBounds.min.y < wallBounds.max.y + collisionPadding)) { // Player collides with Wall from above
-					OutputDebugString(L"[Notice] Vertical Collision detected.\n");
+					OutputDebugString(L"[Notice] Player 2 collides with object from above.\n");
 					if (getObjRef[i].get()->isWall && playerVelocityHolder.y > 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(playerVelocityHolder.x, 0);
 					}
@@ -148,9 +151,12 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				}
 
 				if (getObjRef[i].get()->isProjectile) { //player death
+					OutputDebugString(L"[Notice] Player 2 collides with bullet.\n");
 					getObjRef[i].get()->isEnabled = false; //Disable the bullet
 					getObjRef[i].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the bullet
 					getObjRef[i].get()->GetTransformComponent()->SetPosition(-100, -100); //Hide the bullet away from the stage
+					getObjRef[1].get()->isDestroyed = true; //destroy player which leads to other player's victory
+					getObjRef[0].get()->isDestroyed = false; //destroy player which leads to other player's victory
 				}
 			}
 		}

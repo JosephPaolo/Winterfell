@@ -7,7 +7,7 @@ AudioSystem::AudioSystem() {
 
 
 void AudioSystem::LoadBuffer() {
-	if (!buffer.loadFromFile("../../../Assets/zzz.wav")) {
+	if (!buffer.loadFromFile("../../../Assets/MMBGM.wav")) {
 		OutputDebugString(L"\n[Error] Cannot load test sound.");
 	}
 	sound.setBuffer(buffer);
@@ -29,6 +29,8 @@ void AudioSystem::LoadBuffer() {
 void AudioSystem::SoundPlay(int x) {
 	if (x = 1) {
 		sound.play();
+		sound.setLoop(true);
+		sound.setVolume(30);
 	}
 	else if (x = 2) {
 		sound2.play();

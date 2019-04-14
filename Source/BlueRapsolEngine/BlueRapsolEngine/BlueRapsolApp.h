@@ -22,6 +22,9 @@ protected:
 private:
 	void CheckInput();
 	void TickCounters();
+	void PlayerVictory(int playerNum);
+	void Rematch();
+	void CheckVictory();
 
 	std::string player1Key;
 	std::string player2Key;

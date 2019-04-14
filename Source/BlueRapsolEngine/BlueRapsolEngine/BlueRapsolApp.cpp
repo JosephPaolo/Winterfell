@@ -21,7 +21,7 @@ void BlueRapsolApp::GameStart() {
 	audioSys.LoadBuffer();
 
 	//Play Sound
-	//audioSys.SoundPlay();
+	audioSys.SoundPlay(1);
 
 	//Load Texture
 	graphicsSys.LoadTextureFromFile("WallTex", "../../../Assets/50x50Brick.png");
@@ -42,6 +42,8 @@ void BlueRapsolApp::GameStart() {
 	graphicsSys.LoadTextureFromFile("Player2TexSoutheast", "../../../Assets/P2Southeast.png");
 	graphicsSys.LoadTextureFromFile("Player2TexSouthwest", "../../../Assets/P2Southwest.png");
 	graphicsSys.LoadTextureFromFile("BulletTex", "../../../Assets/bullet.png");
+	graphicsSys.LoadTextureFromFile("ExplosionTex", "../../../Assets/Explosion.png");
+	graphicsSys.LoadTextureFromFile("BeybladeTex", "../../../Assets/Beyblade.png");
 
 	//Example
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
@@ -147,14 +149,9 @@ void BlueRapsolApp::GameStart() {
 }
 
 void BlueRapsolApp::GameUpdate() {
+	CheckVictory();
 	TickCounters();
 	CheckInput();
-
-	//Example
-	//This moves our second created object (index 1) towards the right by 0.2f every tick
-	//float newPositionX = allObjects[1].get()->GetTransformComponent()->GetPosition().x + 0.05f; //The original x position + 0.2f
-	//float newPositionY = allObjects[1].get()->GetTransformComponent()->GetPosition().y; //The original y position doesnt change
-	//allObjects[1].get()->GetTransformComponent()->SetPosition(newPositionX, newPositionY); //We pass the values to the object with SetPosition()
 
 }
 
@@ -176,6 +173,44 @@ void BlueRapsolApp::TickCounters() {
 			player2ReadyToFire = true;
 		}
 	}
+}
+
+void BlueRapsolApp::CheckVictory() {
+
+	if (player1Victory || player2Victory) {
+		return;
+	}
+	if (allObjects[1].get()->isDestroyed == true) {
+		OutputDebugString(L"[Notice] Player 2 Destroyed.\n");
+		player1Victory = true;
+		PlayerVictory(1);
+	}
+	else if (allObjects[0].get()->isDestroyed == true) {
+		OutputDebugString(L"[Notice] Player 1 Destroyed.\n");
+		player2Victory = true;
+		PlayerVictory(2);
+	}
+	
+}
+
+void BlueRapsolApp::PlayerVictory(int playerNum) {
+	if (playerNum == 1) { //Player 1 Victory
+		OutputDebugString(L"[Notice] Player 1 Victory.\n");
+		allObjects[1].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["ExplosionTex"]); 
+	}
+	else if (playerNum == 2) { //Player 2 Victory
+		OutputDebugString(L"[Notice] Player 2 Victory.\n");
+		allObjects[0].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["ExplosionTex"]);
+	}
+	else { //error
+		OutputDebugString(L"[Error] Can't discern victor.\n");
+	}
+}
+
+void BlueRapsolApp::Rematch() {
+	//Revert sprite
+	allObjects[getObjIndex["Player1"]].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["Player1TexNorth"]);
+	allObjects[getObjIndex["Player2"]].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["Player2TexNorth"]);
 }
 
 void BlueRapsolApp::CheckInput() {
