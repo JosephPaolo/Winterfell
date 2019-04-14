@@ -52,13 +52,13 @@ void BlueRapsolApp::GameStart() {
 	//Making the players
 	//TODO: Currently, player 1 and 2 must be the first and second objects created to work. Change to be more modular in the future.
 
-	Instantiate("Player1", "Player1TexNorth", 150, 150, 25, 25);
+	Instantiate("Player1", "Player1TexNorth", 55, 168, 25, 25);
 	player1Key = "Player1";
 	allObjects[getObjIndex["Player1"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
 	initPlayer1Dir.x = 0;
 	initPlayer1Dir.y = -1;
 
-	Instantiate("Player2", "Player2TexNorth", 200, 150, 25, 25);
+	Instantiate("Player2", "Player2TexNorth", 558, 168, 25, 25);
 	player2Key = "Player2";
 	allObjects[getObjIndex["Player2"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
 	initPlayer2Dir.x = 0;
@@ -90,10 +90,52 @@ void BlueRapsolApp::GameStart() {
 		allObjects[getObjIndex["East Wall " + std::to_string(i-1)]].get()->isWall = true;
 	}
 
+	Instantiate("Wall A", "WallTex", 300, 75);	 allObjects[getObjIndex["Wall A"]].get()->isWall = true;
+	Instantiate("Wall B", "WallTex", 300, 225);  allObjects[getObjIndex["Wall B"]].get()->isWall = true;
+	Instantiate("Wall C", "WallTex", 300, 250);  allObjects[getObjIndex["Wall C"]].get()->isWall = true;
+	Instantiate("Wall D", "WallTex", 300, 100);  allObjects[getObjIndex["Wall D"]].get()->isWall = true;
+	Instantiate("Wall E", "WallTex", 450, 150);  allObjects[getObjIndex["Wall E"]].get()->isWall = true;
+	Instantiate("Wall F", "WallTex", 450, 175);  allObjects[getObjIndex["Wall F"]].get()->isWall = true;
+	Instantiate("Wall G", "WallTex", 150, 150);  allObjects[getObjIndex["Wall G"]].get()->isWall = true;
+	Instantiate("Wall H", "WallTex", 150, 175);  allObjects[getObjIndex["Wall H"]].get()->isWall = true;
+	Instantiate("Wall I", "WallTex", 225, 125);  allObjects[getObjIndex["Wall I"]].get()->isWall = true;
+	Instantiate("Wall J", "WallTex", 225, 200);  allObjects[getObjIndex["Wall J"]].get()->isWall = true;
+	Instantiate("Wall K", "WallTex", 375, 125);  allObjects[getObjIndex["Wall K"]].get()->isWall = true;
+	Instantiate("Wall L", "WallTex", 375, 200);  allObjects[getObjIndex["Wall L"]].get()->isWall = true;
+	Instantiate("Wall M", "WallTex", 50, 50);    allObjects[getObjIndex["Wall M"]].get()->isWall = true;
+	Instantiate("Wall N", "WallTex", 50, 75);    allObjects[getObjIndex["Wall N"]].get()->isWall = true;
+	Instantiate("Wall O", "WallTex", 50, 100);   allObjects[getObjIndex["Wall O"]].get()->isWall = true;
+	Instantiate("Wall P", "WallTex", 550, 50);   allObjects[getObjIndex["Wall P"]].get()->isWall = true;
+	Instantiate("Wall Q", "WallTex", 550, 75);   allObjects[getObjIndex["Wall Q"]].get()->isWall = true;
+	Instantiate("Wall R", "WallTex", 550, 100);  allObjects[getObjIndex["Wall R"]].get()->isWall = true;
+	Instantiate("Wall S", "WallTex", 50, 225);   allObjects[getObjIndex["Wall S"]].get()->isWall = true;
+	Instantiate("Wall T", "WallTex", 50, 250);   allObjects[getObjIndex["Wall T"]].get()->isWall = true;
+	Instantiate("Wall U", "WallTex", 50, 275);   allObjects[getObjIndex["Wall U"]].get()->isWall = true;
+	Instantiate("Wall V", "WallTex", 550, 225);  allObjects[getObjIndex["Wall V"]].get()->isWall = true;
+	Instantiate("Wall W", "WallTex", 550, 250);  allObjects[getObjIndex["Wall W"]].get()->isWall = true;
+	Instantiate("Wall X", "WallTex", 550, 275);  allObjects[getObjIndex["Wall X"]].get()->isWall = true;
+	Instantiate("Wall Y", "WallTex", 125, 25);   allObjects[getObjIndex["Wall Y"]].get()->isWall = true;
+	Instantiate("Wall Z", "WallTex", 125, 300);  allObjects[getObjIndex["Wall Z"]].get()->isWall = true;
+	Instantiate("Wall AA", "WallTex", 475, 25);  allObjects[getObjIndex["Wall AA"]].get()->isWall = true;
+	Instantiate("Wall AB", "WallTex", 475, 300); allObjects[getObjIndex["Wall AB"]].get()->isWall = true;
+	Instantiate("Wall AC", "WallTex", 125, 50);  allObjects[getObjIndex["Wall AC"]].get()->isWall = true;
+	Instantiate("Wall AD", "WallTex", 125, 75);  allObjects[getObjIndex["Wall AD"]].get()->isWall = true;
+	Instantiate("Wall AE", "WallTex", 475, 250); allObjects[getObjIndex["Wall AE"]].get()->isWall = true;
+	Instantiate("Wall AF", "WallTex", 475, 275); allObjects[getObjIndex["Wall AF"]].get()->isWall = true;
+	Instantiate("Wall AG", "WallTex", 175, 250); allObjects[getObjIndex["Wall AG"]].get()->isWall = true;
+	Instantiate("Wall AH", "WallTex", 200, 250); allObjects[getObjIndex["Wall AH"]].get()->isWall = true;
+	Instantiate("Wall AI", "WallTex", 400, 75);  allObjects[getObjIndex["Wall AI"]].get()->isWall = true;
+	Instantiate("Wall AJ", "WallTex", 425, 75);  allObjects[getObjIndex["Wall AJ"]].get()->isWall = true;
+	Instantiate("Wall AK", "WallTex", 200, 50);  allObjects[getObjIndex["Wall AK"]].get()->isWall = true;
+	Instantiate("Wall AL", "WallTex", 400, 275); allObjects[getObjIndex["Wall AL"]].get()->isWall = true;
+	Instantiate("Wall AM", "WallTex", 350, 25);  allObjects[getObjIndex["Wall AM"]].get()->isWall = true;
+	Instantiate("Wall AN", "WallTex", 250, 300); allObjects[getObjIndex["Wall AN"]].get()->isWall = true;
+
+
 	//Creating the recycled bullets
 
 	for (int i = 0; i < maxBullets; i++) {
-		Instantiate("Bullet " + std::to_string(i), "BulletTex", -100, -100, 10, 10);
+		Instantiate("Bullet " + std::to_string(i), "BulletTex", -100, -100, 20, 20);
 		allObjects[allObjects.size() - 1].get()->isProjectile = true;
 		recycledBullets[i] = allObjects.size() - 1;
 	}
@@ -215,8 +257,8 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0;
 		playerDir.y = 0;
 	}
-	playerDir.x = playerDir.x * 0.05;
-	playerDir.y = playerDir.y * 0.05;
+	playerDir.x = playerDir.x * 0.2f;
+	playerDir.y = playerDir.y * 0.2f;
 	allObjects[getObjIndex[player1Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 	
 	//Shoot bullet
@@ -226,7 +268,7 @@ void BlueRapsolApp::CheckInput() {
 
 		//Spawn bullet at the appropriate side outside of the player's hitbox
 		if (player1CarDir == CardinalDirection::North) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 10);
 		}
 		else if (player1CarDir == CardinalDirection::Northeast) {
 			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
@@ -244,10 +286,10 @@ void BlueRapsolApp::CheckInput() {
 			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
 		}
 		else if (player1CarDir == CardinalDirection::West) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
 		}
 		else if (player1CarDir == CardinalDirection::Northwest) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 10);
 		}
 		else {
 			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
@@ -338,8 +380,8 @@ void BlueRapsolApp::CheckInput() {
 		playerDir.x = 0;
 		playerDir.y = 0;
 	}
-	playerDir.x = playerDir.x * 0.05;
-	playerDir.y = playerDir.y * 0.05;
+	playerDir.x = playerDir.x * 0.2f;
+	playerDir.y = playerDir.y * 0.2f;
 	allObjects[getObjIndex[player2Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 
 	//Shoot bullet
@@ -349,7 +391,7 @@ void BlueRapsolApp::CheckInput() {
 		
 		//Spawn bullet at the appropriate side outside of the player's hitbox
 		if (player2CarDir == CardinalDirection::North) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 10);
 		}
 		else if (player2CarDir == CardinalDirection::Northeast) {
 			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
@@ -367,17 +409,17 @@ void BlueRapsolApp::CheckInput() {
 			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
 		}
 		else if (player2CarDir == CardinalDirection::West) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
 		}
 		else if (player2CarDir == CardinalDirection::Northwest) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
+			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 10);
 		}
 		else {
 			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
 		}
 
 		allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
-		allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer2Dir.x * bulletSpeed, initPlayer2Dir.y * bulletSpeed); //right now bullet speed is tied to player direction
+		allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer2Dir.x * bulletSpeed, initPlayer2Dir.y * bulletSpeed); //right now bullet direction is tied to player direction
 		//switch next bullet
 		if ( (nextBullet + 1) >= maxBullets) {
 			nextBullet = 0;

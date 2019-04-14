@@ -48,7 +48,7 @@ bool BlueRapsolEngine::Initialize() {
 }
 
 void BlueRapsolEngine::Run(HINSTANCE hInstance) {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Blue Rapsol Game"); //Creates the window
+	sf::RenderWindow window(sf::VideoMode(1250, 700), "Blue Rapsol Game"); //Creates the window
 	isInitializing = true;
 
 	//Initialization
@@ -99,14 +99,21 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 			}
 		}
 
-		if (!isPaused) {
-			mTimer.Tick(); //Ticks the timer
-			GameUpdate(); //Update game logic
-			physicsSys.UpdatePhysics(allObjects, 0, 1); //TODO: handle player index better
+		//
+		if (loopCounter >= loopsPerTick) {
+			loopCounter = 0;
+
+			if (!isPaused) {
+				mTimer.Tick(); //Ticks the timer
+				GameUpdate(); //Update game logic
+				physicsSys.UpdatePhysics(allObjects, 0, 1); //TODO: handle player index better
+			}
+			graphicsSys.DrawRenderObjects(renderWindow, allObjects);
+		}
+		else {
+			loopCounter++;
 		}
 
-		graphicsSys.DrawRenderObjects(renderWindow, allObjects);
-		//DrawRenderObjects(renderWindow); //Draw Object in the scene
 	}
 }
 

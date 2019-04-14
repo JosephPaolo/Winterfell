@@ -76,6 +76,9 @@ protected:
 
 private:
 	GameTimer mTimer;
+	int loopsPerTick = 128;
+	int loopCounter = 0;
+
 	bool isInitializing = true;
 	bool isPaused = false;
 

@@ -115,7 +115,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 
 			//Check if there is overlap and that player 2 is moving velocity wise
 			if (TestAABBOverlap(&playerBounds, &wallBounds)
-				&& !(playerVelocityHolder.x == 0 && playerVelocityHolder.y == 0)) {
+				&& !(playerVelocityHolder.x == 0 && playerVelocityHolder.y == 0 && objVelocityHolder.x == 0 && objVelocityHolder.y == 0)) {
 
 				//Prevent going further upon collision
 				if ((playerBounds.max.x > wallBounds.min.x) && (playerBounds.max.x < wallBounds.min.x + collisionPadding)) { // Player collides with Wall from left
