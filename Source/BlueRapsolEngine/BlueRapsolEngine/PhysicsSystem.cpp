@@ -97,10 +97,13 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				if (getObjRef[i].get()->isProjectile) { //player death
 					OutputDebugString(L"[Notice] Player 1 collides with bullet.\n");
 					getObjRef[i].get()->isEnabled = false; //Disable the bullet
+					getObjRef[0].get()->isEnabled = false; //Disable player
 					getObjRef[i].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the bullet
+					getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the player
 					getObjRef[i].get()->GetTransformComponent()->SetPosition(-100, -100); //Hide the bullet away from the stage
 					getObjRef[0].get()->isDestroyed = true; //destroy player which leads to other player's victory
-					getObjRef[1].get()->isDestroyed = false; //destroy player which leads to other player's victory
+					getObjRef[1].get()->isDestroyed = false; 
+
 				}
 			}
 
@@ -153,7 +156,9 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				if (getObjRef[i].get()->isProjectile) { //player death
 					OutputDebugString(L"[Notice] Player 2 collides with bullet.\n");
 					getObjRef[i].get()->isEnabled = false; //Disable the bullet
+					getObjRef[1].get()->isEnabled = false; //Disable player 1
 					getObjRef[i].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the bullet
+					getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the player
 					getObjRef[i].get()->GetTransformComponent()->SetPosition(-100, -100); //Hide the bullet away from the stage
 					getObjRef[1].get()->isDestroyed = true; //destroy player which leads to other player's victory
 					getObjRef[0].get()->isDestroyed = false; //destroy player which leads to other player's victory

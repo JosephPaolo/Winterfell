@@ -44,6 +44,8 @@ void BlueRapsolApp::GameStart() {
 	graphicsSys.LoadTextureFromFile("BulletTex", "../../../Assets/bullet.png");
 	graphicsSys.LoadTextureFromFile("ExplosionTex", "../../../Assets/Explosion.png");
 	graphicsSys.LoadTextureFromFile("BeybladeTex", "../../../Assets/Beyblade.png");
+	graphicsSys.LoadTextureFromFile("Player1VictoryTex", "../../../Assets/Player1Victory.png");
+	graphicsSys.LoadTextureFromFile("Player2VictoryTex", "../../../Assets/Player2Victory.png");
 
 	//Example
 	//Instantiate() creates a new GameObject and stores it in an array. Instantiate() returns the index position so you can reference the object later on.
@@ -57,12 +59,14 @@ void BlueRapsolApp::GameStart() {
 	Instantiate("Player1", "Player1TexNorth", 55, 168, 25, 25);
 	player1Key = "Player1";
 	allObjects[getObjIndex["Player1"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
+	allObjects[getObjIndex["Player1"]].get()->isEnabled = true;
 	initPlayer1Dir.x = 0;
 	initPlayer1Dir.y = -1;
 
 	Instantiate("Player2", "Player2TexNorth", 558, 168, 25, 25);
 	player2Key = "Player2";
 	allObjects[getObjIndex["Player2"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
+	allObjects[getObjIndex["Player2"]].get()->isEnabled = true;
 	initPlayer2Dir.x = 0;
 	initPlayer2Dir.y = -1;
 
@@ -135,13 +139,15 @@ void BlueRapsolApp::GameStart() {
 
 
 	//Creating the recycled bullets
-
 	for (int i = 0; i < maxBullets; i++) {
 		Instantiate("Bullet " + std::to_string(i), "BulletTex", -100, -100, 20, 20);
 		allObjects[allObjects.size() - 1].get()->isProjectile = true;
 		recycledBullets[i] = allObjects.size() - 1;
 	}
 
+	//Create victory text
+	Instantiate("VictoryText1", "Player1VictoryTex", -600, -600);
+	Instantiate("VictoryText2", "Player2VictoryTex", -600, -600);
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
@@ -197,10 +203,12 @@ void BlueRapsolApp::PlayerVictory(int playerNum) {
 	if (playerNum == 1) { //Player 1 Victory
 		OutputDebugString(L"[Notice] Player 1 Victory.\n");
 		allObjects[1].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["ExplosionTex"]); 
+		allObjects[getObjIndex["VictoryText1"]].get()->GetTransformComponent()->SetPosition(190,50); //Show victory text
 	}
 	else if (playerNum == 2) { //Player 2 Victory
 		OutputDebugString(L"[Notice] Player 2 Victory.\n");
 		allObjects[0].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["ExplosionTex"]);
+		allObjects[getObjIndex["VictoryText2"]].get()->GetTransformComponent()->SetPosition(190, 50); //Show victory text
 	}
 	else { //error
 		OutputDebugString(L"[Error] Can't discern victor.\n");
@@ -208,259 +216,285 @@ void BlueRapsolApp::PlayerVictory(int playerNum) {
 }
 
 void BlueRapsolApp::Rematch() {
+	//disable players
+	allObjects[getObjIndex["Player1"]].get()->isEnabled = false;
+	allObjects[getObjIndex["Player2"]].get()->isEnabled = false;
+
+	//stop players
+	allObjects[getObjIndex["Player1"]].get()->GetPhysicsComponent()->SetVelocity(0, 0);
+	allObjects[getObjIndex["Player2"]].get()->GetPhysicsComponent()->SetVelocity(0, 0);
+
+	//Fix players
+	allObjects[getObjIndex["Player1"]].get()->isDestroyed = false;
+	allObjects[getObjIndex["Player2"]].get()->isDestroyed = false;
+
 	//Revert sprite
 	allObjects[getObjIndex["Player1"]].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["Player1TexNorth"]);
 	allObjects[getObjIndex["Player2"]].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["Player2TexNorth"]);
+
+	//Revert positions
+	allObjects[getObjIndex["Player1"]].get()->GetTransformComponent()->SetPosition(55, 168);
+	allObjects[getObjIndex["Player2"]].get()->GetTransformComponent()->SetPosition(558, 168);
+	allObjects[getObjIndex["VictoryText1"]].get()->GetTransformComponent()->SetPosition(-600, -600);
+	allObjects[getObjIndex["VictoryText2"]].get()->GetTransformComponent()->SetPosition(-600, -600);
+
+	//Reset victories
+	player1Victory = false;
+	player2Victory = false;
+
+	//reenable players
+	allObjects[getObjIndex["Player1"]].get()->isEnabled = true;
+	allObjects[getObjIndex["Player2"]].get()->isEnabled = true;
 }
 
 void BlueRapsolApp::CheckInput() {
 	Vector2 playerDir;
 
-	//TODO Check if player 1's object exist
-	if (false) {
-		return;
+	if ( (player1Victory || player2Victory) && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+		Rematch();
 	}
 
 	//Remember: scene origin is top left, y positive is downwards, x positive is rightwards
 
-	//Player 1 control
-	// Northward
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = 0;
-		playerDir.y = -1;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::North;
-		SetTexture("Player1", "Player1TexNorth");
-	}
-	// Northeastward
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = 0.707;
-		playerDir.y = -0.707;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::Northeast;
-		SetTexture("Player1", "Player1TexNortheast");
-	}
-	// Eastward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = 1;
-		playerDir.y = 0;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::East;
-		SetTexture("Player1", "Player1TexEast");
-	}
-	// Southeastward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = 0.707;
-		playerDir.y = 0.707;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::Southeast;
-		SetTexture("Player1", "Player1TexSoutheast");
-	}
-	// Southward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = 0;
-		playerDir.y = 1;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::South;
-		SetTexture("Player1", "Player1TexSouth");
-	}
-	// Southwestward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = -0.707;
-		playerDir.y = 0.707;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::Southwest;
-		SetTexture("Player1", "Player1TexSouthwest");
-	}
-	// Westward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = -1;
-		playerDir.y = 0;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::West;
-		SetTexture("Player1", "Player1TexWest");
-	}
-	// Northwestward
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerDir.x = -0.707;
-		playerDir.y = -0.707;
-		initPlayer1Dir = playerDir;
-		player1CarDir = CardinalDirection::Northwest;
-		SetTexture("Player1", "Player1TexNorthwest");
-	}
-	else {
-		playerDir.x = 0;
-		playerDir.y = 0;
-	}
-	playerDir.x = playerDir.x * 0.2f;
-	playerDir.y = playerDir.y * 0.2f;
-	allObjects[getObjIndex[player1Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
-	
-	//Shoot bullet
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && player1ReadyToFire) {
-		OutputDebugString(L"Player 1 Bullet Fired\n");
-		player1ReadyToFire = false;
+	if (allObjects[getObjIndex["Player1"]].get()->isEnabled == true) {
 
-		//Spawn bullet at the appropriate side outside of the player's hitbox
-		if (player1CarDir == CardinalDirection::North) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 10);
+		//Player 1 control
+		// Northward
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = 0;
+			playerDir.y = -1;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::North;
+			SetTexture("Player1", "Player1TexNorth");
 		}
-		else if (player1CarDir == CardinalDirection::Northeast) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+		// Northeastward
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = 0.707;
+			playerDir.y = -0.707;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::Northeast;
+			SetTexture("Player1", "Player1TexNortheast");
 		}
-		else if (player1CarDir == CardinalDirection::East) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+		// Eastward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = 1;
+			playerDir.y = 0;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::East;
+			SetTexture("Player1", "Player1TexEast");
 		}
-		else if (player1CarDir == CardinalDirection::Southeast) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+		// Southeastward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = 0.707;
+			playerDir.y = 0.707;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::Southeast;
+			SetTexture("Player1", "Player1TexSoutheast");
 		}
-		else if (player1CarDir == CardinalDirection::South) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+		// Southward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = 0;
+			playerDir.y = 1;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::South;
+			SetTexture("Player1", "Player1TexSouth");
 		}
-		else if (player1CarDir == CardinalDirection::Southwest) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+		// Southwestward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = -0.707;
+			playerDir.y = 0.707;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::Southwest;
+			SetTexture("Player1", "Player1TexSouthwest");
 		}
-		else if (player1CarDir == CardinalDirection::West) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+		// Westward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = -1;
+			playerDir.y = 0;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::West;
+			SetTexture("Player1", "Player1TexWest");
 		}
-		else if (player1CarDir == CardinalDirection::Northwest) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 10);
+		// Northwestward
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			playerDir.x = -0.707;
+			playerDir.y = -0.707;
+			initPlayer1Dir = playerDir;
+			player1CarDir = CardinalDirection::Northwest;
+			SetTexture("Player1", "Player1TexNorthwest");
 		}
 		else {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+			playerDir.x = 0;
+			playerDir.y = 0;
 		}
+		playerDir.x = playerDir.x * 0.2f;
+		playerDir.y = playerDir.y * 0.2f;
+		allObjects[getObjIndex[player1Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 
-		allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
-		allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer1Dir.x * bulletSpeed, initPlayer1Dir.y * bulletSpeed); //TODO right now bullet speed is tied to player speed, rectify for future when player speed is variable
-		//switch next bullet
-		if ((nextBullet + 1) >= maxBullets) {
-			nextBullet = 0;
+		//Shoot bullet
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && player1ReadyToFire) {
+			OutputDebugString(L"Player 1 Bullet Fired\n");
+			player1ReadyToFire = false;
+
+			//Spawn bullet at the appropriate side outside of the player's hitbox
+			if (player1CarDir == CardinalDirection::North) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 10);
+			}
+			else if (player1CarDir == CardinalDirection::Northeast) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 6);
+			}
+			else if (player1CarDir == CardinalDirection::East) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+			}
+			else if (player1CarDir == CardinalDirection::Southeast) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+			}
+			else if (player1CarDir == CardinalDirection::South) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+			}
+			else if (player1CarDir == CardinalDirection::Southwest) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 14);
+			}
+			else if (player1CarDir == CardinalDirection::West) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+			}
+			else if (player1CarDir == CardinalDirection::Northwest) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[0].get()->GetTransformComponent()->GetPosition().y - 10);
+			}
+			else {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[0].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[0].get()->GetTransformComponent()->GetPosition().y + 4);
+			}
+
+			allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
+			allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer1Dir.x * bulletSpeed, initPlayer1Dir.y * bulletSpeed); //TODO right now bullet speed is tied to player speed, rectify for future when player speed is variable
+			//switch next bullet
+			if ((nextBullet + 1) >= maxBullets) {
+				nextBullet = 0;
+			}
+			else {
+				nextBullet++;
+			}
+		}
+	}
+
+	if (allObjects[getObjIndex["Player2"]].get()->isEnabled == true) {
+
+		//Player 2 control
+		// Northward
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = 0;
+			playerDir.y = -1;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::North;
+			SetTexture("Player2", "Player2TexNorth");
+		}
+		// Northeastward
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = 0.707;
+			playerDir.y = -0.707;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::Northeast;
+			SetTexture("Player2", "Player2TexNortheast");
+		}
+		// Eastward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = 1;
+			playerDir.y = 0;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::East;
+			SetTexture("Player2", "Player2TexEast");
+		}
+		// Southeastward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = 0.707;
+			playerDir.y = 0.707;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::Southeast;
+			SetTexture("Player2", "Player2TexSoutheast");
+		}
+		// Southward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = 0;
+			playerDir.y = 1;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::South;
+			SetTexture("Player2", "Player2TexSouth");
+		}
+		// Southwestward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = -0.707;
+			playerDir.y = 0.707;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::Southwest;
+			SetTexture("Player2", "Player2TexSouthwest");
+		}
+		// Westward
+		else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = -1;
+			playerDir.y = 0;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::West;
+			SetTexture("Player2", "Player2TexWest");
+		}
+		// Northwestward
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			playerDir.x = -0.707;
+			playerDir.y = -0.707;
+			initPlayer2Dir = playerDir;
+			player2CarDir = CardinalDirection::Northwest;
+			SetTexture("Player2", "Player2TexNorthwest");
 		}
 		else {
-			nextBullet++;
+			playerDir.x = 0;
+			playerDir.y = 0;
 		}
-	}
+		playerDir.x = playerDir.x * 0.2f;
+		playerDir.y = playerDir.y * 0.2f;
+		allObjects[getObjIndex[player2Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 
-	//TODO Check if player 2's object exist
-	if (false) {
-		return;
-	}
+		//Shoot bullet
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && player2ReadyToFire) {
+			OutputDebugString(L"Player 2 Bullet Fired\n");
+			player2ReadyToFire = false;
 
-	//Player 2 control
-	// Northward
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = 0;
-		playerDir.y = -1;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::North;
-		SetTexture("Player2", "Player2TexNorth");
-	}
-	// Northeastward
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = 0.707;
-		playerDir.y = -0.707;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::Northeast;
-		SetTexture("Player2", "Player2TexNortheast");
-	}
-	// Eastward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = 1;
-		playerDir.y = 0;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::East;
-		SetTexture("Player2", "Player2TexEast");
-	}
-	// Southeastward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = 0.707;
-		playerDir.y = 0.707;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::Southeast;
-		SetTexture("Player2", "Player2TexSoutheast");
-	}
-	// Southward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = 0;
-		playerDir.y = 1;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::South;
-		SetTexture("Player2", "Player2TexSouth");
-	}
-	// Southwestward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = -0.707;
-		playerDir.y = 0.707;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::Southwest;
-		SetTexture("Player2", "Player2TexSouthwest");
-	}
-	// Westward
-	else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = -1;
-		playerDir.y = 0;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::West;
-		SetTexture("Player2", "Player2TexWest");
-	}
-	// Northwestward
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		playerDir.x = -0.707;
-		playerDir.y = -0.707;
-		initPlayer2Dir = playerDir;
-		player2CarDir = CardinalDirection::Northwest;
-		SetTexture("Player2", "Player2TexNorthwest");
-	}
-	else {
-		playerDir.x = 0;
-		playerDir.y = 0;
-	}
-	playerDir.x = playerDir.x * 0.2f;
-	playerDir.y = playerDir.y * 0.2f;
-	allObjects[getObjIndex[player2Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
+			//Spawn bullet at the appropriate side outside of the player's hitbox
+			if (player2CarDir == CardinalDirection::North) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 10);
+			}
+			else if (player2CarDir == CardinalDirection::Northeast) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
+			}
+			else if (player2CarDir == CardinalDirection::East) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+			}
+			else if (player2CarDir == CardinalDirection::Southeast) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
+			}
+			else if (player2CarDir == CardinalDirection::South) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
+			}
+			else if (player2CarDir == CardinalDirection::Southwest) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
+			}
+			else if (player2CarDir == CardinalDirection::West) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+			}
+			else if (player2CarDir == CardinalDirection::Northwest) {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 10);
+			}
+			else {
+				allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
+			}
 
-	//Shoot bullet
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && player2ReadyToFire) {
-		OutputDebugString(L"Player 2 Bullet Fired\n");
-		player2ReadyToFire = false;
-		
-		//Spawn bullet at the appropriate side outside of the player's hitbox
-		if (player2CarDir == CardinalDirection::North) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 10);
-		}
-		else if (player2CarDir == CardinalDirection::Northeast) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 6);
-		}
-		else if (player2CarDir == CardinalDirection::East) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
-		}
-		else if (player2CarDir == CardinalDirection::Southeast) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 14, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
-		}
-		else if (player2CarDir == CardinalDirection::South) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
-		}
-		else if (player2CarDir == CardinalDirection::Southwest) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 6, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 14);
-		}
-		else if (player2CarDir == CardinalDirection::West) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
-		}
-		else if (player2CarDir == CardinalDirection::Northwest) {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x - 10, allObjects[1].get()->GetTransformComponent()->GetPosition().y - 10);
-		}
-		else {
-			allObjects[recycledBullets[nextBullet]].get()->GetTransformComponent()->SetPosition(allObjects[1].get()->GetTransformComponent()->GetPosition().x + 4, allObjects[1].get()->GetTransformComponent()->GetPosition().y + 4);
-		}
-
-		allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
-		allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer2Dir.x * bulletSpeed, initPlayer2Dir.y * bulletSpeed); //right now bullet direction is tied to player direction
-		//switch next bullet
-		if ( (nextBullet + 1) >= maxBullets) {
-			nextBullet = 0;
-		}
-		else {
-			nextBullet++;
+			allObjects[recycledBullets[nextBullet]].get()->isEnabled = true;
+			allObjects[recycledBullets[nextBullet]].get()->GetPhysicsComponent()->SetVelocity(initPlayer2Dir.x * bulletSpeed, initPlayer2Dir.y * bulletSpeed); //right now bullet direction is tied to player direction
+			//switch next bullet
+			if ((nextBullet + 1) >= maxBullets) {
+				nextBullet = 0;
+			}
+			else {
+				nextBullet++;
+			}
 		}
 	}
 }

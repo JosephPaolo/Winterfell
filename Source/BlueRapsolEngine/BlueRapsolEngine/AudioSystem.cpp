@@ -30,7 +30,7 @@ void AudioSystem::SoundPlay(int x) {
 	if (x = 1) {
 		sound.play();
 		sound.setLoop(true);
-		sound.setVolume(30);
+		sound.setVolume(20);
 	}
 	else if (x = 2) {
 		sound2.play();
