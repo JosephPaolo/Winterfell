@@ -103,10 +103,13 @@ void BlueRapsolEngine::GameLoop(sf::RenderWindow & renderWindow) {
 		if (loopCounter >= loopsPerTick) {
 			loopCounter = 0;
 
+			time = clock.restart();
+			deltaTime = time.asSeconds();
+
 			if (!isPaused) {
 				mTimer.Tick(); //Ticks the timer
 				GameUpdate(); //Update game logic
-				physicsSys.UpdatePhysics(allObjects, 0, 1); //TODO: handle player index better
+				physicsSys.UpdatePhysics(allObjects, 0, 1, deltaTime); //TODO: handle player index better
 			}
 			graphicsSys.DrawRenderObjects(renderWindow, allObjects);
 		}

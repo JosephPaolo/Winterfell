@@ -34,6 +34,7 @@ public:
 	bool isBackground = false;
 	bool isEnabled = false;
 	bool isDestroyed = false;
+	bool isHazard = false;
 
 	ShapeType GetShape();
 	sf::Color GetColor();

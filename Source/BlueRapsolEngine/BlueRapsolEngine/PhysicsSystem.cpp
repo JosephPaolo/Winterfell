@@ -9,31 +9,16 @@ void PhysicsSystem::UpdatePhysics() {
 }
 
 //TODO: Diameter is divided by 4 instead of 2 because apparently shape size in pixels differ in measurement from scene positions
-void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>& getObjRef, int player1Index, int player2Index) {
-	std::wstring msg;
-
-	sf::Vector2f newPosition;
-
-	Vector2 playerVelocityHolder;
-	Vector2 objVelocityHolder;
-	Vector2 bulletVelocityHolder;
-
-	BRDataType::AABB playerBounds;
-	BRDataType::AABB wallBounds;
-	BRDataType::AABB bulletBounds;
-
-	float widthHolder;
-	float heightHolder;
-	float collisionPadding = 1; //must be higher than velocity value to work
-	int startingIndexA = 0;
-	int startingIndexB = 1;
+//TODO: move game logic out of physics
+void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>& getObjRef, int player1Index, int player2Index, float deltaTime) {
+	
 
 	//Only compare players to walls
 	//TODO change index from starting at 2 when player index will be variable in the future
 	for (int i = 2; i < getObjRef.size(); i++) {
 
-		//Skip object if it's not a wall
-		if (getObjRef[i].get()->isWall == true || getObjRef[i].get()->isProjectile == true) {
+		//Skip object if it's not a wall, projectile, or hazard
+		if (getObjRef[i].get()->isWall == true || getObjRef[i].get()->isProjectile == true || getObjRef[i].get()->isHazard == true) {
 
 			//Establish obj bounds and velocity
 			widthHolder = abs(getObjRef[i].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[i].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
@@ -103,7 +88,12 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 					getObjRef[i].get()->GetTransformComponent()->SetPosition(-100, -100); //Hide the bullet away from the stage
 					getObjRef[0].get()->isDestroyed = true; //destroy player which leads to other player's victory
 					getObjRef[1].get()->isDestroyed = false; 
-
+				}
+				else if (getObjRef[i].get()->isHazard) {
+					getObjRef[0].get()->isEnabled = false; //Disable player
+					getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the player
+					getObjRef[0].get()->isDestroyed = true; //destroy player which leads to other player's victory
+					getObjRef[1].get()->isDestroyed = false;
 				}
 			}
 
@@ -163,9 +153,117 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 					getObjRef[1].get()->isDestroyed = true; //destroy player which leads to other player's victory
 					getObjRef[0].get()->isDestroyed = false; //destroy player which leads to other player's victory
 				}
+				else if (getObjRef[i].get()->isHazard) {
+					getObjRef[1].get()->isEnabled = false; //Disable player
+					getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the player
+					getObjRef[1].get()->isDestroyed = true; //destroy player which leads to other player's victory
+					getObjRef[0].get()->isDestroyed = false;
+				}
 			}
 		}
 
+	}
+
+	//handle hazard collision on walls
+	for (int i = 4; i < getObjRef.size(); i++) {
+
+		if (getObjRef[i].get()->isWall == true) {
+			//Establish wall bounds and velocity
+			widthHolder = abs(getObjRef[i].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[i].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
+			heightHolder = abs(getObjRef[i].get()->GetPhysicsComponent()->GetBounds().min.y - getObjRef[i].get()->GetPhysicsComponent()->GetBounds().max.y) / 2;
+
+			wallBounds.min.x = getObjRef[i].get()->GetTransformComponent()->GetPosition().x;
+			wallBounds.max.x = getObjRef[i].get()->GetTransformComponent()->GetPosition().x + widthHolder;
+			wallBounds.min.y = getObjRef[i].get()->GetTransformComponent()->GetPosition().y + heightHolder; //Note: Remember, In this case Y positive is downwards
+			wallBounds.max.y = getObjRef[i].get()->GetTransformComponent()->GetPosition().y; //and Y negative is upwards
+
+			objVelocityHolder.x = getObjRef[i].get()->GetPhysicsComponent()->GetVelocity().x;
+			objVelocityHolder.y = getObjRef[i].get()->GetPhysicsComponent()->GetVelocity().y;
+
+			//Establish Hazard A bounds
+			widthHolder = abs(getObjRef[2].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[2].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
+			heightHolder = abs(getObjRef[2].get()->GetPhysicsComponent()->GetBounds().min.y - getObjRef[2].get()->GetPhysicsComponent()->GetBounds().max.y) / 2;
+
+			hazardBounds.min.x = getObjRef[2].get()->GetTransformComponent()->GetPosition().x;
+			hazardBounds.max.x = getObjRef[2].get()->GetTransformComponent()->GetPosition().x + widthHolder;
+			hazardBounds.min.y = getObjRef[2].get()->GetTransformComponent()->GetPosition().y + heightHolder; //Note: Remember, In this case Y positive is downwards
+			hazardBounds.max.y = getObjRef[2].get()->GetTransformComponent()->GetPosition().y; //and Y negative is upwards
+
+			hazardVelocityHolder.x = getObjRef[2].get()->GetPhysicsComponent()->GetVelocity().x;
+			hazardVelocityHolder.y = getObjRef[2].get()->GetPhysicsComponent()->GetVelocity().y;
+
+			//Check if there is overlap
+			if (TestAABBOverlap(&hazardBounds, &wallBounds)) {
+
+				//Deflect upon collision
+				if ((hazardBounds.max.x > wallBounds.min.x) && (hazardBounds.max.x < wallBounds.min.x + hazardPadding)) { // Hazard A collides with Wall from left
+					OutputDebugString(L"[Notice] Hazard A collides with object from left.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x > 0) {
+						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
+					}
+				}
+				else if ((hazardBounds.min.x < wallBounds.max.x) && (hazardBounds.min.x > wallBounds.max.x - hazardPadding)) { // Hazard A collides with Wall from right
+					OutputDebugString(L"[Notice] Hazard A collides with object from right.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x < 0) {
+						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
+					}
+				}
+				else if ((hazardBounds.max.y < wallBounds.min.y) && (hazardBounds.max.y > wallBounds.min.y - hazardPadding)) { // Hazard A collides with Wall from below
+					OutputDebugString(L"[Notice] Hazard A collides with object from below.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y < 0) {
+						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
+					}
+				}
+				else if ((hazardBounds.min.y > wallBounds.max.y) && (hazardBounds.min.y < wallBounds.max.y + hazardPadding)) { // Hazard A collides with Wall from above
+					OutputDebugString(L"[Notice] Hazard A collides with object from above.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y > 0) {
+						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
+					}
+				}
+			}
+
+			//Establish Hazard B bounds
+			widthHolder = abs(getObjRef[3].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[3].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
+			heightHolder = abs(getObjRef[3].get()->GetPhysicsComponent()->GetBounds().min.y - getObjRef[3].get()->GetPhysicsComponent()->GetBounds().max.y) / 2;
+
+			hazardBounds.min.x = getObjRef[3].get()->GetTransformComponent()->GetPosition().x;
+			hazardBounds.max.x = getObjRef[3].get()->GetTransformComponent()->GetPosition().x + widthHolder;
+			hazardBounds.min.y = getObjRef[3].get()->GetTransformComponent()->GetPosition().y + heightHolder; //Note: Remember, In this case Y positive is downwards
+			hazardBounds.max.y = getObjRef[3].get()->GetTransformComponent()->GetPosition().y; //and Y negative is upwards
+
+			hazardVelocityHolder.x = getObjRef[3].get()->GetPhysicsComponent()->GetVelocity().x;
+			hazardVelocityHolder.y = getObjRef[3].get()->GetPhysicsComponent()->GetVelocity().y;
+
+			//Check if there is overlap
+			if (TestAABBOverlap(&hazardBounds, &wallBounds)) {
+
+				//Deflect upon collision
+				if ((hazardBounds.max.x > wallBounds.min.x) && (hazardBounds.max.x < wallBounds.min.x + hazardPadding)) { // Hazard B collides with Wall from left
+					OutputDebugString(L"[Notice] Hazard B collides with object from left.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x > 0) {
+						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
+					}
+				}
+				else if ((hazardBounds.min.x < wallBounds.max.x) && (hazardBounds.min.x > wallBounds.max.x - hazardPadding)) { // Hazard B collides with Wall from right
+					OutputDebugString(L"[Notice] Hazard B collides with object from right.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x < 0) {
+						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
+					}
+				}
+				else if ((hazardBounds.max.y < wallBounds.min.y) && (hazardBounds.max.y > wallBounds.min.y - hazardPadding)) { // Hazard B collides with Wall from below
+					OutputDebugString(L"[Notice] Hazard B collides with object from below.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y < 0) {
+						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
+					}
+				}
+				else if ((hazardBounds.min.y > wallBounds.max.y) && (hazardBounds.min.y < wallBounds.max.y + hazardPadding)) { // Hazard B collides with Wall from above
+					OutputDebugString(L"[Notice] Hazard B collides with object from above.\n");
+					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y > 0) {
+						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
+					}
+				}
+			}
+		}
 
 	}
 
@@ -216,10 +314,11 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 		}
 	}
 
+
 	//Loops through Objects and change their position based on velocity. We just add velocity to position.
 	for (auto& obj : getObjRef) {
-		newPosition.x = obj.get()->GetTransformComponent()->GetPosition().x + obj.get()->GetPhysicsComponent()->GetVelocity().x;
-		newPosition.y = obj.get()->GetTransformComponent()->GetPosition().y + obj.get()->GetPhysicsComponent()->GetVelocity().y;
+		newPosition.x = obj.get()->GetTransformComponent()->GetPosition().x + (obj.get()->GetPhysicsComponent()->GetVelocity().x * deltaTime);
+		newPosition.y = obj.get()->GetTransformComponent()->GetPosition().y + (obj.get()->GetPhysicsComponent()->GetVelocity().y * deltaTime);
 		obj.get()->GetTransformComponent()->SetPosition(newPosition);
 	}
 

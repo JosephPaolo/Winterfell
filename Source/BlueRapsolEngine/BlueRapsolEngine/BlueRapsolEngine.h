@@ -25,6 +25,7 @@
 #include "PhysicsSystem.h"
 #include "InputSystem.h"
 #include <SFML/Graphics.hpp>
+#include <chrono>
 
 class BlueRapsolEngine {
 
@@ -69,6 +70,7 @@ protected:
 	GraphicsSystem graphicsSys;
 	PhysicsSystem physicsSys;
 	InputSystem inputSys;
+	float deltaTime;
 
 	std::vector<std::unique_ptr<GameObject>> allObjects; // List of all the objects.
 	//std::vector<GameObject*> allObjects; // List of all the objects.
@@ -78,6 +80,8 @@ private:
 	GameTimer mTimer;
 	int loopsPerTick = 128;
 	int loopCounter = 0;
+	sf::Time time;
+	sf::Clock clock;
 
 	bool isInitializing = true;
 	bool isPaused = false;

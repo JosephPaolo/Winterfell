@@ -70,28 +70,34 @@ void BlueRapsolApp::GameStart() {
 	initPlayer2Dir.x = 0;
 	initPlayer2Dir.y = -1;
 
+	//Create moving hazards
+	Instantiate("Hazard A", "BeybladeTex", 190, 160, 50, 50);
+	allObjects[getObjIndex["Hazard A"]].get()->isHazard = true;
+	Instantiate("Hazard B", "BeybladeTex", 410, 160, 50, 50);
+	allObjects[getObjIndex["Hazard B"]].get()->isHazard = true;
+
 	//Making the walls
 	//Use Instantiate(Object name, Texture name, x position, y position, width, height);
 	//Note: The origin of a shape is at the top left.
 	//Note: The origin of the world is at the top left. Positive x is rightward and positive y is downward.
 	//Note: Collision only works with velocity; you can't change position in BlueRapsolEngine::GameUpdate() and expect it to collide.
 
-	for (int i = 0; i < 25; i++) {
+	for (int i = 0; i < 25; i++) { 
 		Instantiate("North Wall " + std::to_string(i), "WallTex", 0 + (i * 25), 0); 
 		allObjects[getObjIndex["North Wall " + std::to_string(i)]].get()->isWall = true;
 	}
 
-	for (int i = 0; i < 25; i++) {
+	for (int i = 0; i < 25; i++) { 
 		Instantiate("South Wall " + std::to_string(i), "WallTex", 0 + (i * 25), 325);
 		allObjects[getObjIndex["South Wall " + std::to_string(i)]].get()->isWall = true;
 	}
 
-	for (int i = 1; i < 13; i++) {
+	for (int i = 1; i < 13; i++) { 
 		Instantiate("West Wall " + std::to_string(i-1), "WallTex", 0, 0 + (i * 25));
 		allObjects[getObjIndex["West Wall " + std::to_string(i-1)]].get()->isWall = true;
 	}
-
-	for (int i = 1; i < 13; i++) {
+	
+	for (int i = 1; i < 13; i++) { 
 		Instantiate("East Wall " + std::to_string(i-1), "WallTex", 600, 0 + (i * 25));
 		allObjects[getObjIndex["East Wall " + std::to_string(i-1)]].get()->isWall = true;
 	}
@@ -136,7 +142,6 @@ void BlueRapsolApp::GameStart() {
 	Instantiate("Wall AL", "WallTex", 400, 275); allObjects[getObjIndex["Wall AL"]].get()->isWall = true;
 	Instantiate("Wall AM", "WallTex", 350, 25);  allObjects[getObjIndex["Wall AM"]].get()->isWall = true;
 	Instantiate("Wall AN", "WallTex", 250, 300); allObjects[getObjIndex["Wall AN"]].get()->isWall = true;
-
 
 	//Creating the recycled bullets
 	for (int i = 0; i < maxBullets; i++) {
@@ -218,13 +223,17 @@ void BlueRapsolApp::PlayerVictory(int playerNum) {
 }
 
 void BlueRapsolApp::Rematch() {
+	isGameStarted = false;
+
 	//disable players
 	allObjects[getObjIndex["Player1"]].get()->isEnabled = false;
 	allObjects[getObjIndex["Player2"]].get()->isEnabled = false;
 
-	//stop players
+	//stop players and hazards
 	allObjects[getObjIndex["Player1"]].get()->GetPhysicsComponent()->SetVelocity(0, 0);
 	allObjects[getObjIndex["Player2"]].get()->GetPhysicsComponent()->SetVelocity(0, 0);
+	allObjects[getObjIndex["Hazard A"]].get()->GetPhysicsComponent()->SetVelocity(0, 0);
+	allObjects[getObjIndex["Hazard B"]].get()->GetPhysicsComponent()->SetVelocity(0, 0);
 
 	//Fix players
 	allObjects[getObjIndex["Player1"]].get()->isDestroyed = false;
@@ -239,14 +248,23 @@ void BlueRapsolApp::Rematch() {
 	allObjects[getObjIndex["Player2"]].get()->GetTransformComponent()->SetPosition(558, 168);
 	allObjects[getObjIndex["VictoryText1"]].get()->GetTransformComponent()->SetPosition(-600, -600);
 	allObjects[getObjIndex["VictoryText2"]].get()->GetTransformComponent()->SetPosition(-600, -600);
+	allObjects[getObjIndex["Hazard A"]].get()->GetTransformComponent()->SetPosition(190, 160);
+	allObjects[getObjIndex["Hazard B"]].get()->GetTransformComponent()->SetPosition(410, 160);
+
+	//TODO remove bullets
 
 	//Reset victories
 	player1Victory = false;
 	player2Victory = false;
 
+	//Reset hazard velocities
+	allObjects[getObjIndex["Hazard A"]].get()->GetPhysicsComponent()->SetVelocity(0.7 * hazardSpeed, 0.3 * hazardSpeed);
+	allObjects[getObjIndex["Hazard B"]].get()->GetPhysicsComponent()->SetVelocity(0.3 * hazardSpeed, 0.7 * hazardSpeed);
+
 	//reenable players
 	allObjects[getObjIndex["Player1"]].get()->isEnabled = true;
 	allObjects[getObjIndex["Player2"]].get()->isEnabled = true;
+
 }
 
 void BlueRapsolApp::CheckInput() {
@@ -254,6 +272,15 @@ void BlueRapsolApp::CheckInput() {
 
 	if ( (player1Victory || player2Victory) && sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
 		Rematch();
+	}
+
+	if (!isGameStarted && isAnyKeyPressed()) {
+		isGameStarted = true;
+		allObjects[getObjIndex["Hazard A"]].get()->GetPhysicsComponent()->SetVelocity(0.7 * hazardSpeed, 0.3 * hazardSpeed);
+		allObjects[getObjIndex["Hazard B"]].get()->GetPhysicsComponent()->SetVelocity(0.3 * hazardSpeed, 0.7 * hazardSpeed);
+	}
+	else if (!isGameStarted) {
+		return;
 	}
 
 	//Remember: scene origin is top left, y positive is downwards, x positive is rightwards
@@ -329,8 +356,8 @@ void BlueRapsolApp::CheckInput() {
 			playerDir.x = 0;
 			playerDir.y = 0;
 		}
-		playerDir.x = playerDir.x * 0.2f;
-		playerDir.y = playerDir.y * 0.2f;
+		playerDir.x = playerDir.x * playerSpeed;
+		playerDir.y = playerDir.y * playerSpeed;
 		allObjects[getObjIndex[player1Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 
 		//Shoot bullet
@@ -451,8 +478,8 @@ void BlueRapsolApp::CheckInput() {
 			playerDir.x = 0;
 			playerDir.y = 0;
 		}
-		playerDir.x = playerDir.x * 0.2f;
-		playerDir.y = playerDir.y * 0.2f;
+		playerDir.x = playerDir.x * playerSpeed;
+		playerDir.y = playerDir.y * playerSpeed;
 		allObjects[getObjIndex[player2Key]].get()->GetPhysicsComponent()->SetVelocity(playerDir);
 
 		//Shoot bullet
@@ -501,4 +528,12 @@ void BlueRapsolApp::CheckInput() {
 			}
 		}
 	}
+}
+
+bool BlueRapsolApp::isAnyKeyPressed(){
+	for (int k = -1; k < sf::Keyboard::KeyCount; ++k){
+		if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(k)))
+			return true;
+	}
+	return false;
 }

@@ -1,4 +1,32 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  AudioSystem.cpp
+  BlueRapsolApp.cpp
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(91): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(96): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(101): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(150): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(19): warning C4101: 'ObjIndex': unreferenced local variable
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(261): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(262): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(279): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(280): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(301): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(302): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(317): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(318): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(333): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(334): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(349): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(350): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(423): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(424): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(439): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(440): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(455): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(456): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(471): warning C4305: '=': truncation from 'double' to 'float'
+d:\files\programming\school\game3121\winterfell repo\winterfell\source\bluerapsolengine\bluerapsolengine\bluerapsolapp.cpp(472): warning C4305: '=': truncation from 'double' to 'float'
+  Main.cpp
+  Generating Code...
   BlueRapsolEngine.vcxproj -> D:\Files\PROGRAMMING\School\GAME3121\Winterfell Repo\Winterfell\Source\BlueRapsolEngine\\..\..\Blue Rapsol Engine\x64\Debug\BlueRapsolEngine.exe
