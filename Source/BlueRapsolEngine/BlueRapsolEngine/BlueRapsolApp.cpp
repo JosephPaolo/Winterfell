@@ -202,11 +202,13 @@ void BlueRapsolApp::CheckVictory() {
 void BlueRapsolApp::PlayerVictory(int playerNum) {
 	if (playerNum == 1) { //Player 1 Victory
 		OutputDebugString(L"[Notice] Player 1 Victory.\n");
+		audioSys.SoundPlay(3);
 		allObjects[1].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["ExplosionTex"]); 
 		allObjects[getObjIndex["VictoryText1"]].get()->GetTransformComponent()->SetPosition(190,50); //Show victory text
 	}
 	else if (playerNum == 2) { //Player 2 Victory
 		OutputDebugString(L"[Notice] Player 2 Victory.\n");
+		audioSys.SoundPlay(3);
 		allObjects[0].get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap["ExplosionTex"]);
 		allObjects[getObjIndex["VictoryText2"]].get()->GetTransformComponent()->SetPosition(190, 50); //Show victory text
 	}
@@ -334,6 +336,7 @@ void BlueRapsolApp::CheckInput() {
 		//Shoot bullet
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && player1ReadyToFire) {
 			OutputDebugString(L"Player 1 Bullet Fired\n");
+			audioSys.SoundPlay(2);
 			player1ReadyToFire = false;
 
 			//Spawn bullet at the appropriate side outside of the player's hitbox
@@ -455,6 +458,7 @@ void BlueRapsolApp::CheckInput() {
 		//Shoot bullet
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && player2ReadyToFire) {
 			OutputDebugString(L"Player 2 Bullet Fired\n");
+			audioSys.SoundPlay(2);
 			player2ReadyToFire = false;
 
 			//Spawn bullet at the appropriate side outside of the player's hitbox
