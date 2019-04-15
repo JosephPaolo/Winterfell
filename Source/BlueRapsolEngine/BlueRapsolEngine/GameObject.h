@@ -25,16 +25,17 @@ public:
 	GameObject::GameObject(sf::Texture, float getX, float getY, float width, float height);
 	GameObject::~GameObject(void);
 	
-	//Temp until components are properly implemented
 	//Tags
-	bool isPlayer = false;
+	TagType tag;
+	/*bool isPlayer = false;
 	bool isProjectile = false;
 	bool isWall = false;
 	bool isDoodad = false;
 	bool isBackground = false;
+	bool isHazard = false;*/
+
 	bool isEnabled = false;
 	bool isDestroyed = false;
-	bool isHazard = false;
 
 	ShapeType GetShape();
 	sf::Color GetColor();
@@ -47,7 +48,7 @@ public:
 	TransformComponent* GetTransformComponent();
 
 	template<class T>
-	T GetComponent(ComponentType componentType);
+	T* GetComponent(ComponentType componentType);
 
 	void AddComponent(ComponentType componentType);
 

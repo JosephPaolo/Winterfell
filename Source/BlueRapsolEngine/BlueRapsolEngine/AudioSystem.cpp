@@ -8,25 +8,25 @@ AudioSystem::AudioSystem() {
 
 void AudioSystem::LoadBuffer() {
 	if (!buffer.loadFromFile("../../../Assets/MMBGM.wav")) {
-		OutputDebugString(L"\n[Error] Cannot load bgm sound.");
+		OutputDebugString(L"[Error] Cannot load bgm sound.\n");
 	}
 	sound.setBuffer(buffer);
 	sound.setVolume(20);
 
 	if (!buffer2.loadFromFile("../../../Assets/Cannon.wav")) {
-		OutputDebugString(L"\n[Error] Cannot load cannon sound.");
+		OutputDebugString(L"[Error] Cannot load cannon sound.\n");
 	}
 	sound2.setBuffer(buffer2);
 	sound2.setVolume(20);
 
 	if (!buffer3.loadFromFile("../../../Assets/Explosion.wav")) {
-		OutputDebugString(L"\n[Error] Cannot load explosion sound.");
+		OutputDebugString(L"[Error] Cannot load explosion sound.\n");
 	}
 	sound3.setBuffer(buffer3);
 	sound3.setVolume(20);
 
 	if (!buffer4.loadFromFile("../../../Assets/test4.wav")) {
-		OutputDebugString(L"\n[Error] Cannot load test sound.");
+		OutputDebugString(L"[Error] Cannot load test sound.\n");
 	}
 	sound4.setBuffer(buffer4);
 

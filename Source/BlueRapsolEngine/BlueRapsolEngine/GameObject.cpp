@@ -4,20 +4,13 @@ using namespace BlueRapsolEnums;
 
 GameObject::GameObject() {
 
-	TransformComponent newTransform;
-	PhysicsComponent newPhysics; 
-	RenderComponent newRender; 
-
 	transformComponent.SetRenderRef(renderComponent);
 	transformComponent.SetTransform(renderComponent.renderObjPtr.get()->getTransform()); //Set SFML shape transform to transform component
 	physicsComponent.SetBounds(Vector2(0, 50), Vector2(50, 0));
-
-	componentList.push_back(&newTransform);
-	componentList.push_back(&physicsComponent);
-	componentList.push_back(&renderComponent);
 }
 
 GameObject::GameObject(float xPos, float yPos) {
+
 	transformComponent.SetRenderRef(renderComponent);
 	physicsComponent.SetBounds(Vector2(0, 50), Vector2(50, 0));
 	transformComponent.SetPosition(xPos, yPos);
@@ -25,6 +18,7 @@ GameObject::GameObject(float xPos, float yPos) {
 }
 
 GameObject::GameObject(float xPos, float yPos, float width, float height) {
+
 	transformComponent.SetRenderRef(renderComponent);
 	//renderComponent.renderObjPtr.get()->setSize(sf::Vector2f(width, height));
 	physicsComponent.SetBounds(Vector2(0, height), Vector2(width, 0));
@@ -33,6 +27,7 @@ GameObject::GameObject(float xPos, float yPos, float width, float height) {
 }
 
 GameObject::GameObject(sf::Texture setSpriteTexture, float xPos, float yPos) {
+
 	transformComponent.SetRenderRef(renderComponent);
 	//renderComponent.renderObjPtr.get()->setSize(sf::Vector2f(width, height));
 	renderComponent.SetTexture(setSpriteTexture);
@@ -42,6 +37,7 @@ GameObject::GameObject(sf::Texture setSpriteTexture, float xPos, float yPos) {
 }
 
 GameObject::GameObject(sf::Texture setSpriteTexture, float xPos, float yPos, float width, float height) {
+
 	transformComponent.SetRenderRef(renderComponent);
 	//renderComponent.renderObjPtr.get()->setSize(sf::Vector2f(width, height));
 	//renderComponent.renderObjPtr.get()->setScale(sf::Vector2f(width, height));
@@ -72,14 +68,44 @@ sf::Color GameObject::GetColor() {
 }
 
 PhysicsComponent* GameObject::GetPhysicsComponent() {
+	PhysicsComponent * physicsHolder;
+
+	//Check if component already exists
+	/*for (int i = 0; i < componentList.size(); i++) {
+		if (componentList[i]->type == ComponentType::Physics) {
+			physicsHolder = (PhysicsComponent*)componentList[i];
+			return physicsHolder;
+		}
+	}*/
+
 	return &physicsComponent;
 }
 
 RenderComponent* GameObject::GetRenderComponent() {
+	RenderComponent* renderHolder;
+
+	//Check if component already exists
+	/*for (int i = 0; i < componentList.size(); i++) {
+		if (componentList[i]->type == ComponentType::Renderer) {
+			renderHolder = (RenderComponent*)componentList[i];
+			return renderHolder;
+		}
+	}*/
+
 	return &renderComponent;
 }
 
 TransformComponent* GameObject::GetTransformComponent() {
+	TransformComponent* transformHolder;
+
+	//Check if component already exists
+	/*for (int i = 0; i < componentList.size(); i++) {
+		if (componentList[i]->type == ComponentType::Transform) {
+			transformHolder = (TransformComponent*)componentList[i];
+			return transformHolder;
+		}
+	}*/
+
 	return &transformComponent;
 }
 
@@ -89,9 +115,6 @@ void GameObject::AddComponent(ComponentType componentType) {
 	TransformComponent transformHolder;
 	PhysicsComponent physicsHolder;
 	RenderComponent renderHolder;
-	MobComponent mobHolder;
-	ControllableComponent controlHolder;
-	ProjectileComponent projectileHolder;
 
 	//Check if component already exists
 	for (int i = 0; i < componentList.size(); i++) {
@@ -114,18 +137,6 @@ void GameObject::AddComponent(ComponentType componentType) {
 		renderHolder.type = ComponentType::Renderer;
 		componentList.push_back(&renderHolder);
 		break;
-	case ComponentType::Mobile:
-		mobHolder.type = ComponentType::Mobile;
-		componentList.push_back(&mobHolder);
-		break;
-	case ComponentType::Controllable:
-		controlHolder.type = ComponentType::Controllable;
-		componentList.push_back(&controlHolder);
-		break;
-	case ComponentType::Projectile:
-		projectileHolder.type = ComponentType::Projectile;
-		componentList.push_back(&projectileHolder);
-		break;
 	default:
 		//Handle component not found
 		break;
@@ -134,19 +145,16 @@ void GameObject::AddComponent(ComponentType componentType) {
 }
 
 template<class T>
-T GameObject::GetComponent(ComponentType componentType) {
+T* GameObject::GetComponent(ComponentType componentType) {
 	TransformComponent* transformHolder;
 	PhysicsComponent* physicsHolder;
 	RenderComponent* renderHolder;
-	MobComponent* mobHolder;
-	ControllableComponent* controlHolder;
-	ProjectileComponent* projectileHolder;
 
 	switch (componentType) {
 	case ComponentType::Transform:
 		for (int i = 0; i < componentList.size(); i++) {
 			if (componentList[i]->type == componentType) {
-				transformHolder = componentList[i];
+				transformHolder = (TransformComponent*)componentList[i];
 				return transformHolder;
 			}
 		}
@@ -154,7 +162,7 @@ T GameObject::GetComponent(ComponentType componentType) {
 	case ComponentType::Physics:
 		for (int i = 0; i < componentList.size(); i++) {
 			if (componentList[i]->type == componentType) {
-				physicsHolder = componentList[i];
+				physicsHolder = (PhysicsComponent*)componentList[i];
 				return physicsHolder;
 			}
 		}
@@ -162,32 +170,8 @@ T GameObject::GetComponent(ComponentType componentType) {
 	case ComponentType::Renderer:
 		for (int i = 0; i < componentList.size(); i++) {
 			if (componentList[i]->type == componentType) {
-				renderHolder = componentList[i];
+				renderHolder = (RenderComponent*)componentList[i];
 				return renderHolder;
-			}
-		}
-		break;
-	case ComponentType::Mobile:
-		for (int i = 0; i < componentList.size(); i++) {
-			if (componentList[i]->type == componentType) {
-				mobHolder = componentList[i];
-				return mobHolder;
-			}
-		}
-		break;
-	case ComponentType::Controllable:
-		for (int i = 0; i < componentList.size(); i++) {
-			if (componentList[i]->type == componentType) {
-				controlHolder = componentList[i];
-				return controlHolder;
-			}
-		}
-		break;
-	case ComponentType::Projectile:
-		for (int i = 0; i < componentList.size(); i++) {
-			if (componentList[i]->type == componentType) {
-				projectileHolder = componentList[i];
-				return projectileHolder;
 			}
 		}
 		break;

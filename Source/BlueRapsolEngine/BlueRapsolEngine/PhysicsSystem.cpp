@@ -18,7 +18,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 	for (int i = 2; i < getObjRef.size(); i++) {
 
 		//Skip object if it's not a wall, projectile, or hazard
-		if (getObjRef[i].get()->isWall == true || getObjRef[i].get()->isProjectile == true || getObjRef[i].get()->isHazard == true) {
+		if (getObjRef[i].get()->tag == TagType::Wall || getObjRef[i].get()->tag == TagType::Bullet || getObjRef[i].get()->tag == TagType::Hazard) {
 
 			//Establish obj bounds and velocity
 			widthHolder = abs(getObjRef[i].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[i].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
@@ -50,7 +50,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				//Prevent going further upon collision
 				if ((playerBounds.max.x > wallBounds.min.x) && (playerBounds.max.x < wallBounds.min.x + collisionPadding)) { // Player collides with Wall from left
 					OutputDebugString(L"[Notice] Player 1 collides with object from left.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.x > 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.x > 0) { //prevent player 1 from moving further
 						getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(0, playerVelocityHolder.y);
 					}
 				
@@ -58,7 +58,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				}
 				else if ((playerBounds.min.x < wallBounds.max.x) && (playerBounds.min.x > wallBounds.max.x - collisionPadding)) { // Player collides with Wall from right
 					OutputDebugString(L"[Notice] Player 1 collides with object from right.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.x < 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.x < 0) { //prevent player 1 from moving further
 						getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(0, playerVelocityHolder.y);
 					}
 
@@ -66,20 +66,20 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				}
 				else if ((playerBounds.max.y < wallBounds.min.y) && (playerBounds.max.y > wallBounds.min.y - collisionPadding)) { // Player collides with Wall from below
 					OutputDebugString(L"[Notice] Player 1 collides with object from below.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.y < 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.y < 0) { //prevent player 1 from moving further
 						getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(playerVelocityHolder.x, 0);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.min.y > wallBounds.max.y) && (playerBounds.min.y < wallBounds.max.y + collisionPadding)) { // Player collides with Wall from above
 					OutputDebugString(L"[Notice] Player 1 collides with object from above.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.y > 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.y > 0) { //prevent player 1 from moving further
 						getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(playerVelocityHolder.x, 0);
 					}
 					//else allow current velocity
 				}
 
-				if (getObjRef[i].get()->isProjectile) { //player death
+				if (getObjRef[i].get()->tag == TagType::Bullet) { //player death
 					OutputDebugString(L"[Notice] Player 1 collides with bullet.\n");
 					getObjRef[i].get()->isEnabled = false; //Disable the bullet
 					getObjRef[0].get()->isEnabled = false; //Disable player
@@ -89,7 +89,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 					getObjRef[0].get()->isDestroyed = true; //destroy player which leads to other player's victory
 					getObjRef[1].get()->isDestroyed = false; 
 				}
-				else if (getObjRef[i].get()->isHazard) {
+				else if (getObjRef[i].get()->tag == TagType::Hazard) {
 					getObjRef[0].get()->isEnabled = false; //Disable player
 					getObjRef[0].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the player
 					getObjRef[0].get()->isDestroyed = true; //destroy player which leads to other player's victory
@@ -116,34 +116,34 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				//Prevent going further upon collision
 				if ((playerBounds.max.x > wallBounds.min.x) && (playerBounds.max.x < wallBounds.min.x + collisionPadding)) { // Player collides with Wall from left
 					OutputDebugString(L"[Notice] Player 2 collides with object from left.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.x > 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.x > 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, playerVelocityHolder.y);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.min.x < wallBounds.max.x) && (playerBounds.min.x > wallBounds.max.x - collisionPadding)) { // Player collides with Wall from right
 					OutputDebugString(L"[Notice] Player 2 collides with object from right.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.x < 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.x < 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, playerVelocityHolder.y);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.max.y < wallBounds.min.y) && (playerBounds.max.y > wallBounds.min.y - collisionPadding)) { // Player collides with Wall from below
 					OutputDebugString(L"[Notice] Player 2 collides with object from below.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.y < 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.y < 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(playerVelocityHolder.x, 0);
 					}
 					//else allow current velocity
 				}
 				else if ((playerBounds.min.y > wallBounds.max.y) && (playerBounds.min.y < wallBounds.max.y + collisionPadding)) { // Player collides with Wall from above
 					OutputDebugString(L"[Notice] Player 2 collides with object from above.\n");
-					if (getObjRef[i].get()->isWall && playerVelocityHolder.y > 0) { //prevent player 1 from moving further
+					if (getObjRef[i].get()->tag == TagType::Wall && playerVelocityHolder.y > 0) { //prevent player 1 from moving further
 						getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(playerVelocityHolder.x, 0);
 					}
 					//else allow current velocity
 				}
 
-				if (getObjRef[i].get()->isProjectile) { //player death
+				if (getObjRef[i].get()->tag == TagType::Bullet) { //player death
 					OutputDebugString(L"[Notice] Player 2 collides with bullet.\n");
 					getObjRef[i].get()->isEnabled = false; //Disable the bullet
 					getObjRef[1].get()->isEnabled = false; //Disable player 1
@@ -153,7 +153,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 					getObjRef[1].get()->isDestroyed = true; //destroy player which leads to other player's victory
 					getObjRef[0].get()->isDestroyed = false; //destroy player which leads to other player's victory
 				}
-				else if (getObjRef[i].get()->isHazard) {
+				else if (getObjRef[i].get()->tag == TagType::Hazard) {
 					getObjRef[1].get()->isEnabled = false; //Disable player
 					getObjRef[1].get()->GetPhysicsComponent()->SetVelocity(0, 0); //Stop the player
 					getObjRef[1].get()->isDestroyed = true; //destroy player which leads to other player's victory
@@ -167,7 +167,7 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 	//handle hazard collision on walls
 	for (int i = 4; i < getObjRef.size(); i++) {
 
-		if (getObjRef[i].get()->isWall == true) {
+		if (getObjRef[i].get()->tag == TagType::Wall == true) {
 			//Establish wall bounds and velocity
 			widthHolder = abs(getObjRef[i].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[i].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
 			heightHolder = abs(getObjRef[i].get()->GetPhysicsComponent()->GetBounds().min.y - getObjRef[i].get()->GetPhysicsComponent()->GetBounds().max.y) / 2;
@@ -198,25 +198,25 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				//Deflect upon collision
 				if ((hazardBounds.max.x > wallBounds.min.x) && (hazardBounds.max.x < wallBounds.min.x + hazardPadding)) { // Hazard A collides with Wall from left
 					OutputDebugString(L"[Notice] Hazard A collides with object from left.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x > 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.x > 0) {
 						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
 					}
 				}
 				else if ((hazardBounds.min.x < wallBounds.max.x) && (hazardBounds.min.x > wallBounds.max.x - hazardPadding)) { // Hazard A collides with Wall from right
 					OutputDebugString(L"[Notice] Hazard A collides with object from right.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x < 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.x < 0) {
 						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
 					}
 				}
 				else if ((hazardBounds.max.y < wallBounds.min.y) && (hazardBounds.max.y > wallBounds.min.y - hazardPadding)) { // Hazard A collides with Wall from below
 					OutputDebugString(L"[Notice] Hazard A collides with object from below.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y < 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.y < 0) {
 						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
 					}
 				}
 				else if ((hazardBounds.min.y > wallBounds.max.y) && (hazardBounds.min.y < wallBounds.max.y + hazardPadding)) { // Hazard A collides with Wall from above
 					OutputDebugString(L"[Notice] Hazard A collides with object from above.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y > 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.y > 0) {
 						getObjRef[2].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
 					}
 				}
@@ -240,25 +240,25 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 				//Deflect upon collision
 				if ((hazardBounds.max.x > wallBounds.min.x) && (hazardBounds.max.x < wallBounds.min.x + hazardPadding)) { // Hazard B collides with Wall from left
 					OutputDebugString(L"[Notice] Hazard B collides with object from left.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x > 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.x > 0) {
 						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
 					}
 				}
 				else if ((hazardBounds.min.x < wallBounds.max.x) && (hazardBounds.min.x > wallBounds.max.x - hazardPadding)) { // Hazard B collides with Wall from right
 					OutputDebugString(L"[Notice] Hazard B collides with object from right.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.x < 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.x < 0) {
 						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x * -1, hazardVelocityHolder.y);
 					}
 				}
 				else if ((hazardBounds.max.y < wallBounds.min.y) && (hazardBounds.max.y > wallBounds.min.y - hazardPadding)) { // Hazard B collides with Wall from below
 					OutputDebugString(L"[Notice] Hazard B collides with object from below.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y < 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.y < 0) {
 						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
 					}
 				}
 				else if ((hazardBounds.min.y > wallBounds.max.y) && (hazardBounds.min.y < wallBounds.max.y + hazardPadding)) { // Hazard B collides with Wall from above
 					OutputDebugString(L"[Notice] Hazard B collides with object from above.\n");
-					if (getObjRef[i].get()->isWall && hazardVelocityHolder.y > 0) {
+					if (getObjRef[i].get()->tag == TagType::Wall && hazardVelocityHolder.y > 0) {
 						getObjRef[3].get()->GetPhysicsComponent()->SetVelocity(hazardVelocityHolder.x, hazardVelocityHolder.y * -1);
 					}
 				}
@@ -270,10 +270,10 @@ void PhysicsSystem::UpdatePhysics(const std::vector<std::unique_ptr<GameObject>>
 	//handle bullet collision on walls
 	//TODO make more elegant
 	for (int ia = 0; ia < getObjRef.size(); ia++) {
-		if (getObjRef[ia].get()->isProjectile == true && getObjRef[ia].get()->isEnabled) { //if object is bullet and is enabled
+		if (getObjRef[ia].get()->tag == TagType::Bullet == true && getObjRef[ia].get()->isEnabled) { //if object is bullet and is enabled
 
 			for (int ib = 0; ib < getObjRef.size(); ib++) {
-				if (getObjRef[ib].get()->isWall == true) { //if object is wall
+				if (getObjRef[ib].get()->tag == TagType::Wall == true) { //if object is wall
 					//Establish wall bounds and velocity
 					widthHolder = abs(getObjRef[ib].get()->GetPhysicsComponent()->GetBounds().min.x - getObjRef[ib].get()->GetPhysicsComponent()->GetBounds().max.x) / 2;
 					heightHolder = abs(getObjRef[ib].get()->GetPhysicsComponent()->GetBounds().min.y - getObjRef[ib].get()->GetPhysicsComponent()->GetBounds().max.y) / 2;

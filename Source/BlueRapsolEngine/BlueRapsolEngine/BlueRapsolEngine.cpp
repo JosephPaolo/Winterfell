@@ -135,8 +135,12 @@ void BlueRapsolEngine::GameUpdate() {
 int BlueRapsolEngine::Instantiate() {
 	auto objHolder = std::make_unique<GameObject>();
 
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
 	allObjects.push_back(std::move(objHolder));
 	getObjIndex.insert(std::make_pair(std::to_string(getObjIndex.size() - 1), getObjIndex.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
 
 	return allObjects.size() - 1; //return allObjects index 
 }
@@ -144,8 +148,12 @@ int BlueRapsolEngine::Instantiate() {
 int BlueRapsolEngine::Instantiate(std::string setKey) {
 	auto objHolder = std::make_unique<GameObject>();
 
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
 	allObjects.push_back(std::move(objHolder));
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
 
 	return allObjects.size() - 1; //return allObjects index 
 }
@@ -153,8 +161,12 @@ int BlueRapsolEngine::Instantiate(std::string setKey) {
 int BlueRapsolEngine::Instantiate(std::string setKey, float xPos, float yPos) {
 	auto objHolder = std::make_unique<GameObject>(xPos, yPos);
 
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
 	allObjects.push_back(std::move(objHolder));
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
 
 	return allObjects.size() - 1; //return allObjects index 
 }
@@ -162,8 +174,12 @@ int BlueRapsolEngine::Instantiate(std::string setKey, float xPos, float yPos) {
 int BlueRapsolEngine::Instantiate(std::string setKey, BRDataType::Vector2 setPos) {
 	auto objHolder = std::make_unique<GameObject>(setPos.x, setPos.y);
 
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
 	allObjects.push_back(std::move(objHolder));
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
 
 	return allObjects.size() - 1; //return allObjects index 
 }
@@ -171,14 +187,43 @@ int BlueRapsolEngine::Instantiate(std::string setKey, BRDataType::Vector2 setPos
 int BlueRapsolEngine::Instantiate(std::string setKey, float xPos, float yPos, float width, float height) {
 	auto objHolder = std::make_unique<GameObject>(xPos, yPos, width, height);
 
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
 	allObjects.push_back(std::move(objHolder));
 	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
 
 	return allObjects.size() - 1; //return allObjects index 
 }
 
 int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos) {
 	auto objHolder = std::make_unique<GameObject>(xPos, yPos);
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
+	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[setSprite]);
+	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setScale(sf::Vector2f(1.0f, 1.0f));
+	allObjects.push_back(std::move(objHolder));
+	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
+	return allObjects.size() - 1; //return allObjects index 
+}
+
+int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos, TagType getType) {
+	auto objHolder = std::make_unique<GameObject>(xPos, yPos);
+
+	objHolder.get()->tag = getType;
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
+	if (getType == TagType::Wall || getType == TagType::Player || getType == TagType::Bullet || getType == TagType::Hazard) {
+		objHolder.get()->AddComponent(ComponentType::Renderer);
+		objHolder.get()->AddComponent(ComponentType::Physics);
+	}
+
 	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[setSprite]);
 	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setScale(sf::Vector2f(1.0f, 1.0f));
 	allObjects.push_back(std::move(objHolder));
@@ -189,6 +234,30 @@ int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, flo
 
 int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos, float colliderWidth, float colliderHeight) {
 	auto objHolder = std::make_unique<GameObject>(xPos, yPos, colliderWidth, colliderHeight);
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
+	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[setSprite]);
+	//objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setScale(sf::Vector2f(scaleWidth, scaleHeight));
+	allObjects.push_back(std::move(objHolder));
+	getObjIndex.insert(std::make_pair(setKey, allObjects.size() - 1));
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
+	return allObjects.size() - 1; //return allObjects index 
+}
+
+int BlueRapsolEngine::Instantiate(std::string setKey, std::string setSprite, float xPos, float yPos, float colliderWidth, float colliderHeight, TagType getType) {
+	auto objHolder = std::make_unique<GameObject>(xPos, yPos, colliderWidth, colliderHeight);
+	objHolder.get()->tag = getType;
+
+	objHolder.get()->AddComponent(ComponentType::Transform);
+
+	if (getType == TagType::Wall || getType == TagType::Player || getType == TagType::Bullet || getType == TagType::Hazard) {
+		objHolder.get()->AddComponent(ComponentType::Renderer);
+		objHolder.get()->AddComponent(ComponentType::Physics);
+	}
+
 	objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setTexture(graphicsSys.textureMap[setSprite]);
 	//objHolder.get()->GetRenderComponent()->renderObjPtr.get()->setScale(sf::Vector2f(scaleWidth, scaleHeight));
 	allObjects.push_back(std::move(objHolder));

@@ -42,5 +42,15 @@ namespace BlueRapsolEnums {
 		PickUp,
 		PowerUp
 	};
+	
+	enum TagType {
+		NoTag,
+		Player,
+		Wall,
+		Bullet,
+		Aesthetic,
+		Background,
+		Hazard
+	};
 
 }

@@ -56,25 +56,27 @@ void BlueRapsolApp::GameStart() {
 	//Making the players
 	//TODO: Currently, player 1 and 2 must be the first and second objects created to work. Change to be more modular in the future.
 
-	Instantiate("Player1", "Player1TexNorth", 55, 168, 25, 25);
+	Instantiate("Player1", "Player1TexNorth", 55, 168, 25, 25, TagType::Player);
 	player1Key = "Player1";
-	allObjects[getObjIndex["Player1"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
+	allObjects[getObjIndex["Player1"]].get()->tag = TagType::Player; 
 	allObjects[getObjIndex["Player1"]].get()->isEnabled = true;
 	initPlayer1Dir.x = 0;
 	initPlayer1Dir.y = -1;
+	//allObjects[getObjIndex["Player1"]].get()->AddComponent(ComponentType::Transform);
 
-	Instantiate("Player2", "Player2TexNorth", 558, 168, 25, 25);
+	Instantiate("Player2", "Player2TexNorth", 558, 168, 25, 25, TagType::Player);
 	player2Key = "Player2";
-	allObjects[getObjIndex["Player2"]].get()->isPlayer = true; //TEMP until ControllableComponent is implemented and tested.
+	allObjects[getObjIndex["Player2"]].get()->tag = TagType::Player; 
 	allObjects[getObjIndex["Player2"]].get()->isEnabled = true;
 	initPlayer2Dir.x = 0;
 	initPlayer2Dir.y = -1;
 
 	//Create moving hazards
-	Instantiate("Hazard A", "BeybladeTex", 190, 160, 50, 50);
-	allObjects[getObjIndex["Hazard A"]].get()->isHazard = true;
-	Instantiate("Hazard B", "BeybladeTex", 410, 160, 50, 50);
-	allObjects[getObjIndex["Hazard B"]].get()->isHazard = true;
+	Instantiate("Hazard A", "BeybladeTex", 190, 160, 50, 50, TagType::Hazard);
+	allObjects[getObjIndex["Hazard A"]].get()->tag = TagType::Hazard;
+
+	Instantiate("Hazard B", "BeybladeTex", 410, 160, 50, 50, TagType::Hazard);
+	allObjects[getObjIndex["Hazard B"]].get()->tag = TagType::Hazard;
 
 	//Making the walls
 	//Use Instantiate(Object name, Texture name, x position, y position, width, height);
@@ -83,80 +85,81 @@ void BlueRapsolApp::GameStart() {
 	//Note: Collision only works with velocity; you can't change position in BlueRapsolEngine::GameUpdate() and expect it to collide.
 
 	for (int i = 0; i < 25; i++) { 
-		Instantiate("North Wall " + std::to_string(i), "WallTex", 0 + (i * 25), 0); 
-		allObjects[getObjIndex["North Wall " + std::to_string(i)]].get()->isWall = true;
+		Instantiate("North Wall " + std::to_string(i), "WallTex", 0 + (i * 25), 0, TagType::Wall); 
+		allObjects[getObjIndex["North Wall " + std::to_string(i)]].get()->tag = TagType::Wall;
 	}
 
 	for (int i = 0; i < 25; i++) { 
-		Instantiate("South Wall " + std::to_string(i), "WallTex", 0 + (i * 25), 325);
-		allObjects[getObjIndex["South Wall " + std::to_string(i)]].get()->isWall = true;
+		Instantiate("South Wall " + std::to_string(i), "WallTex", 0 + (i * 25), 325, TagType::Wall);
+		allObjects[getObjIndex["South Wall " + std::to_string(i)]].get()->tag = TagType::Wall;
 	}
 
 	for (int i = 1; i < 13; i++) { 
-		Instantiate("West Wall " + std::to_string(i-1), "WallTex", 0, 0 + (i * 25));
-		allObjects[getObjIndex["West Wall " + std::to_string(i-1)]].get()->isWall = true;
+		Instantiate("West Wall " + std::to_string(i-1), "WallTex", 0, 0 + (i * 25), TagType::Wall);
+		allObjects[getObjIndex["West Wall " + std::to_string(i-1)]].get()->tag = TagType::Wall;
 	}
 	
 	for (int i = 1; i < 13; i++) { 
-		Instantiate("East Wall " + std::to_string(i-1), "WallTex", 600, 0 + (i * 25));
-		allObjects[getObjIndex["East Wall " + std::to_string(i-1)]].get()->isWall = true;
+		Instantiate("East Wall " + std::to_string(i-1), "WallTex", 600, 0 + (i * 25), TagType::Wall);
+		allObjects[getObjIndex["East Wall " + std::to_string(i-1)]].get()->tag = TagType::Wall;
 	}
 
-	Instantiate("Wall A", "WallTex", 300, 75);	 allObjects[getObjIndex["Wall A"]].get()->isWall = true;
-	Instantiate("Wall B", "WallTex", 300, 225);  allObjects[getObjIndex["Wall B"]].get()->isWall = true;
-	Instantiate("Wall C", "WallTex", 300, 250);  allObjects[getObjIndex["Wall C"]].get()->isWall = true;
-	Instantiate("Wall D", "WallTex", 300, 100);  allObjects[getObjIndex["Wall D"]].get()->isWall = true;
-	Instantiate("Wall E", "WallTex", 450, 150);  allObjects[getObjIndex["Wall E"]].get()->isWall = true;
-	Instantiate("Wall F", "WallTex", 450, 175);  allObjects[getObjIndex["Wall F"]].get()->isWall = true;
-	Instantiate("Wall G", "WallTex", 150, 150);  allObjects[getObjIndex["Wall G"]].get()->isWall = true;
-	Instantiate("Wall H", "WallTex", 150, 175);  allObjects[getObjIndex["Wall H"]].get()->isWall = true;
-	Instantiate("Wall I", "WallTex", 225, 125);  allObjects[getObjIndex["Wall I"]].get()->isWall = true;
-	Instantiate("Wall J", "WallTex", 225, 200);  allObjects[getObjIndex["Wall J"]].get()->isWall = true;
-	Instantiate("Wall K", "WallTex", 375, 125);  allObjects[getObjIndex["Wall K"]].get()->isWall = true;
-	Instantiate("Wall L", "WallTex", 375, 200);  allObjects[getObjIndex["Wall L"]].get()->isWall = true;
-	Instantiate("Wall M", "WallTex", 50, 50);    allObjects[getObjIndex["Wall M"]].get()->isWall = true;
-	Instantiate("Wall N", "WallTex", 50, 75);    allObjects[getObjIndex["Wall N"]].get()->isWall = true;
-	Instantiate("Wall O", "WallTex", 50, 100);   allObjects[getObjIndex["Wall O"]].get()->isWall = true;
-	Instantiate("Wall P", "WallTex", 550, 50);   allObjects[getObjIndex["Wall P"]].get()->isWall = true;
-	Instantiate("Wall Q", "WallTex", 550, 75);   allObjects[getObjIndex["Wall Q"]].get()->isWall = true;
-	Instantiate("Wall R", "WallTex", 550, 100);  allObjects[getObjIndex["Wall R"]].get()->isWall = true;
-	Instantiate("Wall S", "WallTex", 50, 225);   allObjects[getObjIndex["Wall S"]].get()->isWall = true;
-	Instantiate("Wall T", "WallTex", 50, 250);   allObjects[getObjIndex["Wall T"]].get()->isWall = true;
-	Instantiate("Wall U", "WallTex", 50, 275);   allObjects[getObjIndex["Wall U"]].get()->isWall = true;
-	Instantiate("Wall V", "WallTex", 550, 225);  allObjects[getObjIndex["Wall V"]].get()->isWall = true;
-	Instantiate("Wall W", "WallTex", 550, 250);  allObjects[getObjIndex["Wall W"]].get()->isWall = true;
-	Instantiate("Wall X", "WallTex", 550, 275);  allObjects[getObjIndex["Wall X"]].get()->isWall = true;
-	Instantiate("Wall Y", "WallTex", 125, 25);   allObjects[getObjIndex["Wall Y"]].get()->isWall = true;
-	Instantiate("Wall Z", "WallTex", 125, 300);  allObjects[getObjIndex["Wall Z"]].get()->isWall = true;
-	Instantiate("Wall AA", "WallTex", 475, 25);  allObjects[getObjIndex["Wall AA"]].get()->isWall = true;
-	Instantiate("Wall AB", "WallTex", 475, 300); allObjects[getObjIndex["Wall AB"]].get()->isWall = true;
-	Instantiate("Wall AC", "WallTex", 125, 50);  allObjects[getObjIndex["Wall AC"]].get()->isWall = true;
-	Instantiate("Wall AD", "WallTex", 125, 75);  allObjects[getObjIndex["Wall AD"]].get()->isWall = true;
-	Instantiate("Wall AE", "WallTex", 475, 250); allObjects[getObjIndex["Wall AE"]].get()->isWall = true;
-	Instantiate("Wall AF", "WallTex", 475, 275); allObjects[getObjIndex["Wall AF"]].get()->isWall = true;
-	Instantiate("Wall AG", "WallTex", 175, 250); allObjects[getObjIndex["Wall AG"]].get()->isWall = true;
-	Instantiate("Wall AH", "WallTex", 200, 250); allObjects[getObjIndex["Wall AH"]].get()->isWall = true;
-	Instantiate("Wall AI", "WallTex", 400, 75);  allObjects[getObjIndex["Wall AI"]].get()->isWall = true;
-	Instantiate("Wall AJ", "WallTex", 425, 75);  allObjects[getObjIndex["Wall AJ"]].get()->isWall = true;
-	Instantiate("Wall AK", "WallTex", 200, 50);  allObjects[getObjIndex["Wall AK"]].get()->isWall = true;
-	Instantiate("Wall AL", "WallTex", 400, 275); allObjects[getObjIndex["Wall AL"]].get()->isWall = true;
-	Instantiate("Wall AM", "WallTex", 350, 25);  allObjects[getObjIndex["Wall AM"]].get()->isWall = true;
-	Instantiate("Wall AN", "WallTex", 250, 300); allObjects[getObjIndex["Wall AN"]].get()->isWall = true;
+	Instantiate("Wall A", "WallTex", 300, 75, TagType::Wall);	
+	Instantiate("Wall B", "WallTex", 300, 225, TagType::Wall);  
+	Instantiate("Wall C", "WallTex", 300, 250, TagType::Wall);  
+	Instantiate("Wall D", "WallTex", 300, 100, TagType::Wall);  
+	Instantiate("Wall E", "WallTex", 450, 150, TagType::Wall);  
+	Instantiate("Wall F", "WallTex", 450, 175, TagType::Wall);  
+	Instantiate("Wall G", "WallTex", 150, 150, TagType::Wall);  
+	Instantiate("Wall H", "WallTex", 150, 175, TagType::Wall);  
+	Instantiate("Wall I", "WallTex", 225, 125, TagType::Wall);  
+	Instantiate("Wall J", "WallTex", 225, 200, TagType::Wall);  
+	Instantiate("Wall K", "WallTex", 375, 125, TagType::Wall); 
+	Instantiate("Wall L", "WallTex", 375, 200, TagType::Wall); 
+	Instantiate("Wall M", "WallTex", 50, 50, TagType::Wall);    
+	Instantiate("Wall N", "WallTex", 50, 75, TagType::Wall);    
+	Instantiate("Wall O", "WallTex", 50, 100, TagType::Wall);   
+	Instantiate("Wall P", "WallTex", 550, 50, TagType::Wall);   
+	Instantiate("Wall Q", "WallTex", 550, 75, TagType::Wall);   
+	Instantiate("Wall R", "WallTex", 550, 100, TagType::Wall);  
+	Instantiate("Wall S", "WallTex", 50, 225, TagType::Wall);   
+	Instantiate("Wall T", "WallTex", 50, 250, TagType::Wall);   
+	Instantiate("Wall U", "WallTex", 50, 275, TagType::Wall);   
+	Instantiate("Wall V", "WallTex", 550, 225, TagType::Wall); 
+	Instantiate("Wall W", "WallTex", 550, 250, TagType::Wall);  
+	Instantiate("Wall X", "WallTex", 550, 275, TagType::Wall);  
+	Instantiate("Wall Y", "WallTex", 125, 25, TagType::Wall);   
+	Instantiate("Wall Z", "WallTex", 125, 300, TagType::Wall);  
+	Instantiate("Wall AA", "WallTex", 475, 25, TagType::Wall);  
+	Instantiate("Wall AB", "WallTex", 475, 300, TagType::Wall); 
+	Instantiate("Wall AC", "WallTex", 125, 50, TagType::Wall);  
+	Instantiate("Wall AD", "WallTex", 125, 75, TagType::Wall);  
+	Instantiate("Wall AE", "WallTex", 475, 250, TagType::Wall); 
+	Instantiate("Wall AF", "WallTex", 475, 275, TagType::Wall); 
+	Instantiate("Wall AG", "WallTex", 175, 250, TagType::Wall);
+	Instantiate("Wall AH", "WallTex", 200, 250, TagType::Wall); 
+	Instantiate("Wall AI", "WallTex", 400, 75, TagType::Wall);  
+	Instantiate("Wall AJ", "WallTex", 425, 75, TagType::Wall);  
+	Instantiate("Wall AK", "WallTex", 200, 50, TagType::Wall);  
+	Instantiate("Wall AL", "WallTex", 400, 275, TagType::Wall); 
+	Instantiate("Wall AM", "WallTex", 350, 25, TagType::Wall);  
+	Instantiate("Wall AN", "WallTex", 250, 300, TagType::Wall); 
 
 	//Creating the recycled bullets
 	for (int i = 0; i < maxBullets; i++) {
-		Instantiate("Bullet " + std::to_string(i), "BulletTex", -100, -100, 20, 20);
-		allObjects[allObjects.size() - 1].get()->isProjectile = true;
+		Instantiate("Bullet " + std::to_string(i), "BulletTex", -100, -100, 20, 20, TagType::Bullet);
+		allObjects[allObjects.size() - 1].get()->tag = TagType::Bullet;
 		recycledBullets[i] = allObjects.size() - 1;
 	}
 
 	//Create victory text
-	Instantiate("VictoryText1", "Player1VictoryTex", -600, -600);
-	Instantiate("VictoryText2", "Player2VictoryTex", -600, -600);
+	Instantiate("VictoryText1", "Player1VictoryTex", -600, -600, TagType::Aesthetic);
+	Instantiate("VictoryText2", "Player2VictoryTex", -600, -600, TagType::Aesthetic);
 
 	//Debugging Example
 	//msg = L"Value of ObjIndex: " + std::to_wstring(ObjIndex) + L"\n";
 	//OutputDebugString(msg.c_str());
+
 }
 
 void BlueRapsolApp::GameUpdate() {
